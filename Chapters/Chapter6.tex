@@ -1,0 +1,135 @@
+% Chapter Template
+
+\chapter{Introducción general TECSCI} % Main chapter title
+
+\label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+
+En este capítulo se explica brevemente el marco de trabajo en en el cual se desarrolla el proyecto y se dan las primeras definiciones sobre el equipo a contruir. 
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{TECSCI SAS}
+
+La realización del siguiente proyecto se basa en la construcción de un equipo comercial Dip Coater. El proyecto se desarrolla en el marco de los primeros años de vida de la empresa \textbf{TECSCI} \textit{(Technology for Science)}.
+
+TECSCI pretende convertirse en una empresa líder en el desarrollo de equipamiento científico de laboratorios. Con el objetivo general de diseñar y fabricar equipos con foco en procesos nanotecnológicos adhiriendo a la filosofía del software y hardware libre y aportando desde su lugar a la comunidad.
+
+Tiene como visión ser líder y referente global en el desarrollo de equipamiento científico de fuentes abiertas y como misión 
+pretende fabricar productos innovadores de alta calidad para atender las demandas de los laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
+
+El Dip Coater es el primer equipo que se realizado y se adapta completamente al modelo de negocio pensado, el cual se presenta en la Figura \ref{fig:diagBloques} en donde se describe el modelo de negocios de la empresa sobre un diagrama Canvas.
+
+\clearpage
+
+\vspace{1cm}
+\begin{figure}[htpb]
+\centering 
+\includegraphics[width=1\textwidth]{./Figures/canvas.png}
+\caption{Diagrama Canvas - Modelo de Negocios TECSCI}
+\label{fig:diagBloques}
+\end{figure}
+\vspace{1cm}
+
+
+Las soluciones que propone TECSCI se orientan a dar respuesta a las siguientes problemáticas que se comparten en el mercado local e intercional:
+\begin{itemize}
+\item Elevado precio del equipamiento científico y mantenimiento.
+\item Contratación exclusiva de servicio técnico asociado al fabricante.
+\item Soluciones de software y hardware cerradas que no permiten la adaptación del instrumental a experimentos científicos personalizados.
+\end{itemize}
+
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+
+\section{Dip Coater}
+
+
+En los laboratorios de investigación aplicados a nanotecnologías existen diferentes equipos para la fabricación de películas delgadas comunmente denominado \textit{thin film}, las películas delgadas son finas capas de material de espesores variables que comunmente van desde las centenas de nanómetros hasta las decenas de micrones que se depositan sobre diferentes superficies.  
+
+Para la creación de películas delgadas por deposición se utilizan diferentes tipos de técnicas físicas o químicas, también existe la posibilidad utilizando otro tipo de técnicas de hacer crecer la película sobre la superficie.
+Se utilizará para este proyecto la técnica de inmersión controlada de una superficie de muestra en un sustrato disuelto en solución.
+
+Dip Coating es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción de una muestra en una solución bajo estudio, como se observa en la Figura \ref{fig:inmersion} en donde se observa una ejecución completa del movimiento desarrollado por el equipo.
+
+\vspace{1cm}
+\begin{figure}[htpb]
+\centering 
+\includegraphics[width=0.9\textwidth]{./Figures/dip-coating.png}
+\caption{Proceso completo desarrollado por el equipo}
+\label{fig:inmersion}
+\end{figure}
+\vspace{1cm}
+ 
+La principal y mas importante característica de la máquina es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera en que la muestra queda sumergida, y también controlar la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
+ 
+
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+
+\subsection{Dip Coater en el mercado}
+
+Existen diferentes fabricantes a nivel mundial que comercialízan estos equipos pero ninguno a nivel local, presentamos en las siguientes figuras algunos de ellos. (
+
+\vspace{1cm}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.2\textwidth]{./Figures/dip_biolin.pdf}
+	\caption{Equipo de la empresa Biolin Scientific.}
+	\label{fig:texmaker}
+\end{figure}
+\vspace{1cm}
+
+\vspace{1cm}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.2\textwidth]{./Figures/dip_kibron.pdf}
+	\caption{Equipo de la empresa Kibron.}
+	\label{fig:texmaker}
+\end{figure}
+\vspace{1cm}
+
+y luego en la siguiente tabla comparamos las especificaciones técnicas generales que los caracterizan.
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Objetivos y Alcance}
+
+\subsection{Objetivos}
+
+El objetivo de este proyecto es que la empresa TECSCI diseñe y fabrique el primer equipo comercial, con la perspectiva de ser el primero de una serie más amplia de equipos de laboratorio para la investigación científica. En principio el proyecto se enmarca en la temática de estudio sobre aplicaciones  Nanotecnologícas, pero el campo al cual se apunta es mucho más amplio, y se pretende poder abarcarlo incrementalmente respetando los principios filosóficos del Hardware y Software Libre.
+
+
+\subsection{Alcance}
+
+El presente proyecto incluye la presentación de un equipo comercial Dip Coater. 
+
+Abarca los siguientes puntos:
+
+\begin{itemize}
+\item Desarrollo del Firmware que contemple la comunicación con driver del fabricante TRINAMIC, específicamente el TMC5130.
+\item Diseño del Hardware con software de diseño KICAD.
+\item Fabricación del PCB y montaje de componentes electrónicos.
+\item Diseño y Fabricación de la parte mecánica soporte del equipo y fabricación de piezas especiales a través de mecanizado CNC.
+\item Incorporación de pantalla touch HMI \textit{human machine interface} de la marca STONE para configuración y uso del equipo.
+\end{itemize}
+
+
+
+El presente proyecto no incluye:
+
+\begin{itemize}
+\item Desarrollo de hardware con fuente de alimentación incorporada.
+\item La programación de la interfaz gráfica con el software de diseño provisto por el fabricante de la pantalla.
+\item Control del ambiente con registro de humedad y  cámara de humedad.
+\end{itemize}
+
+
+
+
