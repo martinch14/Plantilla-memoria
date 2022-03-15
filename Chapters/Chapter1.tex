@@ -5,129 +5,167 @@
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 
-En este capítulo se explica brevemente el marco de trabajo en en el cual se desarrolla el proyecto y se dan las primeras definiciones sobre el equipo a construir. 
+En este capítulo se explica brevemente el marco en el cual se desarrollo el trabajo y se dan las primeras definiciones sobre el equipo a construir. 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-\section{Tecsci sas}
+\section{El contexto Tecsci}
 
-La realización del siguiente proyecto se basa en la construcción de un equipo comercial \textit{Dip Coater}. El proyecto se desarrolla en el marco de los primeros años de vida de la empresa \textit{TECSCI (Technology for Science)}.
+La realización del siguiente proyecto se basa en la construcción de un equipo comercial \textit{Dip Coater}. El proyecto se desarrolla en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
 
-La empresa tiene como visión ser líder y referente global en el desarrollo de equipamiento científico de fuentes abiertas y como misión 
-pretende fabricar productos innovadores de alta calidad para atender las demandas de los laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
+La empresa tiene como visión ser referente internacional en el desarrollo de equipamiento científico y como misión pretende fabricar productos innovadores de alta calidad. Espera poder dar respuesta a las demandas de laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
 
-Con el objetivo general de diseñar y fabricar equipos con foco en procesos nanotecnológicos, adhiriendo a la filosofía del software y hardware libre y aportando desde su lugar a la comunidad. El Dip coater es el primer equipo realizado y se adapta completamente al modelo de negocio pensado, el cual se presenta en la Figura \ref{fig:diagBloques} en donde se describe el modelo de negocios de la empresa sobre un diagrama Canvas.
+Como valor agregado destacamos que la empresa adhiere a la filosofía del software y hardware libre \citep{web_oshwa}, por lo tanto el lector podrá acceder a todo el código fuente del firmware\citep{web_firmware_tecsci} y también a los archivos de diseño y fabricación del circuito impreso\citep{web_hardware_tecsci} contando así con todo el material necesario para replicar, reparar o adaptar a sus necesidades el equipo.
 
-\clearpage
-
-\vspace{1cm}
-\begin{figure}[htpb]
-\centering 
-\includegraphics[width=1\textwidth]{./Figures/canvas.png}
-\caption{Diagrama Canvas - Modelo de Negocios TECSCI}
-\label{fig:diagBloques}
-\end{figure}
-\vspace{1cm}
-
-
-Las soluciones que propone Tecsci se orientan a dar respuesta a las problemáticas que se comparten tanto en el mercado local como en el internacional:
+Las soluciones que propone se orientan a dar respuesta a las problemáticas que se comparten tanto en el mercado local como en el internacional:
 \begin{itemize}
 \item Elevado precio del equipamiento científico y mantenimiento.
 \item Contratación exclusiva de servicio técnico asociado al fabricante.
 \item Soluciones de software y hardware cerradas que no permiten la adaptación del instrumental a experimentos científicos personalizados.
 \end{itemize}
 
+
+La empresa está incubada en la Fundación Unsam Innovación y Tecnología  (FUNINTEC) y sus instalaciones se encuentran dentro del Campus Miguelete en la Universidad Nacional de San Martín (UNSAM). 
+
+El impacto de está incubación es positivo, ya que brinda las herramientas necesarias para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo, en la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado CNC, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
+
+\clearpage
+\begin{figure}[htpb]
+\centering 
+\includegraphics[width=0.85\textwidth]{./Figures/taller_v3.pdf}
+\caption{Centro Tecnológico FUNINTEC.}
+\label{fig:taller}
+\end{figure}
+
+
+Esto fue posible luego del esfuerzo de los trabajadores de la empresa TECSCI que dejaron en condiciones el lugar y recuperaron los equipos de producción luego de años de abandono.
+También la empresa cuenta con un laboratorio de electrónica con equipos para diseño y prototipado electrónico.
+
+
 %-----------------------------------
 %	SUBSECTION 1
 %-----------------------------------
 
-\section{Dip coating}
+\section{Técnicas de dip coating}
+
+En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films} que consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
 
 
-En los laboratorios de investigación aplicados a nanotecnologías existen diferentes equipos para la fabricación de películas delgadas comunmente denominadas \textit{thin film}, las películas delgadas son finas capas de material de espesores variables que comunmente van desde las centenas de nanómetros hasta las decenas de micrones \textit{[100nm - 50 um]} que se depositan sobre diferentes superficies.  
+\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de una muestra en una solución bajo estudio, en la Figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
 
-Para la creación de películas delgadas por deposición se utilizan diferentes tipos de técnicas físicas o químicas, también existe la posibilidad utilizando otro tipo de técnicas de hacer crecer la película sobre la superficie.
-Se utilizará para este proyecto la técnica de inmersión controlada de una superficie de muestra en un sustrato disuelto en solución.
 
-Dip Coating es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción de una muestra en una solución bajo estudio, como se observa en la Figura \ref{fig:inmersion} en donde se observa una ejecución completa del movimiento desarrollado por el equipo.
-
-\vspace{1cm}
 \begin{figure}[htpb]
 \centering 
-\includegraphics[width=0.9\textwidth]{./Figures/dip-coating.png}
-\caption{Proceso completo desarrollado por el equipo}
+\includegraphics[width=0.85\textwidth]{./Figures/dip-coating.png}
+\caption{Proceso completo desarrollado por el equipo.}
 \label{fig:inmersion}
 \end{figure}
-\vspace{1cm}
+
  
-La principal y mas importante característica de la máquina es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera en que la muestra queda sumergida, y también controlar la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
+La principal característica del equipo es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera que la muestra queda sumergida y la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
+
+Como ejemplo de los resultados que se obtienen aplicando está técnica podemos observar en la figura \ref{fig:muestras} films de dioxido de titanio \ce{TiO2}, en la primer imagen el film se preparó sobre un wafer de silicio y en la segunda sobre un porta muestra de vidrio.
+
+
+\begin{figure}[!htpb]
+     \centering
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=.5\textwidth]{./Figures/muestra_1.pdf}
+         \caption{Film sobre wafer de silicio.}
+         \label{fig:muestra_1}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=.5\textwidth]{./Figures/muestra_2.pdf}
+         \caption{Film sobre portaobjeto.}
+         \label{fig:muestra_"}
+     \end{subfigure}
+     \hfill
+        \caption{Films de dioxido de titanio \ce{TiO2} \protect\footnotemark .}
+        \label{fig:muestras}
+\end{figure}
+
+\footnotetext{Imágen tomada en los laboratorios del Instituto de Nanosistemas de la Unsam}
+
+
+Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} a \SI{200}{nm} y la velocidad de inmersion y extracción de los sustratos de \SI{180}{mm/min}.
+
+Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, es necesario realizar tratamientos térmicos para finalizar el proceso, que se realizan con otro tipo de equipos y por lo tanto no serán parte de esta memoria.
  
 
 %-----------------------------------
 %	SUBSECTION 2
 %-----------------------------------
 
-\section{Estado del arte}
+\section{Dip coaters en el mercado}
 
-Existen diferentes fabricantes a nivel mundial que comercialízan estos equipos pero ninguno a nivel local, también podemos encontrar diferentes modelos dip coater, por ejemplo la empresa Biolin Scientific tiene una versión simple y también ofrece version mas compleja, presentamos a continuación algunos equipos de diferentes fabricantes.
+Existen diferentes fabricantes a nivel internacional que comercialízan estes tipo de equipos pero ninguno a nivel local, presentamos a continuación algunos equipos de diferentes fabricantes. 
 
-\textbf{Biolin Scientific}  \citep{1_web_biolin}
+Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibron \citep{2_web_kibron}.
 
-En la figura \ref{fig:equipos_biolin} podemos ver el equipo simple que ofrece la companía y otro mas avanzado que a través de una rotación en la base cambia automáticamente las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una pc corriendo un software para poder ser ejecutados.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.25\textwidth]{./Figures/kibron.pdf}
+	\caption{Equipo de la empresa Kibron.}
+	\label{fig:dip_kibron}
+\end{figure}
+
+En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad la cual a través de una rotación en la base da la posibilidad de cambiar automáticamente las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una pc corriendo un software para poder ser accionados.
 
 \begin{figure}[!htpb]
      \centering
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
-         \includegraphics[width=.65\textwidth]{./Figures/dip_biolin.pdf}
-         \caption{Equipo simple}
+         \includegraphics[width=.45\textwidth]{./Figures/dip_biolin.pdf}
+         \caption{Equipo simple.}
          \label{fig:dip_biolin}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
-         \includegraphics[width=.85\textwidth]{./Figures/dip_biolin_2.pdf}
-         \caption{Equipo avanzado}
+         \includegraphics[width=.65\textwidth]{./Figures/dip_biolin_2.pdf}
+         \caption{Equipo avanzado.}
          \label{fig:dip_biolin_2}
      \end{subfigure}
      \hfill
-        \caption{Equipos de la empresa Biolin Scientific}
+        \caption{Equipos de la empresa Biolin Scientific.}
         \label{fig:equipos_biolin}
 \end{figure}
 
-
-
-\textbf{Kibron}  \citep{2_web_kibron}
-
-\ref{fig:dip_kibron}
+Por último presentamos el equipo de la empresa Bungard \citep{6_web_bungard}, que puede observarse en la figura \ref{fig:dip_bungard}.
+Este equipo a diferencia de los otros cuenta con un display LCD y botonera, que permite al usuario realizar una configuración a pie de máquina.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.35\textwidth]{./Figures/kibron.pdf}
-	\caption{Equipo de la empresa Kibron.}
-	\label{fig:dip_kibron}
+	\includegraphics[width=.45\textwidth]{./Figures/6_bungard.pdf}
+	\caption{Equipo de la empresa Bungard.}
+	\label{fig:dip_bungard}
 \end{figure}
 
-\textbf{Ossila}  \citep{4_web_ossila}
-
-y luego en la siguiente tabla \ref{tab:equipos_competencia} comparamos las especificaciones técnicas que los caracterizan.
+A continuación se presenta la tabla \ref{tab:equipos_competencia} en donde se comparan las especificaciones técnicas que los caracterizan.
 
 \begin{table}[h]
 	\centering
-	\caption[caption corto]{Especificaciones técnicas de otros fabricantes}
-	\begin{tabular}{l c c c}    
+	\caption[Dip coaters en el mercado]{Especificaciones técnicas de otros equipos}
+	\begin{tabular}{l c c c c}    
 		\toprule
-		\textbf{Equipo} 	 & \textbf{Recorrido max.}  & \textbf{Velocidad (mm/min)}  & \textbf{Acel (m/min2)}\\
+		\textbf{Equipo} 	 & \textbf{Recorrido}  & \textbf{Velocidad (mm/min)}  & \textbf{Acel (m/min2)}  & \textbf{Interface} \\
 		\midrule
-		Bio Single Vessel Medium	& 300 mm 	& 1    - 1000   & without 		\\		
-		Bio Multiplie Vessel		& 70  mm	& 0.1  - 108 	& without		\\
-		Kibron LayerX				& 134 mm	& 0.06 - 300	& without		\\
-		Ossila						& 100 mm	& 0.6 - 3000	& without		\\
+		Bio Single Vessel M	& 300 mm 	& 1    - 1000   & no & pc 							\\		
+		Bio Multiplie Vessel		& 70  mm	& 0.1  - 108 	& no & pc					\\
+		Kibron LayerX				& 134 mm	& 0.06 - 300	& no & pc					\\
+		Bungard						& 600 mm	& 30 - 10000	& no & display/botón		\\
+		Ossila \citep{4_web_ossila}					& 100 mm	& 0.6  - 3000	& no & pc		\\
+		Holmarc	\citep{5_web_holmarc}					& 100 mm	& 1.08 - 540	& no & pc		\\
 		\bottomrule
 		\hline
 	\end{tabular}
 	\label{tab:equipos_competencia}
 \end{table}
+
+Podemos entonces extraer al menos dos conclusiones, ninguno de los equipos permite al usuario tener control sobre la aceleración en los movimientos de inmersión y extracción de muestra, y la mayoría  dependen de una comunicación usb-serial con una computadora para poder ser ejecutados.  
 
 %----------------------------------------------------------------------------------------
 %	SECTION 3
@@ -137,8 +175,9 @@ y luego en la siguiente tabla \ref{tab:equipos_competencia} comparamos las espec
 
 \subsection{Objetivos}
 
-El objetivo de este proyecto es que la empresa TECSCI diseñe y fabrique el primer equipo comercial, con la perspectiva de ser el primero de una serie más amplia de equipos de laboratorio para la investigación científica. En principio el proyecto se enmarca en la temática de estudio sobre aplicaciones  Nanotecnologícas, pero el campo al cual se apunta es mucho más amplio, y se pretende poder abarcarlo incrementalmente respetando los principios filosóficos del Hardware y Software Libre.
+El objetivo de este trabajo es que la empresa TECSCI diseñe y fabrique su primer equipo comercial, con la perspectiva de ser el primero de una serie más amplia de equipos de laboratorio para la investigación científica.
 
+También es parte de los objetivos fundamentales que el equipo desarrollado incorpore mejoras respecto a sus competidores, se planteará en los siguientes capítulos un estudio sobre el control de movimientos elegido y se presentará un sistema de configuración de equipo moderno. 
 
 \subsection{Alcance}
 
@@ -163,6 +202,5 @@ El presente proyecto no incluye:
 \item Programación de la interfaz gráfica con el software de diseño provisto por el fabricante de la pantalla.
 \item Control del entorno con registro de humedad, temperatura y  cámara de humedad.
 \end{itemize}
-
 
 

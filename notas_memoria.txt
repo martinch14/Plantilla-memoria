@@ -1,2 +1,24 @@
 utilizacion del software tracker para el modelado del movimineto del carro
 
+Clase 2:
+
+Los capitulos 3 y 4 deberian ser los que mas cantidad de paginas tienen
+
+requerimientos en cap 1 o cap 2
+mucha referencia en cap 1 y 2 
+cap 2:  diagrama en bloque general 
+
+
+cap 3: el mas amplio de todo el que describe toda la implementacion
+
+cap4: banco de pruebas 
+
+este ensayo se relaciona con el requerimientos numero ..
+
+comparación con el estado de arte
+
+
+pertenencia todo en mayuscula
+en italica si esta en otro idioma  (no es los titulos)
+
+usamos la coma para separar decimales
