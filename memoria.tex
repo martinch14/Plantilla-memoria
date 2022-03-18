@@ -29,7 +29,13 @@ headsepline, % Uncomment to get a line under the header
 %Para escribir formulas químicas
 \usepackage[version=4]{mhchem}
 %Para escribir unidades del sistema internacional
-\usepackage{siunitx} 
+\usepackage{siunitx}
+\sisetup{
+detect-family,
+per-mode = fraction,
+separate-uncertainty = true,
+inter-unit-product = \cdot
+}
 %
 
 \usepackage[utf8]{inputenc}
