@@ -5,17 +5,17 @@
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 
-En este capítulo se explica brevemente el marco en el cual se desarrollo el trabajo y se dan las primeras definiciones sobre el equipo a construir. 
+En este capítulo se explica brevemente el marco en el cual se desarrolló el trabajo y se dan las primeras definiciones sobre el equipo a construido. 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-\section{El contexto Tecsci}
+\section{Contexto}
 
-La realización del siguiente proyecto se basa en la construcción de un equipo comercial \textit{Dip Coater}. El proyecto se desarrolla en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
+El trabajo consistió en la construcción de un equipo comercial \textit{Dip coater}. El trabajo se desarrolló en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
 
 La empresa tiene como visión ser referente internacional en el desarrollo de equipamiento científico y como misión pretende fabricar productos innovadores de alta calidad. Espera poder dar respuesta a las demandas de laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
 
-Como valor agregado destacamos que la empresa adhiere a la filosofía del software y hardware libre \citep{web_oshwa}, por lo tanto el lector podrá acceder a todo el código fuente del firmware\citep{web_firmware_tecsci} y también a los archivos de diseño y fabricación del circuito impreso\citep{web_hardware_tecsci} contando así con todo el material necesario para replicar, reparar o adaptar a sus necesidades el equipo.
+Como valor agregado destacamos que la empresa adhiere a la filosofía del software y hardware libre \citep{web_oshwa}, por lo tanto, el lector podrá acceder a todo el código fuente del firmware \citep{web_firmware_tecsci} y también a los archivos de diseño y fabricación del circuito impreso \citep{web_hardware_tecsci} necesarios para replicar, reparar o adaptar a sus necesidades el equipo.
 
 Las soluciones que propone se orientan a dar respuesta a las problemáticas que se comparten tanto en el mercado local como en el internacional:
 \begin{itemize}
@@ -25,9 +25,9 @@ Las soluciones que propone se orientan a dar respuesta a las problemáticas que 
 \end{itemize}
 
 
-La empresa está incubada en la Fundación Unsam Innovación y Tecnología  (FUNINTEC) y sus instalaciones se encuentran dentro del Campus Miguelete en la Universidad Nacional de San Martín (UNSAM). 
+La empresa está incubada en FUNINTEC (Fundación Unsam Innovación y Tecnología) y sus instalaciones se encuentran dentro del Campus Miguelete en la UNSAM ( Universidad Nacional de San Martín). 
 
-El impacto de está incubación es positivo, ya que brinda las herramientas necesarias para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo, en la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado CNC, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
+El impacto de está incubación es positivo, ya que brinda herramientas para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo. En la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado \textit{CNC (computer numerical control)}, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
 
 \clearpage
 \begin{figure}[htpb]
@@ -37,9 +37,7 @@ El impacto de está incubación es positivo, ya que brinda las herramientas nece
 \label{fig:taller}
 \end{figure}
 
-
-Esto fue posible luego del esfuerzo de los trabajadores de la empresa TECSCI que dejaron en condiciones el lugar y recuperaron los equipos de producción luego de años de abandono.
-También la empresa cuenta con un laboratorio de electrónica con equipos para diseño y prototipado electrónico.
+La empresa también cuenta con un laboratorio de electrónica con equipos para diseño y prototipado electrónico.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -49,7 +47,7 @@ También la empresa cuenta con un laboratorio de electrónica con equipos para d
 En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films} que consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
 
 
-\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de una muestra en una solución bajo estudio, en la Figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
+\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
 
 
 \begin{figure}[htpb]
@@ -62,7 +60,7 @@ En los laboratorios de investigación aplicados en nanotecnologías existen dife
  
 La principal característica del equipo es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera que la muestra queda sumergida y la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
 
-Como ejemplo de los resultados que se obtienen aplicando está técnica podemos observar en la figura \ref{fig:muestras} films de dioxido de titanio \ce{TiO2}, en la primer imagen el film se preparó sobre un wafer de silicio y en la segunda sobre un portaobjeto de vidrio.
+Como ejemplo de los resultados que se obtienen aplicando está técnica podemos observar films de dioxido de titanio \ce{TiO2} en la figura \ref{fig:muestras}. En la imagen A el film se preparó sobre un wafer de silicio y en la imagen B sobre un portaobjeto de vidrio.
 
 
 \begin{figure}[!htpb]
@@ -85,10 +83,10 @@ Como ejemplo de los resultados que se obtienen aplicando está técnica podemos 
         \label{fig:muestras}
 \end{figure}
 
-\footnotetext{Imágen tomada en los laboratorios del Instituto de Nanosistemas de la Unsam}
+\footnotetext{Imagen tomada en los laboratorios del Instituto de Nanosistemas de la Unsam}
 
 
-Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} a \SI{200}{nm} y la velocidad de inmersion y extracción de los sustratos de \SI{180}{mm/min}.
+Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} a \SI{200}{nm} y la velocidad de  y extracción de los sustratos de \SI{180}{mm/min}.
 
 Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, es necesario realizar tratamientos térmicos para finalizar el proceso, que se realizan con otro tipo de equipos y por lo tanto no serán parte de esta memoria.
  
@@ -99,7 +97,7 @@ Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, 
 %----------------------------------------------------------------------------------------
 \section{Dip coaters en el mercado}
 
-Existen diferentes fabricantes a nivel internacional que comercialízan este tipo de equipos pero ninguno a nivel local, presentamos a continuación algunos equipos de diferentes fabricantes. 
+Existen diferentes fabricantes a nivel internacional que comercializan este tipo de equipos pero ninguno a nivel local. Se presentan a continuación algunos equipos de diferentes fabricantes. 
 
 Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibron \citep{2_web_kibron}.
 
@@ -110,7 +108,7 @@ Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibro
 	\label{fig:dip_kibron}
 \end{figure}
 
-En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad la cual a través de una rotación en la base da la posibilidad de cambiar automáticamente las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una pc corriendo un software para poder ser accionados.
+En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad extra, que a través de una rotación en la base da la posibilidad de cambiar automáticamente las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una computadora corriendo un software para poder ser accionados.
 
 \begin{figure}[!htpb]
      \centering
@@ -173,27 +171,28 @@ Podemos entonces extraer al menos dos conclusiones, ninguno de los equipos permi
 
 \subsection{Objetivos}
 
-El objetivo de este trabajo es que la empresa TECSCI diseñe y fabrique su primer equipo comercial, con la perspectiva de ser el primero de una serie más amplia de equipos de laboratorio para la investigación científica.
+El objetivo de este trabajo fue diseñar y fabricar el primer equipo comercial de la empresa TECSCI, con la perspectiva a futuro de ampliar la gama ofrecida de equipos de laboratorio para la investigación científica.
 
-También es parte de los objetivos fundamentales que el equipo desarrollado incorpore mejoras respecto a sus competidores, se planteará en los siguientes capítulos un estudio sobre el control de movimientos elegido y se presentará un sistema de configuración de equipo moderno. 
+También es parte de los objetivos fundamentales que el equipo desarrollado incorpore mejoras respecto a sus competidores. Se planteará en los siguientes capítulos un estudio sobre el control de movimientos elegido y se presentará un sistema moderno de configuración de equipo. 
 
 \subsection{Alcance}
 
-El presente proyecto incluye la presentación de un equipo comercial Dip Coater. 
+El presente trabajo incluye la presentación de un equipo comercial dip coater. 
 
-Abarca los siguientes puntos:
+
+Abarcó los siguientes puntos:
 
 \begin{itemize}
-\item Desarrollo del Firmware que contemple la comunicación con driver del fabricante TRINAMIC, específicamente el TMC5130.
-\item Diseño del Hardware con software de diseño KICAD.
+\item Desarrollo de firmware que contemple la comunicación con driver TMC5130 \citep{3_web_trinamic_producto}.
+\item Diseño del hardware con software de diseño KICAD \citep{web_kicad}.
 \item Fabricación del PCB y montaje de componentes electrónicos.
-\item Diseño y Fabricación de la parte mecánica soporte del equipo y fabricación de piezas especiales a través de mecanizado CNC.
-\item Incorporación de pantalla táctil HMI \textit{human machine interface} de la marca STONE para configuración y uso del equipo.
+\item Diseño y fabricación de partes mecánicas soporte del equipo a través de mecanizado CNC.
+\item Incorporación de pantalla táctil \textit{HMI (human machine interface)} para configuración y uso del equipo.
 \end{itemize}
 
 
 
-El presente proyecto no incluye:
+El trabajo no incluyó:
 
 \begin{itemize}
 \item Desarrollo de hardware con fuente de alimentación incorporada.
