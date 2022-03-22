@@ -5,13 +5,13 @@
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 
-En este capítulo se explica brevemente el marco en el cual se desarrolló el trabajo y se dan las primeras definiciones sobre el equipo a construido. 
+En este capítulo se explica brevemente el marco en el cual se desarrolló el trabajo y se dan las primeras definiciones sobre el equipo construido. 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 \section{Contexto}
 
-El trabajo consistió en la construcción de un equipo comercial \textit{Dip coater}. El trabajo se desarrolló en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
+El trabajo consistió en la construcción de un equipo comercial \textit{dip coater}. El trabajo se desarrolló en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
 
 La empresa tiene como visión ser referente internacional en el desarrollo de equipamiento científico y como misión pretende fabricar productos innovadores de alta calidad. Espera poder dar respuesta a las demandas de laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
 
@@ -47,7 +47,7 @@ La empresa también cuenta con un laboratorio de electrónica con equipos para d
 En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films} que consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
 
 
-\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
+\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D (investigación y desarrollo) en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
 
 
 \begin{figure}[htpb]
@@ -86,7 +86,7 @@ Como ejemplo de los resultados que se obtienen aplicando está técnica podemos 
 \footnotetext{Imagen tomada en los laboratorios del Instituto de Nanosistemas de la Unsam}
 
 
-Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} a \SI{200}{nm} y la velocidad de  y extracción de los sustratos de \SI{180}{mm/min}.
+Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} y \SI{200}{nm} y la velocidad de inmersión y extracción de los sustratos de \SI{180}{mm/min}.
 
 Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, es necesario realizar tratamientos térmicos para finalizar el proceso, que se realizan con otro tipo de equipos y por lo tanto no serán parte de esta memoria.
  
@@ -108,7 +108,7 @@ Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibro
 	\label{fig:dip_kibron}
 \end{figure}
 
-En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad extra, que a través de una rotación en la base da la posibilidad de cambiar automáticamente las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una computadora corriendo un software para poder ser accionados.
+En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad extra, que a través de una rotación en la base da la posibilidad de cambiar de manera automática y secuencial las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una computadora corriendo un software para poder ser accionados.
 
 \begin{figure}[!htpb]
      \centering
@@ -152,7 +152,7 @@ A continuación se presenta la tabla \ref{tab:equipos_competencia} en donde se c
 		Bio Single Vessel M	& 300 mm 	& 1    - 1000   & no & pc 							\\		
 		Bio Multiplie Vessel		& 70  mm	& 0.1  - 108 	& no & pc					\\
 		Kibron LayerX				& 134 mm	& 0.06 - 300	& no & pc					\\
-		Bungard						& 600 mm	& 30 - 10000	& no & display/botón		\\
+		Bungard						& 600 mm	& 30 - 10000	& no & display/botones		\\
 		Ossila \citep{4_web_ossila}					& 100 mm	& 0.6  - 3000	& no & pc		\\
 		Holmarc	\citep{5_web_holmarc}					& 100 mm	& 1.08 - 540	& no & pc		\\
 		\bottomrule
@@ -161,7 +161,7 @@ A continuación se presenta la tabla \ref{tab:equipos_competencia} en donde se c
 	\label{tab:equipos_competencia}
 \end{table}
 
-Podemos entonces extraer al menos dos conclusiones, ninguno de los equipos permite al usuario tener control sobre la aceleración en los movimientos de inmersión y extracción de muestra, y la mayoría  dependen de una comunicación usb-serial con una computadora para poder ser ejecutados.  
+Podemos entonces extraer algunas conclusiones, ninguno de los equipos permite al usuario tener control sobre la aceleración en los movimientos de inmersión y extracción de muestra, la mayoría  de los equipos depende de una comunicación USB-SERIAL con una computadora para poder ser ejecutados, ninguna de las empresas adhiere a los principios del software y hardware libre.  
 
 %----------------------------------------------------------------------------------------
 %	SECTION 4
@@ -187,7 +187,7 @@ Abarcó los siguientes puntos:
 \item Diseño del hardware con software de diseño KICAD \citep{web_kicad}.
 \item Fabricación del PCB y montaje de componentes electrónicos.
 \item Diseño y fabricación de partes mecánicas soporte del equipo a través de mecanizado CNC.
-\item Incorporación de pantalla táctil \textit{HMI (human machine interface)} para configuración y uso del equipo.
+\item Incorporación de pantalla táctil para configuración y uso del equipo.
 \end{itemize}
 
 
@@ -196,7 +196,7 @@ El trabajo no incluyó:
 
 \begin{itemize}
 \item Desarrollo de hardware con fuente de alimentación incorporada.
-\item Programación de la interfaz gráfica con el software de diseño provisto por el fabricante de la pantalla.
+\item Programación de interfaz gráfica con software de diseño HMI  y módulo de software asociado.
 \item Control del entorno con registro de humedad, temperatura y  cámara de humedad.
 \end{itemize}
 
