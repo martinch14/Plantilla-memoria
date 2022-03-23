@@ -15,28 +15,28 @@ En el presente capítulo se introducen los módulos principales del equipo dip c
 Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico complejo difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
 
 
-La publicación se basa entonces en un estudio semi-experimental sobre varias soluciones químicas para predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos, un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas. 
+La publicación se basa entonces en un estudio semi-experimental sobre varias soluciones químicas para predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos, un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas respecto al rango de estudio. 
 
-Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto a la velocidad utilizada, también se puede observar como se relacionan los diferentes modelos. 
+Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
 
-\begin{figure}[ht]
+\begin{figure}[!h]
 \centering 
-\includegraphics[width=0.6\textwidth]{./Figures/paper_galo.png}
+\includegraphics[width=0.52\textwidth]{./Figures/paper_galo.png}
 \caption{Espesor vs velocidad. Imagen tomada de \cite{paper_galo}.}
 \label{fig:paper_galo}
 \end{figure}
 
-Los resultados del experimento concluyen  que existe linealidad  en la relación de espesor respecto la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . En donde el fenómeno se puede explicar por el modelo de evaporación.
+Los resultados del experimento concluyen que existe linealidad  en la relación de espesor respecto la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . También demuestra que en dicho rango de velocidades el fenómeno se explica por el modelo de evaporación.
 
 Se desprende de este análisis la importancia de los siguientes requerimientos funcionales definidos por el cliente: 
 
 \begin{itemize}
 \item El sistema debe contar con un rango de velocidades de desplazamiento de muestra entre [1- 1000 \si{\milli\meter\per\minute}]. 
 \item El sistema debe contar con un rango de aceleraciones de desplazamiento de muestra entre [1000 - 15000 \si{\meter\per\square\minute}].
-\item El sistema debe permitir que el usuario pueda configurar en un programa variables de desplazamiento y tiempos de espera.		
+		
 \end{itemize}
 	
-Cabe destacar que todos los experimentos en la publicación fueron a realizados velocidad constante. De las reuniones con el cliente y del interés de trabajar en la frontera de la ciencia surgió la necesitad de poder darle al usuario la posibilidad de realizar experimentos a velocidad y aceleración controlada. Esto último es una cualidad que diferencia a nuestro equipo de todos los equipos comerciales relevados.
+Cabe destacar que todos los experimentos en la publicación fueron realizados a velocidad constante. De las reuniones con el cliente y del interés de trabajar en la frontera de la ciencia surgió la necesitad de poder darle al usuario la posibilidad de realizar experimentos a velocidad y aceleración controlada. Esto último es una cualidad que diferencia a nuestro equipo de todos los equipos comerciales analizados en la sección \ref{sec:mercado}.
 
  
 %Sin embargo, es una técnica muy difundida porque es simple y proporciona una excelente reproducibilidad. 
@@ -47,21 +47,22 @@ Cabe destacar que todos los experimentos en la publicación fueron a realizados 
 
 \subsection{Circuitos Integrados Trinamic}
 
-Del de los siguientes requerimientos funcionales acordados con el cliente:
+%De los siguientes requerimientos funcionales acordados con el cliente:
+De reuniones con el cliente en donde se remarca la importancia de trabajar con un control preciso de motor y en base a experiencias de uso de equipos con tecnologías similares surge el interés de trabajar con un fabricante de driver específico. Se definen entonces los siguientes requerimientos:
 			
 \begin{itemize}
 \item El equipo deberá contar para realizar los movimientos con un motor paso a paso Nema 17.
 \item Se utilizará un driver de motor de la marca TRINAMIC.
 \end{itemize}
 
-Surge la necesidad de trabajar con el fabricante de circuitos integrados \textit{TRINAMIC Motion Control}\citep{3_web_trinamic}. Como su nombre lo indica Trinamic se especializa en la fabricación de CI (circuitos integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, actualmente fue adquirida por la compañía Analog Devices.
+\textit{TRINAMIC Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (circuitos integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, que garantiza en cierta medida la calidad de sus productos, actualmente fue adquirida por la compañía Analog Devices.
 
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
-Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. En nuestro caso como ya tenemos defino la utilización de un motor paso a paso vamos a trabajar con el ultimó integrado diseñado para tal fin, el mismo es el TMC5130. 
+Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. En nuestro caso como ya tenemos defino la utilización de un motor paso a paso vamos a trabajar con el ultimó integrado diseñado para tal fin, el driver TMC5130. 
   
-Todos los CI requieren una configuración inicial de parámetros, que depende del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board}.
+Todos los CI requieren una configuración inicial de parámetros, que dependen del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board}.
 
-El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} podemos observar a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación del CI TMC5130 que se observa a derecha.
+El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} podemos observar a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha.
 
 \begin{figure}[htpb]
 \centering 
@@ -74,7 +75,7 @@ El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con dife
   
 \subsection{Driver TMC5130}
 
-El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (metal oxide semiconductor field effect transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso de nuestro dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el \ref{Chapter4} los respectivos ensayos.
+El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (metal oxide semiconductor field effect transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso de nuestro dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el capítulo \ref{Chapter4} los respectivos ensayos.
 
 Podemos observar en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
@@ -85,7 +86,7 @@ Podemos observar en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque d
 \label{fig:tmc5130_diagrama}
 \end{figure}
 
-La comunicación con el CI se puede establecer a través del protocolo \textit{ UART (Universal Asynchronous Receiver-Transmitter)} o \textit{SPI (Serial Peripheral Interface)},en el caso de nuestro equipo utilizaremos la comunicación SPI.
+La comunicación con el CI se puede establecer a través del protocolo \textit{ UART (Universal Asynchronous Receiver-Transmitter)} o \textit{SPI (Serial Peripheral Interface)}, en el caso de nuestro equipo utilizaremos la comunicación SPI.
 
 
 Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. Los pasos están relacionados con las fases  y con la cantidad de dientes que tiene el rotor y estator del motor. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo es común contar con algún motor en donde la especificación dice que el paso es de (\ang{1.8}), esto significa que por cada vuelta de motor (\ang{360}) el motor realizará 200 pasos.
@@ -97,6 +98,7 @@ Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el 
 		(360/1.8) * 256 = 51200 \textup{ micropasos por revolución}
 \end{equation}
 
+En nuestro equipo el motor estará acoplado a un eje lineal para generar un movimiento. Por lo tanto cada micropaso del motor estará asociado a un desplazamiento lineal que se analizará en el capítulo \ref{Chapter3}.
 
 Otra funcionalidad que se utilizará es \textit{Stallguard2}, una función de alta precisión que mide la fuerza contraelectromotriz generada en la bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor de stallguard se decrementa linealmente a medida que la carga en el eje del motor aumenta. En nuestro caso se utilizará esta funcionalidad para realizar un posicionamiento inicial que servirá de referencia para todos los desplazamientos posteriores. Cada vez que el equipo se enciende que ejecuta esta funcionalidad para buscar el respectivo cero de máquina.
      
@@ -116,28 +118,28 @@ También se utilizará \textit{coolStep}, una función que a través de medicion
 \label{fig:tmc5130_coolStep}
 \end{figure}
 
-Por último se analizará la función \textit{dcStep}, es un modo de conmutación automática que ajusta la velocidad del motor en caso de existir cierta sobrecarga del eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
+Por último se utilizará la función \textit{dcStep}, que es un modo de conmutación automática que ajusta la velocidad del motor en caso de existir cierta sobrecarga sobre el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
 
 
-En el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
+%el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
+El driver TMC5130 cuenta con 50 registros que se utilizan para configurar las funcionalidades del CI y controlar el motor conectado. El acceso a los registros se realizará a través del protocolo SPI. En el capítulo \ref{Chapter3} de darán mas detalles de los registros configurados con la ayuda del software TMCL-IDE.  
+
 
 \section{Interfaz de usuario}
 
 Respecto a la interfaz usuario-máquina surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar el equipo a pie de máquina. 
 
-Dando así lugar al siguiente requerimiento:
+Dando lugar al siguiente requerimiento:
 \begin{itemize}
 \item La configuración de la máquina debe poder realizarse a través de una pantalla táctil.	
 \end{itemize} 
 
-Se decidió trabajar con pantallas del tipo \textit{HMI (human machine interface)}, este tipo de pantalla incorpora una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. Cuentan en general con un software que permite crean pantallas utilizadas para control y configuración de equipos. 
+Se decidió trabajar con pantallas del tipo \textit{HMI (human machine interface)}, este tipo de pantallas incorpora una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. Cuentan con un software de diseño para la creación de la interfaz gráfica, que a través de un protocolo de comunicación definido por cada fabricante interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En nuestro caso la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (programmable logic controller)}, 
+ 
 
-En el caso de nuestro equipo el sistema embebido de control se comunicará con la pantalla HMI a través de del protocolo UART. 
+Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de equipos y en nuestro caso por las dimensiones finales del equipo se optó por pantallas de 4.3 pulgadas. Se detalla en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
 
-Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}, el fabricante ofrece un catálogo amplio de equipos, en nuestro caso por las dimensiones finales del equipo se optó por una pantalla de 4.3 pulgadas. Se detalla en la siguiente tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas del mismo fabricante:
-
-
-\begin{table}[ht]
+\begin{table}[!h]
 	\centering
 	\caption[Comparación Stone]{Comparación pantallas táctiles Stone 4.3.}
 	\begin{tabular}{l c c }    
@@ -159,7 +161,10 @@ Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_
 	\label{tab:tabla_stone}
 \end{table}
 
-El modelo elegido fue el STWI043WT, que pertenece a la nueva línea productos, tiene mayor capacidad de procesamiento, cuenta con un software de configuración moderno con mayores funcionalidades que el anterior y el costo no supera el \SI{15}{\percent} respecto de su modelo predecesor.  
+
+El modelo elegido fue el STWI043WT, que pertenece a la nueva línea productos, tiene mayor capacidad de procesamiento, cuenta con un software nuevo de configuración con mayores funcionalidades respecto al utilizado por el otro modelo y la diferencia de precios no supera el \SI{15}{\percent}.  
+
+La comunicación de la pantalla STWI043WT con el microcontrolador se realizará a través del protocolo UART.
 
 
 %El modelo elegido como se observa en la figura \ref{fig:stone}
@@ -170,47 +175,9 @@ El modelo elegido fue el STWI043WT, que pertenece a la nueva línea productos, t
 %\label{fig:stone}
 %\end{figure}
 
+\section{Estructura mecánica}
 
-\section{Equipo propuesto}
-\subsection{Componentes electrónicos}
-
-
-Se presentan a continuación los siguientes requerimientos de firmware:
-
-\begin{itemize}
-
-\item El sistema debe permitir que el usuario pueda configurar en un programa variables de desplazamiento y tiempos de espera.
-\item Un programa previamente configurado debe poder ejecutarse o guardarse en memoria interna.
-\item El usuario debe poder guardar al menos 10 programas en la memoria no volátil del sistema.
-\item Se deberá utilizar un control de versionado de cambios durante el desarrollo del firmware.
-\item El desarrollo del firmware debe realizarse con capas de abstracción de software de tal manera que permita en un futuro cambiar de microcontrolador sin mayor esfuerzo.
-\item Deberá registrar variables de presión y temperatura [opcional].
-
-\end{itemize}
-
-
-
-Como se observa en la figura \ref{fig:equipo_propuesto}, el equipo dip coater  propuesto incluye los siguientes módulos: 
-
-\begin{figure}[ht]
-\centering 
-\includegraphics[width=0.9\textwidth]{./Figures/cap2_esquema_propuesto.jpg}
-\caption{Esquema propuesto.}
-\label{fig:equipo_propuesto}
-\end{figure}
-
-
-
-\begin{enumerate}
-\item Microcontrolador ESP32-WROOM. 
-\item Periféricos principales (UART - SPI - I2C - FLASH Interna). 
-\item Driver de motor paso a paso TMC5130.
-\item Pantalla táctil STONE STWI043WT.
-\end{enumerate}
-
-\subsection{Componentes mecánicos}
-
-Según los siguientes requerimientos asociados a las partes mecánicas: 
+Se presentan a continuación los siguientes requerimientos asociados a las partes mecánicas del equipo: 
 
 \begin{itemize}
 \item La estructura principal del equipo debe ser fabricada con perfil de aluminio anodizado natural.
@@ -219,17 +186,18 @@ Según los siguientes requerimientos asociados a las partes mecánicas:
 
 \end{itemize}
 
-Se decidió trabajar con el proveedor Perfiles de Aluminio .NET \citep{web_perfiles_net}, que cuenta con perfiles de diferentes modelos y dimensiones para construir la estructura.
+Se decidió trabajar con el proveedor Perfiles de Aluminio .NET \citep{web_perfiles_net}, que cuenta con diferentes modelos y dimensiones de perfiles necesarios para la fabricación de la estructura.
+
 El equipo también contará con una guía lineal acoplada al perfil principal. Para la elección de la guía se tuvieron en cuenta las siguientes consideraciones:
 
 \begin{enumerate}
-\item El ambiente cambia  según las soluciones químicas utilizadas. Es posible entonces que se trabaje con soluciones muy corrosivas que afecten la estructura.  
-\item El uso de lubricantes en las guías podrían afectar la calidad del experimento.
+\item El ambiente cambia  según las soluciones químicas utilizadas. Es posible entonces que se trabaje con soluciones corrosivas que afecten la estructura.  
+\item El uso de lubricantes en las guías podría afectar la calidad del experimento.
 \item Se deben evitar vibraciones en la estructura para no dañar la calidad del \textit{film}.
 
 \end{enumerate}
 
-Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se especializa en la fabricación de polímeros y ofrece guías lineales que se deslizan en lugar de rodar. Los polímeros están combinados con materiales anticorrosivos y no requieren la aplicación de lubricante, es decir que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
+Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se especializa en la fabricación de polímeros. La empresa ofrece guías lineales que se deslizan en lugar de rodar, es decir no tienen rodamientos. Los polímeros están combinados con materiales anticorrosivos y no requieren la aplicación de lubricante, es decir que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
 
 \begin{figure}[ht]
 \centering 
@@ -243,8 +211,45 @@ Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con
 Con la parte CAD diseñamos un primer modelo 3D de pieza y en nuestro caso antes de comenzar con el módulo CAM, realizamos  una impresión 3D con filamento PLA para probar las dimensiones y factibilidad de la pieza.
 Una vez que el modelo queda aprobado comenzamos con el módulo CAM, este modulo se encarga de convertir el modelo 3D en lenguaje de máquina que el equipo puede interpretar. En el taller mecánico contamos con una Fresadora \textit{ CNC (computer numerical control)} de la marca FAGOR \citep{web_fagor} que interpreta G-CODE también conocido como RS-274 \citep{web_gcode}. 
 
-En el capítulo \ref{Chapter3} se darán detalles mas precisos de piezas fabricadas.
+En el capítulo \ref{Chapter3} se darán detalles mas precisos de las piezas fabricadas.
  
 
+\section{Equipo propuesto}
+
+
+Se presentan a continuación los siguientes requerimientos:
+\begin{itemize}
+
+\item El sistema debe permitir que el usuario pueda configurar en un programa variables de desplazamiento y tiempos de espera.
+\item Un programa previamente configurado debe poder ejecutarse o guardarse en memoria interna.
+\item El usuario debe poder guardar al menos 10 programas en la memoria no volátil del sistema.
+\item Se deberá utilizar un control de versionado de cambios durante el desarrollo del firmware.
+\item El desarrollo del firmware debe realizarse con capas de abstracción de software de tal manera que permita en un futuro cambiar de microcontrolador sin mayor esfuerzo.
+\item El desarrollo de realizará sobre un módulo microcontrolador ESP32.
+\item Deberá registrar variables de presión y temperatura [opcional].
+\end{itemize}
+
+De reuniones con el cliente y de la necesidad de trabajar con un equipo que permita a futuro contar con una comunicación Wi-Fi, surgió el requerimiento de trabajar con el módulo ESP32 \citep{web_esp}.
+ 
+El ESP32 es un módulo del tipo \textit{SoC (system on a chip)} que integra mayores prestaciones a demás de su de unidad de procesamiento. Para almacenar los programas generados por el usuario se utilizará la memoria flash incorporada en el módulo.  
+
+Teniendo en cuenta los requerimientos analizados en las secciones previas y los requerimientos analizados en esta sección se propone como puede observarse en la figura \ref{fig:equipo_propuesto} el siguiente esquema de equipo dip coater.  
+
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width=0.9\textwidth]{./Figures/cap2_esquema_propuesto.jpg}
+\caption{Esquema propuesto.}
+\label{fig:equipo_propuesto}
+\end{figure}
+
+\begin{enumerate}
+\item Módulo ESP32-WROOM. 
+\item Consola de comandos para establecer una comunicación entre el equipo y una computadora (Protocolo UART)
+\item Driver TMC5130 (Protocolo SPI).
+\item Pantalla táctil STONE STWI043WT (Protocolo UART). 
+\item Almacenamiento de programas (FLASH Interna).
+
+\end{enumerate}
 
 
