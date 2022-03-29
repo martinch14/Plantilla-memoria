@@ -9,22 +9,24 @@
 %----------------------------------------------------------------------------------------
 En el presente capítulo se introducen los módulos principales del equipo dip coater fabricado.   
 
-\section{Movimientos controlados}
-\subsection{Estudio preliminar}
+\section{Estudio preliminar}
 
-Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico complejo difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
+Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \textit{(Preparation of Sol-Gel Films by Dip-Coating)} \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico, complejo, difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
 
 
 La publicación se basa entonces en un estudio semi-experimental sobre varias soluciones químicas para predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos, un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas respecto al rango de estudio. 
 
-Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
+Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto a velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
 
 \begin{figure}[!h]
 \centering 
 \includegraphics[width=0.52\textwidth]{./Figures/paper_galo.png}
-\caption{Espesor vs velocidad. Imagen tomada de \cite{paper_galo}.}
+\caption{Espesor vs velocidad \protect\footnotemark.}
 \label{fig:paper_galo}
 \end{figure}
+
+\footnotetext{Imagen tomada de \cite{paper_galo}.}
+
 
 Los resultados del experimento concluyen que existe linealidad  en la relación de espesor respecto la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . También demuestra que en dicho rango de velocidades el fenómeno se explica por el modelo de evaporación.
 
@@ -36,7 +38,7 @@ Se desprende de este análisis la importancia de los siguientes requerimientos f
 		
 \end{itemize}
 	
-Cabe destacar que todos los experimentos en la publicación fueron realizados a velocidad constante. De las reuniones con el cliente y del interés de trabajar en la frontera de la ciencia surgió la necesitad de poder darle al usuario la posibilidad de realizar experimentos a velocidad y aceleración controlada. Esto último es una cualidad que diferencia a nuestro equipo de todos los equipos comerciales analizados en la sección \ref{sec:mercado}.
+Cabe destacar que todos los experimentos en la publicación fueron realizados a velocidad constante. De las reuniones con el cliente y del interés de trabajar en la frontera de la ciencia surgió la necesitad de poder darle al usuario la posibilidad de realizar experimentos a velocidad y aceleración controlada. Esto último es una cualidad que diferencia a este equipo respecto de todos los equipos comerciales analizados en la sección \ref{sec:mercado}.
 
  
 %Sin embargo, es una técnica muy difundida porque es simple y proporciona una excelente reproducibilidad. 
@@ -45,46 +47,50 @@ Cabe destacar que todos los experimentos en la publicación fueron realizados a 
 %La importancia de estos resultados es que el rango de velocidades quedá incluido dentro de los %requerimientos de nuestro equipo. 
 
 
-\subsection{Circuitos Integrados Trinamic}
+\section{Circuitos integrados Trinamic}
 
 %De los siguientes requerimientos funcionales acordados con el cliente:
 De reuniones con el cliente en donde se remarca la importancia de trabajar con un control preciso de motor y en base a experiencias de uso de equipos con tecnologías similares surge el interés de trabajar con un fabricante de driver específico. Se definen entonces los siguientes requerimientos:
 			
 \begin{itemize}
-\item El equipo deberá contar para realizar los movimientos con un motor paso a paso Nema 17.
+\item El equipo deberá contar con un motor paso a paso Nema 17 \citep{web_nema17}  para realizar los movimientos.
 \item Se utilizará un driver de motor de la marca TRINAMIC.
 \end{itemize}
 
-\textit{TRINAMIC Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (circuitos integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, que garantiza en cierta medida la calidad de sus productos, actualmente fue adquirida por la compañía Analog Devices.
+\textit{Trinamic Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos, actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
 
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
-Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. En nuestro caso como ya tenemos defino la utilización de un motor paso a paso vamos a trabajar con el ultimó integrado diseñado para tal fin, el driver TMC5130. 
+Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
   
-Todos los CI requieren una configuración inicial de parámetros, que dependen del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board}.
+Todos los CI requieren una configuración inicial de parámetros, que dependen del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
 
-El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} podemos observar a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha.
+El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. Finalmente el motor paso a paso se conecta a la placa de evaluación.
 
 \begin{figure}[htpb]
 \centering 
-\includegraphics[width=0.9\textwidth]{./Figures/tmc5130_placa.png}
-\caption{Placa de desarrollo Startrampe + placa de evaluación TMC5130.}
+\includegraphics[width=0.9\textwidth]{./Figures/tmc5130_placa.jpg}
+\caption{Placa de desarrollo Startrampe + placa de evaluación TMC5130 \protect\footnotemark.}
 \label{fig:tmc5130_placa}
 \end{figure}
+
+\footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
 
   
 \subsection{Driver TMC5130}
 
-El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (metal oxide semiconductor field effect transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso de nuestro dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el capítulo \ref{Chapter4} los respectivos ensayos.
+El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso de nuestro dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el capítulo \ref{Chapter4} los respectivos ensayos.
 
 Podemos observar en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
 \begin{figure}[htpb]
 \centering 
 \includegraphics[width=1.1\textwidth]{./Figures/tmc5130_diagrama.png}
-\caption{Diagrama en bloques TMC5130.}
+\caption{Diagrama en bloques TMC5130 \protect\footnotemark.}
 \label{fig:tmc5130_diagrama}
 \end{figure}
+
+\footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
 La comunicación con el CI se puede establecer a través del protocolo \textit{ UART (Universal Asynchronous Receiver-Transmitter)} o \textit{SPI (Serial Peripheral Interface)}, en el caso de nuestro equipo utilizaremos la comunicación SPI.
 
@@ -134,12 +140,12 @@ Dando lugar al siguiente requerimiento:
 \item La configuración de la máquina debe poder realizarse a través de una pantalla táctil.	
 \end{itemize} 
 
-Se decidió trabajar con pantallas del tipo \textit{HMI (human machine interface)}, este tipo de pantallas incorpora una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. Cuentan con un software de diseño para la creación de la interfaz gráfica, que a través de un protocolo de comunicación definido por cada fabricante interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En nuestro caso la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (programmable logic controller)}, 
+Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}, este tipo de pantallas incorpora una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. Cuentan con un software de diseño para la creación de la interfaz gráfica, que a través de un protocolo de comunicación definido por cada fabricante interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En nuestro caso la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}, 
  
 
 Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de equipos y en nuestro caso por las dimensiones finales del equipo se optó por pantallas de 4.3 pulgadas. Se detalla en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
 
-\begin{table}[!h]
+\begin{table}[!ht]
 	\centering
 	\caption[Comparación Stone]{Comparación pantallas táctiles Stone 4.3.}
 	\begin{tabular}{l c c }    
@@ -176,6 +182,7 @@ La comunicación de la pantalla STWI043WT con el microcontrolador se realizará 
 %\end{figure}
 
 \section{Estructura mecánica}
+\label{sec:estructura_mecanica}
 
 Se presentan a continuación los siguientes requerimientos asociados a las partes mecánicas del equipo: 
 
@@ -206,15 +213,21 @@ Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se espec
 \label{fig:equipo_mecánico}
 \end{figure}
 
-Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con BOBCAD \citep{web_bobcad}, un software \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )} utilizado en la industria manufacturera. 
+Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Un software  utilizado en la industria manufacturera compuesto por dos módulos fundamentales que abarcan los aspectos de diseño y luego de respectiva fabricación.  
 
-Con la parte CAD diseñamos un primer modelo 3D de pieza y en nuestro caso antes de comenzar con el módulo CAM, realizamos  una impresión 3D con filamento PLA para probar las dimensiones y factibilidad de la pieza.
-Una vez que el modelo queda aprobado comenzamos con el módulo CAM, este modulo se encarga de convertir el modelo 3D en lenguaje de máquina que el equipo puede interpretar. En el taller mecánico contamos con una Fresadora \textit{ CNC (computer numerical control)} de la marca FAGOR \citep{web_fagor} que interpreta G-CODE también conocido como RS-274 \citep{web_gcode}. 
+Con la parte CAD diseñamos un primer modelo 3D de pieza y antes de comenzar con el módulo CAM, realizamos  una impresión 3D con filamento PLA para probar las dimensiones y factibilidad de la pieza.
+Una vez que el modelo queda aprobado comenzamos con el módulo CAM, este módulo se encarga de convertir el modelo 3D en lenguaje de máquina que el equipo puede interpretar.Se observa en la imagen \ref{fig:fagor} la fresadora \textit{ CNC (computer numerical control)} de la marca FAGOR \citep{web_fagor} disponible en el taller mecánico. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} y lo convierte en los respectivos movimientos de motores.
 
-En el capítulo \ref{Chapter3} se darán detalles mas precisos de las piezas fabricadas.
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width=0.7\textwidth]{./Figures/fagor.png}
+\caption{Fresadora Fagor GVC 600.}
+\label{fig:fagor}
+\end{figure}
  
 
-\section{Equipo propuesto}
+\section{Equipo electrónico propuesto}
 
 
 Se presentan a continuación los siguientes requerimientos:

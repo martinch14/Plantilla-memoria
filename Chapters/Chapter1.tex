@@ -27,7 +27,7 @@ Las soluciones que propone se orientan a dar respuesta a las problemáticas que 
 
 La empresa está incubada en FUNINTEC (Fundación Unsam Innovación y Tecnología) y sus instalaciones se encuentran dentro del Campus Miguelete en la UNSAM ( Universidad Nacional de San Martín). 
 
-El impacto de está incubación es positivo, ya que brinda herramientas para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo. En la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado \textit{CNC (computer numerical control)}, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
+El impacto de está incubación es positivo, ya que brinda herramientas para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo. En la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado \textit{CNC (Computer Numerical Control)}, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
 
 \clearpage
 \begin{figure}[htpb]
@@ -47,16 +47,24 @@ La empresa también cuenta con un laboratorio de electrónica con equipos para d
 En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films} que consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
 
 
-\textit{Dip Coating} es una técnica que se emplea tanto en áreas de I+D (investigación y desarrollo) en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
+\textit{Dip coating} es una técnica que se emplea tanto en áreas de I+D (investigación y desarrollo) en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
 
 
 \begin{figure}[htpb]
 \centering 
 \includegraphics[width=0.85\textwidth]{./Figures/dip-coating.png}
-\caption{Proceso completo desarrollado por el equipo.}
+\caption{Proceso completo desarrollado por el equipo. Imagen tomada de \protect\footnotemark.}
 \label{fig:inmersion}
 \end{figure}
+\footnotetext{Imagen tomada de \citep{web_nadetech}}
 
+\begin{enumerate}
+\item La muestra desciende a velocidad controlada.
+\item La muestra queda sumergida un tiempo establecido por el usuario.	
+\item La muestra asciende a velocidad controlada, este es el punto más crítico del experimento, en donde el material queda adherido a la muestra, se estudiará en el capítulo \ref{Chapter3} dos modelos matemáticos que explican este fenómeno y se dará una noción mas detallada de las velocidades que caracterizan el proceso.
+\item Se extrae toda la muestra.
+\item El usuario puede tener interés o no, en volver a repetir el proceso un tiempo después.
+\end{enumerate} 
  
 La principal característica del equipo es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera que la muestra queda sumergida y la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
 
@@ -79,11 +87,11 @@ Como ejemplo de los resultados que se obtienen aplicando está técnica podemos 
          \label{fig:muestra_"}
      \end{subfigure}
      \hfill
-        \caption{Films de dioxido de titanio \ce{TiO2} \protect\footnotemark .}
+        \caption{Films de dioxido de titanio \ce{TiO2} \protect\footnotemark.}
         \label{fig:muestras}
 \end{figure}
 
-\footnotetext{Imagen tomada en los laboratorios del Instituto de Nanosistemas de la Unsam}
+\footnotetext{Imagen tomada en los laboratorios del Instituto de Nanosistemas de la UNSAM.}
 
 
 Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} y \SI{200}{nm} y la velocidad de inmersión y extracción de los sustratos de \SI{180}{mm/min}.
@@ -144,17 +152,17 @@ A continuación se presenta la tabla \ref{tab:equipos_competencia} en donde se c
 
 \begin{table}[h]
 	\centering
-	\caption[Dip coaters en el mercado]{Especificaciones técnicas de otros equipos}
+	\caption[Dip coaters en el mercado]{Especificaciones técnicas de otros equipos.}
 	\begin{tabular}{l c c c c}    
 		\toprule
-		\textbf{Equipo} 	 & \textbf{Recorrido}  & \textbf{Velocidad (mm/min)}  & \textbf{Acel (m/min2)}  & \textbf{Interface} \\
+		\textbf{Equipo} 	 & \textbf{Recorrido}  & \parbox{2cm} {\textbf{Velocidad (mm/min)}}  & \parbox{2cm}{\textbf{Aceleración (m/min2)}}  & \textbf{Interface} \\
 		\midrule
-		Bio Single Vessel M	& 300 mm 	& 1    - 1000   & no & pc 							\\		
-		Bio Multiplie Vessel		& 70  mm	& 0.1  - 108 	& no & pc					\\
-		Kibron LayerX				& 134 mm	& 0.06 - 300	& no & pc					\\
-		Bungard						& 600 mm	& 30 - 10000	& no & display/botones		\\
-		Ossila \citep{4_web_ossila}					& 100 mm	& 0.6  - 3000	& no & pc		\\
-		Holmarc	\citep{5_web_holmarc}					& 100 mm	& 1.08 - 540	& no & pc		\\
+		Bio Single Vessel M	& 300 mm 	& 1    - 1000   & no & PC 							\\		
+		Bio Multiplie Vessel		& 70  mm	& 0.1  - 108 	& no & PC					\\
+		Kibron LayerX				& 134 mm	& 0.06 - 300	& no & PC					\\
+		Bungard						& 600 mm	& 30 - 10000	& no & Display LCD		\\
+		Ossila \citep{4_web_ossila}					& 100 mm	& 0.6  - 3000	& no & PC		\\
+		Holmarc	\citep{5_web_holmarc}					& 100 mm	& 1.08 - 540	& no & PC		\\
 		\bottomrule
 		\hline
 	\end{tabular}
@@ -183,7 +191,7 @@ El presente trabajo incluye la presentación de un equipo comercial dip coater.
 Abarcó los siguientes puntos:
 
 \begin{itemize}
-\item Uso del driver TMC5130 \citep{3_web_trinamic_producto}.
+\item Driver de motor provisto por el fabricante TRINAMIC \citep{3_web_trinamic}.
 \item Diseño de hardware con software de diseño KICAD \citep{web_kicad}.
 \item Fabricación de placa electrónica y montaje de componentes.
 \item Diseño y fabricación de partes mecánicas a través del mecanizado de aluminio.
