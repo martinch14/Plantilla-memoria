@@ -11,12 +11,12 @@ En el presente capítulo se introducen los módulos principales del equipo dip c
 
 \section{Estudio preliminar}
 
-Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \textit{(Preparation of Sol-Gel Films by Dip-Coating)} \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico, complejo, difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
+Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \textit{(Preparation of Sol-Gel Films by Dip-Coating)} \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico, complejo y difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
 
 
 La publicación se basa entonces en un estudio semi-experimental sobre varias soluciones químicas para predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos, un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas respecto al rango de estudio. 
 
-Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto a velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
+Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto a las velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
 
 \begin{figure}[!h]
 \centering 
@@ -28,7 +28,7 @@ Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabr
 \footnotetext{Imagen tomada de \cite{paper_galo}.}
 
 
-Los resultados del experimento concluyen que existe linealidad  en la relación de espesor respecto la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . También demuestra que en dicho rango de velocidades el fenómeno se explica por el modelo de evaporación.
+Los resultados del experimento concluyen en que existe linealidad en la relación de espesor respecto a la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . También demuestra que en dicho rango de velocidades el fenómeno se explica por el modelo de evaporación.
 
 Se desprende de este análisis la importancia de los siguientes requerimientos funcionales definidos por el cliente: 
 
@@ -58,9 +58,9 @@ De reuniones con el cliente en donde se remarca la importancia de trabajar con u
 \item Se utilizará un driver de motor de la marca TRINAMIC.
 \end{itemize}
 
-\textit{Trinamic Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos, actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
+\textit{Trinamic Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos. Actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
 
-Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
+Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo: impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
 Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
   
 Todos los CI requieren una configuración inicial de parámetros, que dependen del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
@@ -79,10 +79,10 @@ El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con dife
 
   
 \subsection{Driver TMC5130}
-
+\label{subsection:Driver TMC5130}
 El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso del dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el capítulo \ref{Chapter4} los respectivos ensayos.
 
-Podemos observar en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
+Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
 \begin{figure}[htpb]
 \centering 
@@ -96,9 +96,9 @@ Podemos observar en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque d
 La comunicación con el CI se puede establecer a través del protocolo \textit{ UART (Universal Asynchronous Receiver-Transmitter)} o \textit{SPI (Serial Peripheral Interface)}, para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
 
 
-Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. Los pasos están relacionados con las fases  y con la cantidad de dientes que tiene el rotor y estator del motor. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo es común contar con algún motor en donde la especificación dice que el paso es de (\ang{1.8}), esto significa que por cada vuelta de motor (\ang{360}) el motor realizará 200 pasos.
+Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. Los pasos están relacionados con las fases  y con la cantidad de dientes que tiene el rotor y estator del motor. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1.8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
 
-Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos, el driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso (\ang{1.8}) tendríamos en total 51200 micropasos como se observa en la ecuación \ref{eq:micro_pasos}.
+Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos, el driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrían en total 51200 micropasos como se observa en la ecuación \ref{eq:micro_pasos}.
 
 \begin{equation}
 	\label{eq:micro_pasos}
@@ -109,7 +109,7 @@ El motor estará acoplado a un eje lineal que generará movimientos ascendentes 
 
 Otra funcionalidad que se utilizará es \textit{stallguard2}, una función de alta precisión que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta.
 
-Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado por la carga acoplada al eje, si se aplica una fuerza contraría al movimiento programado o el recorrido del carro llega a un límite mecánico la fuerza contraelectromotriz aumentará. 
+Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado por la carga acoplada al eje, si se aplica una fuerza contraría al movimiento programado o el recorrido del carro llega a un límite mecánico, la fuerza contraelectromotriz aumentará. 
 
 \begin{figure}[h]
 \centering 
@@ -123,7 +123,7 @@ Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado
 En el capítulo \ref{Chapter3} se estudiará el valor del registro  stallguard2 configurado. Cada vez que el equipo se enciende se realizará un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utilizará entonces esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos.   
 
 
-También se utilizará \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}, cuyo efecto reduce la energía suministrada según hojas de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Incluso en aplicaciones en donde la carga es constante como es este equipo dip coater ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
+También se utilizará \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}, cuyo efecto reduce la energía suministrada según hojas de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Incluso en aplicaciones en donde la carga es constante, como es este equipo dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
 
 \begin{figure}[h]
 \centering 
@@ -133,26 +133,24 @@ También se utilizará \textit{coolstep}, una función que a través de medicion
 \end{figure}
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-Por último se utilizará la función \textit{dcStep}, que es un modo de conmutación automática que ajusta la velocidad del motor en caso de existir cierta sobrecarga sobre el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
+Por último se utilizará la función \textit{dcStep}, que es un modo de conmutación automática que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
 
 
 %el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
-El driver TMC5130 cuenta con cincuenta registros que se utilizan para configurar las funcionalidades del CI y controlar el motor conectado. El acceso a los registros se realizará a través del protocolo SPI. En el capítulo \ref{Chapter3} de darán más detalles de los registros configurados con la ayuda del software TMCL-IDE.  
+El driver TMC5130 cuenta con cincuenta registros que se utilizan para configurar las funcionalidades del CI y controlar el motor. El acceso a los registros se realizará a través del protocolo SPI. En el capítulo \ref{Chapter3} se darán más detalles de los registros configurados con la ayuda del software TMCL-IDE.  
 
 
 \section{Interfaz de usuario}
 
-Respecto a la interfaz usuario-máquina surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar el equipo a pie de máquina. 
-
-Dando lugar al siguiente requerimiento:
+Respecto a la interacción entre el usuario y el equipo surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar al equipo a pie de máquina. Dando lugar al siguiente requerimiento:
 \begin{itemize}
 \item La configuración de la máquina debe poder realizarse a través de una pantalla táctil.	
 \end{itemize} 
 
-Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}, este tipo de pantallas incorpora una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. En general , cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y a través de un protocolo de comunicación se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En el caso de este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}, 
+Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}. Las mismas incorporan  una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. En general, cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y a través de un protocolo de comunicación se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En el caso de este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}.
  
 
-Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de pantallas que caracteriza según el tipo aplicación y entorno de trabajo. Ofrece entonces pantallas para usos industriales, civiles o avanzados. Por las dimensiones finales del equipo y el tipo de uso se optó por pantallas avanzadas de 4.3 pulgadas. Se detalla en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
+Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de pantallas que caracteriza según el tipo de aplicación y entorno de trabajo. Ofrece entonces pantallas para usos industriales, civiles o avanzados. Por las dimensiones finales del equipo y el tipo de uso se optó por pantallas avanzadas de 4.3 pulgadas. Se detallan en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
 
 \begin{table}[!ht]
 	\centering
@@ -204,7 +202,7 @@ Se presentan a continuación los siguientes requerimientos asociados a las parte
 
 Se decidió trabajar con el proveedor Perfiles de Aluminio .NET \citep{web_perfiles_net}, que cuenta con diferentes modelos y dimensiones de perfiles necesarios para la fabricación de la estructura.
 
-El equipo cuenta con una guía lineal acoplada al perfil principal. Para la elección de la guía se tuvieron en cuenta las siguientes consideraciones:
+El equipo cuenta con una guía lineal acoplada al perfil principal. Para la elección de la misma se tuvieron en cuenta las siguientes consideraciones:
 
 \begin{enumerate}
 \item El ambiente cambia  según las soluciones químicas utilizadas. Es posible entonces que se trabaje con soluciones corrosivas que afecten la estructura.  
@@ -213,7 +211,7 @@ El equipo cuenta con una guía lineal acoplada al perfil principal. Para la elec
 
 \end{enumerate}
 
-Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se especializa en la fabricación de polímeros. La empresa ofrece guías lineales que se deslizan en lugar de rodar, es decir no tienen rodamientos. Los polímeros están combinados con materiales anticorrosivos y no requieren la aplicación de lubricante, es decir que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
+Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se especializa en la fabricación de polímeros. La misma ofrece guías lineales que se deslizan en lugar de rodar, y por lo tanto no utilizan rodamientos metálicos. Los polímeros están combinados con materiales anticorrosivos y no requieren de la aplicación de lubricante, es decir, que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
 
 \begin{figure}[ht]
 \centering 
@@ -224,10 +222,10 @@ Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se espec
 \footnotetext{Imagen tomada de \cite{web_igus}.}
 
 
-Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Un software  utilizado en la industria manufacturera compuesto por dos módulos fundamentales que permiten abarcar aspectos de diseño y modelado de pieza y luego de fabricación.  
+Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Un software  utilizado en la industria manufacturera, que se encuentra constituido por dos módulos fundamentales que permiten abarcar aspectos de diseño y modelado de pieza y luego de fabricación.  
 
-Con la parte CAD se diseña el modelo 3D de la pieza, para poder corregir errores de diseño con mayor velocidad se realiza una impresión 3D con filamento plástico para probar las dimensiones y la factibilidad técnica de la pieza.
-Una vez que el modelo en su versión plástica queda aprobado se comienza con la configuración del módulo CAM, este módulo se encarga de convertir a través de diferentes estrategias al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora \textit{ CNC (Computer Numerical Control)} de la marca FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en los respectivos movimientos de motores.
+Con la parte CAD se diseña el modelo 3D de la pieza. Con el fin de corregir errores de diseño con mayor velocidad, se realiza una impresión 3D con filamento plástico para probar las dimensiones y la factibilidad técnica de la pieza.
+Una vez que el modelo en su versión plástica queda aprobado, se comienza con la configuración del módulo CAM, este módulo se encarga de convertir, a través de diferentes estrategias, al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora \textit{ CNC (Computer Numerical Control)} de la marca FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en los respectivos movimientos de motores.
 
 
 \begin{figure}[ht]
@@ -258,7 +256,7 @@ De reuniones con el cliente y de la necesidad de trabajar con un equipo que perm
 El ESP32 es un módulo del tipo \textit{SoC (System On Chip)}, es decir que además de la unidad de procesamiento integra conectividad inalámbrica con sus periféricos de Wi-Fi y bluetooth y una memoria FLASH para almacenamiento de datos y programa.
   
 
-Teniendo en cuenta los requerimientos analizados en las secciones previas y los requerimientos analizados en esta sección se propone como se observa en la figura \ref{fig:equipo_propuesto} el siguiente esquema de equipo dip coater.  
+Teniendo en cuenta los requerimientos analizados en las secciones previas y los requerimientos analizados en esta sección se propone, como se observa en la figura \ref{fig:equipo_propuesto}, el siguiente esquema de equipo dip coater.  
 
 
 \begin{figure}[ht]
@@ -268,6 +266,6 @@ Teniendo en cuenta los requerimientos analizados en las secciones previas y los 
 \label{fig:equipo_propuesto}
 \end{figure}
 
-El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad central de procesamiento, contará con dos comunicaciones a través del periférico UART, una para establecer una consola de comandos que permita comunicar al equipo con una computadora y realizar pruebas de funcionamiento y configuraciones y la otra para comunicarse con la pantalla táctil. También establecerá un protocolo de almacenamiento para guardar los programas que el usuario cree en la memoria FLASH disponible y finalmente contará con un módulo de comunicación sobre protocolo I2C para obtener datos del sensor de humedad y temperatura BME280.  
+El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad central de procesamiento, contará con dos comunicaciones a través del periférico UART, una para establecer una consola de comandos que permita comunicar al equipo con una computadora y realizar pruebas de funcionamiento y configuraciones y la otra para comunicarse con la pantalla táctil. También establecerá un protocolo de almacenamiento para guardar los programas que el usuario cree en la memoria FLASH disponible. Finalmente contará con un módulo de comunicación sobre protocolo I2C para obtener datos del sensor de humedad y temperatura BME280.  
 
 

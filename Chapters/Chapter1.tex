@@ -11,25 +11,32 @@ En este capítulo se explica brevemente el marco en el cual se desarrolló el tr
 %----------------------------------------------------------------------------------------
 \section{Contexto}
 
-El trabajo consistió en la construcción de un equipo comercial \textit{dip coater}. El trabajo se desarrolló en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
+El trabajo consistió en la construcción de un equipo comercial \textit{dip coater}. El mismo se desarrolló en el marco de la fundación de la empresa \textit{TECSCI (Technology for Science)}.
 
 La empresa tiene como visión ser referente internacional en el desarrollo de equipamiento científico y como misión pretende fabricar productos innovadores de alta calidad. Espera poder dar respuesta a las demandas de laboratorios de investigación, universidades y empresas de base tecnológica nacionales e internacionales.
 
-Como valor agregado destacamos que la empresa adhiere a la filosofía del software y hardware libre \citep{web_oshwa}, por lo tanto, el lector podrá acceder a todo el código fuente del firmware \citep{web_firmware_tecsci} y también a los archivos de diseño y fabricación del circuito impreso \citep{web_hardware_tecsci} necesarios para replicar, reparar o adaptar a sus necesidades el equipo.
+Como valor agregado se destaca que la empresa adhiere a la filosofía del software y hardware libre \citep{web_oshwa}, por lo tanto, el lector podrá acceder a todo el código fuente del firmware \citep{web_firmware_tecsci}, a los archivos de diseño y fabricación del circuito impreso \citep{web_hardware_tecsci} y a los modelos de piezas mecánicas necesarias para replicar, reparar o adaptar el equipo según sus necesidades.
 
 Las soluciones que propone se orientan a dar respuesta a las problemáticas que se comparten tanto en el mercado local como en el internacional:
 \begin{itemize}
-\item Elevado precio del equipamiento científico y mantenimiento.
+\item Elevado precio del equipamiento científico y de su mantenimiento.
 \item Contratación exclusiva de servicio técnico asociado al fabricante.
 \item Soluciones de software y hardware cerradas que no permiten la adaptación del instrumental a experimentos científicos personalizados.
 \end{itemize}
 
 
-La empresa está incubada en FUNINTEC (Fundación Unsam Innovación y Tecnología) y sus instalaciones se encuentran dentro del Campus Miguelete en la UNSAM ( Universidad Nacional de San Martín). 
+La empresa está incubada en FUNINTEC (Fundación Unsam Innovación y Tecnología) y sus instalaciones se encuentran dentro del Campus Miguelete en la UNSAM ( Universidad Nacional de San Martín). El contrato de incubación le permite contar con un taller mecánico con maquinaria suficiente para la fabricación de  prototipos, con la posibilidad de poder escalarlos hacia una etapa de producción. A continuación se mencionan los recursos mas importantes:
+ 
+\begin{itemize}
+\item Torno \textit{CNC (Computer Numerical Control)}.
+\item Centro de mecanizado CNC.
+\item Torno y fresadora manual.
+\item Láser de corte.
+\item Cabina de \textit{blasting}
+\end{itemize}
 
-El impacto de está incubación es positivo, ya que brinda herramientas para poder llevar a cabo los trabajos mecánicos necesarios para la fabricación del equipo. En la figura \ref{fig:taller} podemos ver el taller mecánico donde se pueden fabricar todo tipo de piezas a través del mecanizado \textit{CNC (Computer Numerical Control)}, necesarias en una etapa de prototipado y también con la posibilidad de poder escalarlo hacia una etapa de producción. 
+En la siguiente figura \ref{fig:taller} se observan los equipos mencionados.
 
-\clearpage
 \begin{figure}[htpb]
 \centering 
 \includegraphics[width=0.85\textwidth]{./Figures/taller_v3.pdf}
@@ -44,10 +51,10 @@ La empresa también cuenta con un laboratorio de electrónica con equipos para d
 %----------------------------------------------------------------------------------------
 \section{Técnicas de dip coating}
 
-En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films} que consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
+En los laboratorios de investigación aplicados en nanotecnologías existen diferentes equipos para la fabricación de películas delgadas o \textit{thin films}. Las mismas consisten en capas de material de espesores variables, que comúnmente van desde las centenas de nanómetros hasta las decenas de micrómetros y se depositan sobre diferentes superficies.
 
 
-\textit{Dip coating} es una técnica que se emplea tanto en áreas de I+D (investigación y desarrollo) en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por el equipo.
+\textit{Dip coating} es una técnica que se emplea tanto en áreas de I+D (investigación y desarrollo) en la industria, como en la investigación científica en el campo de las nanociencias, se basa en la inmersión y extracción  controlada de un sustrato en una solución química bajo estudio. En la figura \ref{fig:inmersion} se observa una ejecución completa del movimiento desarrollado por un equipo dip coater.
 
 
 \begin{figure}[htpb]
@@ -61,14 +68,14 @@ En los laboratorios de investigación aplicados en nanotecnologías existen dife
 \begin{enumerate}
 \item La muestra desciende a velocidad controlada.
 \item La muestra queda sumergida un tiempo establecido por el usuario.	
-\item La muestra asciende a velocidad controlada, este es el punto más crítico del experimento, en donde el material queda adherido a la muestra, se estudiará en el capítulo \ref{Chapter3} dos modelos matemáticos que explican este fenómeno y se dará una noción mas detallada de las velocidades que caracterizan el proceso.
+\item La muestra asciende a velocidad controlada, este es el punto más crítico del experimento, en donde el material queda adherido a la muestra. Se estudiarán en el capítulo \ref{Chapter3} dos modelos matemáticos que explican este fenómeno y se dará una noción mas detallada de las velocidades que caracterizan al proceso.
 \item Se extrae toda la muestra.
-\item El usuario puede tener interés o no, en volver a repetir el proceso un tiempo después.
+\item El usuario puede tener interés en volver a repetir el proceso un tiempo después.
 \end{enumerate} 
  
-La principal característica del equipo es darle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera que la muestra queda sumergida y la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
+La principal característica del equipo es brindarle al usuario la posibilidad de controlar la velocidad y aceleración de inmersión de la muestra, el tiempo de espera que la muestra queda sumergida y la extracción, teniendo la posibilidad de repetir el ciclo según se desee.
 
-Como ejemplo de los resultados que se obtienen aplicando está técnica podemos observar en la figura \ref{fig:muestras} films de dioxido de titanio \ce{TiO2}. En la imagen A el film se preparó sobre un wafer de silicio y en la imagen B sobre un portaobjeto de vidrio.
+Como ejemplo de los resultados que se obtienen aplicando está técnica se observan en la figura \ref{fig:muestras} films de dioxido de titanio \ce{TiO2}. En la imagen A el film se preparó sobre un wafer de silicio y en la imagen B sobre un portaobjeto de vidrio.
 
 
 \begin{figure}[!htpb]
@@ -94,9 +101,9 @@ Como ejemplo de los resultados que se obtienen aplicando está técnica podemos 
 \footnotetext{Imagen tomada en los laboratorios del Instituto de Nanosistemas de la UNSAM.}
 
 
-Cabe destacar que los espesores logrados en este experimento fueron entre \SI{180}{nm} y \SI{200}{nm} y la velocidad de inmersión y extracción de los sustratos de \SI{180}{mm/min}.
+Cabe destacar que los espesores de capa logrados en este experimento fueron de entre \SI{180}{nm} y \SI{200}{nm}, con velocidades de inmersión y extracción configuradas en \SI{180}{mm/min}.
 
-Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, es necesario realizar tratamientos térmicos para finalizar el proceso, que se realizan con otro tipo de equipos y por lo tanto no serán parte de esta memoria.
+Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, es necesario realizar tratamientos térmicos para finalizar el proceso. Los mismos se realizan con otro tipo de equipos y por lo tanto no serán parte de esta memoria.
  
 \label{sec:dip coating}
 
@@ -107,7 +114,7 @@ Luego de un proceso dip coating, dependiendo del tipo de muestra que se genere, 
 \label{sec:mercado}
 Existen diferentes fabricantes a nivel internacional que comercializan este tipo de equipos pero ninguno a nivel local. Se presentan a continuación algunos equipos de diferentes fabricantes. 
 
-Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibron \citep{2_web_kibron}.
+Se puede observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibron \citep{2_web_kibron}.
 
 \begin{figure}[htbp]
 	\centering
@@ -116,7 +123,7 @@ Podemos observar en la figura \ref{fig:dip_kibron} el equipo de la empresa Kibro
 	\label{fig:dip_kibron}
 \end{figure}
 
-En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad extra, que a través de una rotación en la base da la posibilidad de cambiar de manera automática y secuencial las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una computadora corriendo un software para poder ser accionados.
+En la figura \ref{fig:equipos_biolin} se observan los equipos de la empresa Biolin Scientific  \citep{1_web_biolin}, un equipo simple y otro con mayor funcionalidad. Si bien ambos controlan con exactitud la velocidad de inmersión y extracción, el último agrega una funcionalidad extra, que a través de una rotación en la base da la posibilidad de cambiar de manera automática y secuencial las soluciones donde se realizan las inmersiones. Ambos equipos necesitan estar conectados a una computadora corriendo un software para poder ser accionados.
 
 \begin{figure}[!htpb]
      \centering
@@ -138,8 +145,8 @@ En la figura \ref{fig:equipos_biolin} podemos ver los equipos de la empresa Biol
         \label{fig:equipos_biolin}
 \end{figure}
 
-Por último presentamos el equipo de la empresa Bungard \citep{6_web_bungard}, que puede observarse en la figura \ref{fig:dip_bungard}.
-Este equipo a diferencia de los otros cuenta con un display LCD y botonera, que permite al usuario realizar una configuración a pie de máquina.
+Por último se presenta el equipo de la empresa Bungard \citep{6_web_bungard}, que puede observarse en la figura \ref{fig:dip_bungard}.
+Este equipo a diferencia de los otros cuenta con un display LCD y botonera, lo que permite al usuario realizar una configuración a pie de máquina.
 
 \begin{figure}[htbp]
 	\centering
@@ -169,7 +176,7 @@ A continuación se presenta la tabla \ref{tab:equipos_competencia} en donde se c
 	\label{tab:equipos_competencia}
 \end{table}
 
-Podemos entonces extraer algunas conclusiones, ninguno de los equipos permite al usuario tener control sobre la aceleración en los movimientos de inmersión y extracción de muestra, la mayoría  de los equipos depende de una comunicación USB-SERIAL con una computadora para poder ser ejecutados, ninguna de las empresas adhiere a los principios del software y hardware libre.  
+Se pueden extraer entonces algunas conclusiones: ninguno de los equipos permite al usuario tener control sobre la aceleración en los movimientos de inmersión y extracción de muestra, la mayoría  de los equipos depende de una comunicación USB-SERIAL con una computadora para poder ser ejecutados, ninguna de las empresas adhiere a los principios del software y hardware libre.  
 
 %----------------------------------------------------------------------------------------
 %	SECTION 4
