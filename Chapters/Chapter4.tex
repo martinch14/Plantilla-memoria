@@ -11,18 +11,49 @@
 \section{Pruebas funcionales de hardware y rediseño}
 %\label{sec:pruebasHW}
 
-En el presente capítulo se explican los ensayos realizados sobre el prototipo de equipo dip coater, se presentan y analizan los resultados obtenidos y se analizan futuros cambios.
+En el presente capítulo se explican los ensayos realizados sobre el prototipo de equipo dip coater, se presentan y analizan los resultados obtenidos y se introducen posibles cambios para próximas versiones.
 \subsection{Comunicación con periféricos}
 
-\subsection{Ensayo de funcionamiento}
+El presente ensayo se realizó para verificar la comunicación entre el microcontrolador ESP32 y el CI TMC5130, como se mencionó en el capítulo \ref{Chapter3} dicha comunicación se establece a través del  protocolo SPI. 
+
+El paquete de datos está definido por un datagrama de 5 bytes, el primer byte define la dirección del registro y los 4 bytes restantes representan el valor. La comunicación con el CI TMC5130  es constante, al encender el equipo se realiza una configuración inicial en donde se escriben todos los registros y luego se realizan operaciones de lectura y escritura para conocer el estado del CI y accionar diferentes tipos de movimientos.
+
+A continuación en la figura \ref{fig:datagrama} se observa la estructura de datos para leer y escribir registros.
+\begin{figure}[h]
+\centering 
+\includegraphics[width=1\textwidth]{./Figures/datagrama.png}
+\caption{Datagrama de 40 bits.}
+\label{fig:datagrama}
+\end{figure}
+
+Las operaciones de lectura y escritura tienen una diferencia, representada por el bit mas significativo de la trama de datos, es decir el bit 39. Cuando la operación es de lectura, y primer byte que representa la dirección del registro no sufre alteración. Cuando la operación es de escritura, hay que establecer en 1 el bit de la posición 39. Por ejemplo si queremos escribir un valor en el registro 0x22, el primer byte del datagrama debería ser 0x22 + 0x80 = 0xA2,  sumar 0x80 representa poner en 1 el primer bit del byte mas significativo del datagrama. 
+
+
+Para realizar el ensayo se utilizo un analizador lógico USB conectado a la placa electrónica, específicamente sobre los terminales que establecen la comunicación SPI entre el microcontrolador y el CI TMC5130. Se puede observar en la siguiente figur  el banco de pruebas del ensayo.
+
+El procedimiento realizado fue el siguiente:
+\begin{enumerate}
+\item Conectarse al equipo dip coater con software Putty.
+\item Abrir el software del analizador lógico y comenzar registro de datos.
+\item Ejecutar comando de lectura del registro 0x2D.
+\item Ejecutar comando de escritura del registro 0x2D con valor 100.
+\item Ejecutar nuevamente comando de lectura de registro 0x2D y verificar el valor ingresado en el item anterior. 
+\end{enumerate}
+
+Se observan a continuación los datagramas capturados en el software del analizador lógico.
+
+
+
+Con este ensayo se pudo validar la correcta comunicación entre el microcontrolador y el CI TMC5130 para las operaciones de lectura y escritura de datos.
 
 \section{Pruebas funcionales firmware y rediseño}
 \subsection{Tiempo de ejecución de movimientos}
 
-El ensayo se realizo para verificar los parámetros que definen el desplazamiento de la muestra, es decir para verificar que las velocidades y aceleraciones que definen movimientos sean similares a las que surgen del cálculo teórico.
-En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de seis puntos que define un movimiento y se mostró como se configuraron los parámetros para obtener una rampa de cuatro puntos en donde la rampa de aceleración es igual a la rampa de desaceleración.
+El ensayo se realizó para verificar los parámetros que definen el desplazamiento de la muestra, es decir para verificar que las velocidades y aceleraciones que definen movimientos sean similares a las que surgen del cálculo teórico.
 
-Dicha rampa esta definida por la siguiente ecuación \ref{eq:movimiento_completo}.
+En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de seis puntos que define un movimiento y se mostró la configuración de los parámetros para obtener una rampa de cuatro puntos en donde la etapa de aceleración es igual a la etapa de desaceleración.
+
+Dicha rampa está definida por la siguiente ecuación \ref{eq:movimiento_completo}.
 
 \begin{equation}
 	\label{eq:movimiento_completo}
@@ -31,7 +62,7 @@ Dicha rampa esta definida por la siguiente ecuación \ref{eq:movimiento_completo
 %(((2*velocidad)/(aceleración*1000))+(desplazamiento/velocidad))*60*1000  
 
 Por lo tanto, con los valores de aceleración, desaceleración, velocidad y desplazamiento se puede calcular el tiempo teórico necesario para la ejecución de un movimiento.
-A continuación en la siguiente tabla se observan los valores de los parámetros ensayados.
+A continuación en la siguiente tabla \ref{tab:ensayo_comandos} se observan los valores de los parámetros ensayados.
 
 \begin{table}[h]
 	\centering
@@ -52,46 +83,59 @@ A continuación en la siguiente tabla se observan los valores de los parámetros
 	\label{tab:ensayo_comandos}
 \end{table}
 
-Para realizar el ensayo se preparo un bloque de código que funciono de la siguiente manera:
+Para realizar el ensayo se programó una aplicación de prueba que realizaba el siguiente procedimiento:
 
 \begin{enumerate}
-\item Se configura un movimiento descendente con los parámetros ya mencionados.
-\item Se ejecuta el movimiento, al iniciar se registra el tiempo del sistema.
-\item Al terminar el movimiento, se registra el tiempo del sistema, se calcula el tiempo que llevo dicho movimiento, se envía por terminal UART un bloque con toda la información.
-\item Se pasa al siguiente parámetro y se repite el ciclo.
-\item El ordenador conectado al equipo ejecuta un script de Python que almacena los datos recibidos en un archivo.
+\item Configuración de movimiento descendente con valores de velocidad, aceleración y desplazamiento.
+\item Ejecución del movimiento y registro del tiempo del sistema.
+\item Registro del tiempo del sistema al final del movimiento, cálculo de variación temporal y envío del dato por terminal UART.
+\item Configuración y ejecución de movimiento ascendente con sus respectivos registros y envío de dato.
+\item Incremento de la tabla hacia nuevos parámetros.
+\item Repetición del ciclo.
+\item Un ordenador conectado al equipo ejecuta un script de Python que almacena los datos recibidos en un archivo.
 \end{enumerate}
 
+En la siguiente figura \ref{fig:tiempo_movimiento_1} se observa en el eje Y el tiempo en ms necesario para ejecutar cada movimiento, los dos puntos cercanos representan el descenso y ascenso con los mismos parámetros de velocidad, aceleración y desplazamiento. El gráfico compara los tiempos teórico respecto a los tiempos registrados. A simple vista no se puede visualizar diferencias significativas entre ambos pares de puntos.
 
 \begin{figure}[h]
 \centering 
 \includegraphics[width=1.2\textwidth]{./Figures/tiempo_movimiento_1.png}
 \caption{Comparación de tiempos teóricos y registrados.}
+\label{fig:tiempo_movimiento_1}
 \end{figure}
 
+Se presenta a continuación en la figura \ref{fig:error_porcentual_1} un gráfico que representa los errores relativos porcentuales de las mediciones anteriores. Se puede deducir que existe un aumento del error relativo a velocidades altas, con un registro pico  en la velocidad de 800 mm/min. 
 
 
+\begin{figure}[h]
+\centering 
+\includegraphics[width=1\textwidth]{./Figures/error.png}
+\caption{Error relativo porcentual.}
+\label{fig:error_porcentual_1}
+\end{figure}
+Se concluye con este ensayo que el equipo es muy preciso en la mayor parte del rango para el cual fue diseñado teniendo un error relativo pico de 13\% en las velocidades superiores del rango de funcionamiento.
+ 
   
 \section{Calibración del equipo}
 \label{sec:calibración}
 \subsection{Desplazamiento lineal y micro pasos}
 
-Este ensayo se realizo para definir y ajustar la constante de desplazamiento que relaciona los micros pasos realizados por el motor con la distancia de desplazamiento del carro. La misma es una constante que queda definida por las dimensiones del tornillo, es decir el paso del mismo,  sobre el cual de desplaza el carro.
+Este ensayo se realizó para definir y ajustar la constante de desplazamiento que relaciona los micros pasos realizados por el motor con la distancia de desplazamiento del carro. La misma es una constante que está definida por las dimensiones del tornillo, es decir el paso del mismo,  sobre el cual de desplaza el carro.
 
 Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto\citep{web_asimeto} el cual puede observarse en la figura \ref{fig:micrometro}, el mismo tiene una resolución de 0.0001 mm y permite desplazamientos de 0 a 50 mm.
 
 
 \begin{figure}[h]
 \centering 
-\includegraphics[width=0.5\textwidth]{./Figures/micrometro.png}
+\includegraphics[width=0.3\textwidth]{./Figures/micrometro.png}
 \caption{Comparador digital Asimeto.}
 \label{fig:micrometro}
 \end{figure}
 
-El ensayo consistió en medir seis desplazamientos sucesivos de 1 mm sobre el carro de manera descendente y luego de manera ascendente. Este ensayo en muy importante porque permite corregir la unidad de conversión de micro pasos a milímetros que utiliza el CI TMC5130 para realizar todos los movimientos. 
+El ensayo consistió en medir seis desplazamientos sucesivos de 1 mm sobre el carro de manera descendente y luego de manera ascendente. Este ensayo es importante porque permite corregir la unidad de conversión de micro pasos a milímetros que utiliza el CI TMC5130 para realizar todos los movimientos. 
 En la subsección \ref{subsec:calibracion} se mencionó la macro \textit{MACHINE STEPS PER MILLIMETER} definida en el archivo hardware.h que surgió de este ensayo. 
 
-En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición donde se visualiza el comparador Asimeto apoyado sobre una base metálica independiente al equipo dip coater con la punta del mismo en contacto directo con el carro de desplazamiento.
+En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición donde se visualiza el comparador Asimeto apoyado sobre una base metálica independiente con la punta del mismo en contacto directo con el carro de desplazamiento.
 
 \begin{figure}[h]
 \centering 
@@ -101,7 +145,8 @@ En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición do
 \end{figure}
 
 
-Para iniciar el ensayo se presiona el botón \textit{origin} en el comparador para poner en cero la medida, la sensibilidad del mismo es tan grande que es difícil dejar la medida inicial en 0,000 mm debido  a la acción de apretar el botón. Luego se realizan movimientos descendentes de 1 mm y se registran en la siguiente tabla \ref{tab:ensayo_desplazamiento_}.
+Para iniciar el ensayo se presiona el botón \textit{origin} del comparador para poner en cero la medida, la sensibilidad del mismo es tan grande que es difícil lograr 0,000 mm debido a la acción misma  de apretar el botón. Luego se realizan movimientos descendentes de 1 mm y se registran los datos.
+En la siguiente tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obtenidos.
 
 \begin{table}[h]
 	\centering
@@ -123,7 +168,7 @@ Para iniciar el ensayo se presiona el botón \textit{origin} en el comparador pa
 	\label{tab:ensayo_desplazamiento_des}
 \end{table}
 
-De igual manera para movimientos ascendentes se registran en la siguiente tabla \ref{tab:ensayo_desplazamiento_asc}.
+De igual manera se confecciona la siguiente tabla \ref{tab:ensayo_desplazamiento_asc} para los movimientos ascendentes.
  
 \begin{table}[h]
 	\centering
@@ -154,8 +199,28 @@ Para corregir el valor de micro pasos por milímetros de desplazamiento se utili
 \end{enumerate}
 
 
-Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micro pasos, luego de esta corrección la macro quedo definida en 12932 micro pasos.
-Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas anteriores, en donde se observo que el porcentaje promedio de los errores relativos ascendentes y descendentes garantizaban que el error era en la centésimas de milímetros y no en las décimas de milímetros.
+Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micro pasos por milímetros, luego de sucesivas correcciones la macro quedo definida en 12932 micro pasos por milímetros.
+Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas anteriores, en donde se observó que el porcentaje promedio de los errores relativos no afectaba en las décimas de milímetros.
+
+\section{Caso de prueba}
+\section{Prueba de campo con personal capacitado}
+
+El siguiente ensayo consistió en una prueba completa del equipo dip coater con personal capacitado del Instituto de Nanosistemas.
+La prueba que se llevo a cabo consistió en realizar el primer \textit{thin films} del equipo, se utilizó un wafer de silicio como sustrato y una solución de dioxido de titanio disuelto en etanol para formar un film de nanoparticulas de titanio.
+
+\begin{figure}[h]
+\centering 
+\includegraphics[width=0.5\textwidth]{./Figures/prueba_b.jpg}
+\caption{Ensayo completo en laboratorio.}
+\label{fig:desplazamiento_lineal}
+\end{figure}
 
 
-\section{Pruebas de campo con personal capacitado}
+\begin{figure}[h]
+\centering 
+\includegraphics[width=0.5\textwidth]{./Figures/prueba_a.jpg}
+\caption{Ensayo con wafer de silicio.}
+\label{fig:desplazamiento_lineal}
+\end{figure}
+
+
