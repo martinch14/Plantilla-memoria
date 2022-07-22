@@ -3,7 +3,7 @@
 \chapter{Diseño e Implementación} % Main chapter title
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-En el siguiente capítulo se presenta el diseño y la implementación de las tres partes fundamentales del equipo. Se abarcan aspectos de diseño de hardware, desarrollo de firmware, diseño y fabricación mecánica.
+En el siguiente capítulo se presenta el diseño y la implementación de las tres partes fundamentales del equipo. Se abarcan aspectos de diseño de hardware, desarrollo de firmware y diseño y fabricación mecánica.
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
@@ -44,10 +44,17 @@ En el siguiente capítulo se presenta el diseño y la implementación de las tre
 }
 
 \section{Hardware}
+\label{section:Hardware}
 \subsection{Diseño basado en módulos de hardware libre}
 \label{subsection:Diseño basado en módulos de hardware libre}
 
-Para la implementación del hardware se utilizó el software libre de diseño de circuitos impresos KICAD \citep{web_kicad}, la elección del mismo se basó en que en sus últimas versiones presentó mejoras significativas respecto a sus predecesoras.
+Para la implementación del hardware se utilizó el software libre de diseño de circuitos impresos KICAD \citep{web_kicad}, la elección del mismo se basó en los siguientes puntos:
+
+\begin{itemize}
+\item Las capacidades que brinda el software son suficientes para el desarrollo de este hardware.
+\item Se valora el apoyo del \textit{CERN:European Organization for Nuclear Research} al proyecto KICAD.
+\item Las últimas versiones presentan mejoras significativas respecto a sus predecesoras.
+\end{itemize}
 
 El diseño de la placa electrónica se baso en el estudio de los siguientes módulos:
 \begin{itemize}
@@ -58,19 +65,16 @@ Se destaca que ambos proyectos adhieren a la filosofía del hardware libre. Por 
 
 \subsection{Etapa de alimentación}
 
-Otra etapa importante, como se observa en la figura \ref{fig:kicad_tension}, es el regulador de tensión que permite alimentar el equipo con tensiones continuas de entre 24 V y 46 V. Para tal fin se utilizó el CI LM5161 en modo \textit{step-down buck converter}, una configuración que permite bajar la tensión de entrada según la relación de las resistencias de \textit{feedback}. En este caso se configuró una salida de 5 V la cual tiene una eficiencia energética de 86 \% según hojas de datos. Luego a través de un regulador de tensión se obtienen 3,3 V utilizados para alimentar el microcontrolador.
+Otra etapa importante, como se observa en la figura \ref{fig:kicad_tension}, es el regulador de tensión que permite alimentar al equipo con tensiones continuas de entre 24 V y 46 V. Para tal fin se utilizó el CI LM5161 en modo \textit{step-down buck converter}, una configuración que permite bajar la tensión de entrada según la relación de las resistencias de \textit{feedback}. En este caso se configuró una salida de 5 V la cual tiene una eficiencia energética de 86 \% según su hoja de datos. Luego a través de un regulador de tensión se obtienen 3,3 V utilizados para alimentar el microcontrolador.
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=1\textwidth]{./Figures/kicad_tension.jpg}
+	\includegraphics[width=1\textwidth]{./Figures/kicad_tension_v1.png}
 	\caption{Módulo de entrada.}
 	\label{fig:kicad_tension}
 \end{figure}
   
 El equipo fue diseñado para ser alimentado con una fuente externa de tensión continua, simplificando así cuestiones regulatorias de certificación que deben cumplir equipos que se alimentan directamente a la red eléctrica.
-
-
-
 
 \subsection{Etapa de comunicación}
 
@@ -80,11 +84,11 @@ El módulo NodeMCU es una placa de desarrollo que contiene el SoC ESP32-WROOM. A
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/kicad_conversor.png}
-	\caption{Conversor UART-USB.}
+	\caption{Conversor serie-USB.}
 	\label{fig:kicad_conversor}
 \end{figure}
 
-Mantener esta etapa de entrada en la placa electrónica final habilita la conexión directa del equipo dip coater con un puerto USB de computadora, permitiendo establecer comunicaciones con el periférico UART sin tener que contar con un programador externo. Se utilizó entonces para esta etapa de conversión el CI CP2102.
+Mantener esta etapa de entrada en la placa electrónica final habilita la conexión directa del equipo dip coater con un puerto USB de computadora, permitiendo establecer una comunicación con el periférico UART y descargar un firmaware nuevo sin tener que contar con un programador externo. Se utilizó para esta etapa de conversión el CI CP2102.
 
 Cuando se trabaja con el módulo NodeMCU se debe seguir la siguiente secuencia para descargar el firmware en el microcontrolador:
 \begin{enumerate}
@@ -99,7 +103,7 @@ La interfaz UART CP2102 consta de señales de transmisión y recepción de datos
 
 \subsection{Driver TMC5130}
 
-El módulo TMC5130-EVAL, como se describió en la sección \ref{sec:Circuitos integrados Trinamic}, contiene al CI TMC5130. Del estudio de esta placa de evaluación se extrajeron las configuraciones necesarias para lograr la correcta utilización del driver. Se tuvieron en cuenta las recomendaciones de diseño establecidas por el fabricante, como por ejemplo: la incorporación de un clock externo de 16 MHz como se observa en la figura \ref{fig:kicad_clock} el cual es necesario en aplicaciones de alta precisión. 
+El módulo TMC5130-EVAL, como se describió en la sección \ref{sec:Circuitos integrados Trinamic}, contiene al CI TMC5130. Del estudio de esta placa de evaluación se extrajeron las configuraciones necesarias para lograr la correcta utilización del driver. Se tuvieron en cuenta las recomendaciones de diseño establecidas por el fabricante, como por ejemplo la incorporación de un clock externo de 16 MHz, que se puede observar en la figura \ref{fig:kicad_clock} el cual es necesario en aplicaciones de alta precisión. 
 
 \begin{figure}[!h]
 	\centering
@@ -108,7 +112,7 @@ El módulo TMC5130-EVAL, como se describió en la sección \ref{sec:Circuitos in
 	\label{fig:kicad_clock}
 \end{figure}
 
-A continuación se observa en la figura \ref{fig:kicad_trinamic} las conexiones del driver con el motor paso a paso y el puerto SPI utilizado para la comunicación con el microcontrolador. 
+A continuación, se observa en la figura \ref{fig:kicad_trinamic} las conexiones del driver con el motor paso a paso y el puerto SPI utilizado en la comunicación con el microcontrolador. 
  
 \begin{figure}[h]
 	\centering
@@ -147,31 +151,31 @@ Todo el diseño y material asociado se encuentra disponible en el repositorio de
 %-----------------------------------
 %	SUBSECTION 2
 %-----------------------------------
-La placa electrónica se fabricó con el proveedor local de circuitos impresos Ernesto Mayer S.A. \citep{web_mayer}. A continuación se presenta la información de diseño de la misma y se describen algunas  restricciones de diseños impuestas por el fabricante:
+La placa electrónica se fabricó con el proveedor local de circuitos impresos Ernesto Mayer S.A. \citep{web_mayer}. A continuación se presenta la información de diseño de la misma y se describen algunas  restricciones de impuestas por el propio fabricante:
 
 \begin{itemize}
 
-\item Grilla de posicionamiento principal: 0.25 mm.
-\item Grilla de ruteo principal: 0.25 mm.
-\item Agujeros de montaje: 3.2 mm.
-\item Pistas principales: 0.5 mm.
-\item Pistas inferiores: 0.25 mm (límite particular 8 mils(0.20mm)).
-\item Pistas superiores: 0.8 mm.
-\item Vías: 0.8 mm /0.4 mm (límite particular 8 mils(0.20mm)).
-\item Margen general: 0.22 mm.
-\item Margen particular: 0.2 mm (límite particual 8 mils(0.20 mm)).
-\item Fabricación: espesor 1.6mm FR4.  
-\item Restricciones generales del fabricante: estándar 10 mils( 0.254 mm).
+\item Grilla de posicionamiento principal: 0,25 mm.
+\item Grilla de ruteo principal: 0,25 mm.
+\item Agujeros de montaje: 3,2 mm.
+\item Pistas principales: 0,5 mm.
+\item Pistas inferiores: 0,25 mm, con límite particular 0,20mm (8 mils).
+\item Pistas superiores: 0,8 mm.
+\item Vías: 0,8 mm /0,4 mm, con límite particular 0,20mm (8 mils).
+\item Margen general: 0,22 mm.
+\item Margen particular: 0,2 mm, con límite particular 0,20 mm (8 mils).
+\item Fabricación: espesor 1,6mm FR4.  
+\item Restricciones generales del fabricante: con límite estándar 0,254 mm (10 mils).
 
 \end{itemize}
 
-Luego de fabricar el PCB, se continuó con el montaje de componentes electrónicos superficiales, que estuvo a cargo de la empresa Asembli S.A. \citep{web_asembli}. Se fabricó un primer lote de cinco placas. A continuación en la figura \ref{fig:dip_real_model} se observa la placa con sus componentes montados.
+Luego de fabricar el PCB, se continuó con el montaje de componentes electrónicos superficiales, que estuvo a cargo de la empresa Asembli S.A. \citep{web_asembli}. Se fabricó un primer lote de cinco placas. En la figura \ref{fig:dip_real_model} se observa la placa con los componentes montados.
 
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.6\textwidth]{./Figures/dip_real_model.jpg}
-	\caption{Placa fabricada MAYER SRL.}
+	\caption{Plaqueta electrónica final.}
 	\label{fig:dip_real_model}
 \end{figure}
 
@@ -186,7 +190,7 @@ Para la implementación del firmware se trabajó con el \textit{framework} ESP-I
 
 Se desarrolló un firmware modular que atomiza el funcionamiento en diferentes bloques de software, lo cual permite incorporar código de manera incremental y ordenada. Se observan en la figura \ref{fig:capas} las capas de abstracción de software implementadas.
 
-La idea principal de esta modularización es la de no permitir llamados a funciones entre capas discontinuas. Los módulos de la capa superior o capa APP solo pueden hacer llamados a funciones de la capa intermedia o capa API \textit{(Application Programming Interfaces)} y estos últimos solo pueden llamar a funciones de la capa inferior o capa BOARD.
+La idea principal de esta abstracción es la de no permitir llamados a funciones entre capas discontinuas. Los módulos de la capa superior o capa APP solo pueden hacer llamados a funciones de la capa intermedia o capa API \textit{(Application Programming Interfaces)} y estas últimas solo pueden llamar a funciones de la capa inferior o capa BOARD.
 
 
 \begin{figure}[h]
@@ -197,7 +201,7 @@ La idea principal de esta modularización es la de no permitir llamados a funcio
 \end{figure}
 
 
-La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 aplicaciones fundamentales para el funcionamiento del equipo y una aplicación de testing utilizada para probar nuevos componentes de software. Cada aplicación contiene al menos una \textit{task} del sistema operativo freeRTOS.
+La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 aplicaciones fundamentales para el funcionamiento del equipo y una aplicación de testing utilizada para probar nuevos componentes de software. Cada aplicación contiene al menos una \textit{task} del sistema operativo freeRTOS. A continuación se detallan las aplicaciones:
 
 \begin{itemize}
 
@@ -209,28 +213,29 @@ La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 apl
 \end{itemize}
 % y realizar test sobre el sistema que se activa y desactiva según la necesidad de uso.
 
-La capa dos esta compuesta por bloques de código provistos por los fabricantes de drivers.
+La capa dos esta compuesta por bloques de código provistos por los fabricantes de drivers:
 \begin{itemize}
 \item API TMC: provista por el fabricante Trinamic y adaptada para ser ejecutada bajo el framework ESP-IDF.
 \item API BOSH: provista por el fabricante y adaptada a este firmware.
-\item API TECSCI: contiene los módulos de software para el manejo de la capa BOARD, es un módulo que está en constante crecimiento con los diferentes desarrollos que la compañia TECSCI.
+\item API TECSCI: contiene los módulos de software para el manejo de la capa BOARD.
+\item API STONE:
 \end{itemize}
 
-La capa uno interacciona con los módulos de hardware del microcontrolador, es decir, que esta capa es la única que contiene todos los llamados a funciones disponibles en el framework ESP-IDF, llamados a periféricos como por ejemplo: UART, GPIO, SPI, I2C entre otros, son realizados desde esta capa. En el caso de que en un futuro se quiera realizar un cambio de microcontrolador, esta sería la única capa que debería reescribirse en mayor medida, permitiendo así reutilizar el software escrito en capas superiores.
-
-Cabe aclarar que este diseño de software es un concepto que se fue implementando a través de las sucesivas refactorizaciones del firmware actual, es posible entonces encontrar algunas excepciones al mismo que se irán corrigiendo en futuras actualizaciones.
-
+La capa uno es la que interacciona con los módulos de hardware del microcontrolador. Por lo tanto, esta capa es la única que contiene llamados a funciones disponibles en el framework ESP-IDF, como por ejemplo las funciones de configuración de los periféricos UART, GPIO, SPI, etc. Es importante mencionar que si debido a un rediseño se decide cambiar el microcontrolador utilizado, solo se deberán reescribir los módulos pertenecientes a esta capa y se podrá mantener el resto del programa sin alteraciones.
 
 \subsection{Módulos principales de software}
 \label{sec:modulos principales}
 \subsubsection{Control de movimientos}
 
-La aplicación app coating contiene toda la lógica de control de movimientos, la misma se encarga de realizar la configuración inicial del driver TMC5130, de ejecutar los procesos completos de dip coating y de procesar comandos individuales para generar diferentes tipos de movimientos. 
+La aplicación app coating contiene toda la lógica de control de movimientos. La misma se encarga de realizar la configuración inicial del driver TMC5130, de ejecutar los procesos completos de dip coating y de procesar comandos individuales para generar diferentes tipos de acciones. 
 
-Como se mencionó en la subsección \ref{subsection:Driver TMC5130} la configuración inicial del driver es compleja, por tal motivo se utilizo el software  TMCL-IDE provisto por el fabricante para realizar la configuración de los registros de manera interactiva. Cabe destacar que con este software se pueden configurar todos los driver que la compañía ofrece, abarcando desde motores paso a paso hasta  servomotores, motores \textit{brushless} y de corriente continua. 
+Como se mencionó en la subsección \ref{subsection:Driver TMC5130} calcular los parámetros iniciales del driver es una tarea compleja, por lo que se optó por utilizar el software TMCL-IDE provisto por el fabricante y realizar la configuración de los registros de manera interactiva.
+
+%Como se mencionó en la subsección \ref{subsection:Driver TMC5130} la configuración inicial del driver es compleja, por tal motivo se utilizo el software  TMCL-IDE provisto por el fabricante para obtener los valores de inicialización de los registros de manera interactiva.
+%Cabe destacar que con este software se pueden configurar todos los driver que la compañía ofrece, abarcando desde motores paso a paso hasta  servomotores, motores \textit{brushless} y de corriente continua. 
 
 En esta etapa de configuración es recomendable que el motor este acoplado al eje lineal, junto con el tornillo, la tuerca y el carro ya que el driver registra la corriente que circula por las bobinas del motor y calcula la fuerza contraelectromotriz que el eje esta ejerciendo. 
-En la siguiente figura \ref{fig:tmcl_ide} se observa el entorno de desarrollo TMCL-IDE.  
+En la figura \ref{fig:tmcl_ide} se observa el entorno de desarrollo TMCL-IDE.  
 
 \begin{figure}[h!t]
 	\centering
@@ -240,10 +245,10 @@ En la siguiente figura \ref{fig:tmcl_ide} se observa el entorno de desarrollo TM
 \end{figure}
 
 
-A continuación en la figura \ref{fig:tmcl_ide_stall} se puede observar el \textit{wizard} de configuración de las funciones \textit{stallguard2} y \textit{coolstep}.
-Como se mencionó en el capítulo \ref{Chapter2} es posible usar stallguard2 para detectar los límites mecánicos de recorrido. El parámetro \textit{stall guard threshold} relaciona la fuerza contraelectromotriz registrada por el driver. A medida que se detecta mayor fuerza, es decir mayor oposición al movimiento y mayor corriente en los motores, el valor de stallguard2 disminuye. Se debe configurar entonces un valor de detección para que el driver generare un evento.
+En la figura \ref{fig:tmcl_ide_stall} se puede observar el \textit{wizard} de configuración de las funciones \textit{stallguard2} y \textit{coolstep}.
+Como se mencionó en el capítulo \ref{Chapter2} es posible usar stallguard2 para detectar los límites mecánicos de recorrido. El parámetro \textit{stall guard threshold} relaciona la fuerza contraelectromotriz registrada por el driver. A medida que se detecta mayor fuerza, es decir mayor oposición al movimiento y mayor corriente en los motores, el valor de stallguard2 disminuye. Se debe configurar entonces un valor límite de detección para que una vez alcanzado se genere un evento.
 
-El firmware cuenta con una función llamada \textit{mod-coating-process-cero-machine} que se encarga de detectar el evento que el driver enviá cuando se detecta un final de carrera. La misma se encarga de parar el motor, generar un desplazamiento en sentido contrario y establecer una nueva posición.
+El firmware cuenta con una función llamada \textit{mod-coating-process-cero-machine} que se encarga de detectar el evento que el driver envía cuando se detecta un final de carrera. La misma se encarga de parar el motor, generar un desplazamiento en sentido contrario y establecer una nueva posición.
 
   
 
@@ -254,9 +259,7 @@ El firmware cuenta con una función llamada \textit{mod-coating-process-cero-mac
 	\label{fig:tmcl_ide_stall}
 \end{figure}
 
-Otros parámetros importantes a configurar son los que definen la rampa de aceleración de los desplazamiento. 
-El driver permite configurar una rampa de aceleraciones de seis puntos.
-Se observa en la figura \ref{fig:rampa} los parámetros A1, AMAX, D1, DMAX, V1 y VMAX que deben configurarse para definir el movimiento, los mismos son parámetros de aceleración, desaceleración y velocidad.
+Otros parámetros importantes a configurar son los que definen la rampa de aceleración del desplazamiento. El driver permite configurar una rampa de seis puntos donde los valores a encontrar, A1, AMAX, D1, DMAX, V1 y VMAX corresponden a la aceleración, desaceleración y velocidad, como se observa en la figura \ref{fig:rampa}.
 
 
 
@@ -268,8 +271,8 @@ Se observa en la figura \ref{fig:rampa} los parámetros A1, AMAX, D1, DMAX, V1 y
 \end{figure}
 
 
-Todos los movimientos del equipo dip coater están definidos de la siguiente manera.
-\begin{lstlisting}[label=cod:vControl,caption=Macros para configurar de desplazamientos.] 
+Todos los movimientos del equipo dip coater están definidos de la siguiente manera \ref{cod:vControl_1}.
+\begin{lstlisting}[label=cod:vControl_1,caption=Macros para configurar de desplazamientos.] 
 	// Velocidad
 	//V1
 	Evalboards.ch1.writeRegister(0, TMC5130_V1, (arg->velocity) / 2);
@@ -310,17 +313,22 @@ App coating puede recibir a través de implementaciones de colas de FreeRTOS com
 \subsubsection{Interfaz usuario-máquina}
 
 
-Las aplicaciones app consola y app hmi se encargan de la comunicación con el usuario del equipo y son las encargadas de enviar mensajes a la aplicacion app coating que ejecuta  y controla los movimientos.
+Las aplicaciones app consola y app hmi se encargan de la interacción con el usuario y son las encargadas de enviar a la aplicación app coating los comandos para ejecutar los distintos movimientos.
+
 El equipo dip coater puede ser utilizado de dos maneras diferentes detalladas a continuación:
 
 \begin{enumerate}
 \item A través de una consola de comandos.
-\item A través de la pantalla táctil.
+\item A través de una pantalla táctil.
 \end{enumerate}
 
 Ambas opciones permiten ejecutar un ciclo completo de dip coating y también permiten ejecutar comandos de manera individual.
 
-App consola permite establecer un canal de comunicación entre el equipo dip coater y un ordenador a través de una comunicación UART. Como se mencionó en la subsección \ref{subsection:Diseño basado en módulos de hardware libre} la placa electrónica incorpora un conversor UART-USB que permite conectar el  equipo directamente a través de un cable USB. Se observan a continuación los comandos definidos en la consola para poder interactuar.
+\subsubsection{Consola de comandos}
+
+App consola permite establecer un canal de comunicación entre el equipo dip coater y un ordenador a través de una comunicación serial. Como se mencionó en la subsección \ref{subsection:Diseño basado en módulos de hardware libre}, la placa electrónica incorpora un conversor serie TTL-USB que permite conectar el  equipo directamente a través de un cable USB. 
+
+Se observa en la figura \ref{fig:consola_movimientos} los comandos definidos para la interacción por consola.
 
 \begin{figure}[h!]
 	\centering
@@ -329,17 +337,19 @@ App consola permite establecer un canal de comunicación entre el equipo dip coa
 	\label{fig:consola_movimientos}
 \end{figure}
 
-El comando \textit{setcommandcustomapp} permite ejecutar el proceso completo  dip coating, para hacerlo hay que cargar todos los parámetros requeridos por el comando que se detallan a continuación: 
+El comando setcommandcustomapp permite configurar el proceso completo de dip coating. Primeramente, es necesario cargar los siguientes parámetros:
 
 \begin{enumerate}
-\item Velocidad y aceleración para abajo y arriba.
-\item Tiempos de espera en posición superior y inferior.
-\item Cantidad de veces de repetición de ciclo.
+\item Velocidad y aceleración ascendente y descendente.
+\item Tiempos de espera en posición superior e inferior.
+\item Cantidad de repeticiones del ciclo.
 \item Posición inicial de comienzo del movimiento.
-\item Distancia total que de recorrido.
+\item Distancia total de recorrido.
 \end{enumerate}
 
-El resto de los comandos \textit{ceromachine, down, downfast, up, upfast, depthsample} entre otros permiten movimiento simples que sirven por ejemplo para posicionar la muestra.
+Una vez que los parámetros quedan establecidos se debe ejecutar el comando RUN para dar inicio al proceso. También esta disponible el comando STOP para que el usuario pueda detener el proceso si así lo desea.
+ 
+El resto de los comandos ceromachine, down, downfast, up, etc, permiten movimientos individuales que sirven para posicionar la muestra.
 
 También como se observa en la figura \ref{fig:consola_comandos} existen comandos como \textit{read-register, write-register} que sirven por ejemplo para leer o escribir registros del driver, los cuales son muy importantes para poder consultar el estado de los mismos en todo momento.
 
@@ -351,8 +361,8 @@ También como se observa en la figura \ref{fig:consola_comandos} existen comando
 	\label{fig:consola_comandos}
 \end{figure}
 
-Como ejemplo se observa a continuación en la figura \ref{fig:comando_lectura} una consulta al registro XACTUAL[0x21] que expresa la posición actual en micro pasos desde la referencia inicial y otra consulta al registro XTARGET[0x2D] cuyo valor expresa la posición objetivo en micro pasos que se desee alcanzar.
-Es este ejemplo XACTUAL es igual a XTARGET ya que el equipo estaba detenido. Para ejecutar un movimiento se debe configurar una nueva posición en XTARGET para accionar el motor hasta que  XACTUAL sea igual a XTARGET.
+Como ejemplo se observa en la figura \ref{fig:comando_lectura} una consulta al registro XACTUAL[0x21] que expresa la posición actual en micro pasos desde la referencia inicial y otra consulta al registro XTARGET[0x2D] cuyo valor expresa la posición objetivo en micro pasos que se desee alcanzar.
+En este ejemplo XACTUAL es igual a XTARGET ya que el equipo estaba detenido. Para ejecutar un movimiento se debe configurar una nueva posición en XTARGET para accionar el motor hasta que  XACTUAL sea igual a XTARGET.
 
 
 \begin{figure}[h!]
@@ -363,43 +373,167 @@ Es este ejemplo XACTUAL es igual a XTARGET ya que el equipo estaba detenido. Par
 \end{figure}
 
 
-Cada vez que el usuario ejecuta un comando de movimiento en la consola, la aplicación \textit{app console}  procesa y envía el mensaje a través de una cola de FreeRTOS hacia la aplicación \textit{app coating}. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. En la figura 
+Cada vez que el usuario ejecuta un comando de movimiento en la consola, la aplicación app console procesa y envía el mensaje a través de una cola de FreeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. En la figura 
 \ref{fig:consola_comando_ok} se observa que luego de iniciar el proceso dip coating se envía el comando DOWN y el mismo es descartado sin afectar el proceso.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/consola_4.png}
-	\caption{Comandos DOWN descartado por equipo en funcionamiento.}
+	\caption{Comando DOWN descartado por equipo en funcionamiento.}
 	\label{fig:consola_comando_ok}
 \end{figure}
 
-El único comando de movimiento que no es descartado es el comando STOP, el cual tiene un tratamiento especial y en cualquier caso siempre se garantiza su ejecución.
+El único comando de movimiento que no es descartado es el comando STOP, el cual tiene un tratamiento especial y siempre se garantiza su ejecución.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/consola_5.png}
-	\caption{Comandos de STOP procesado.}
+	\caption{Comando STOP procesado.}
 	\label{fig:consola_comando_false}
 \end{figure}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/consola_5.png}
+	\caption{Comando STOP procesado.}
+	\label{fig:consola_comando_false}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/consola_5.png}
+	\caption{Comando STOP procesado.}
+	\label{fig:consola_comando_false}
+\end{figure}
 
 \subsubsection{Pantalla táctil}
 
-\subsubsection{Comandos Json}
+La aplicación app hmi establece un canal de comunicación serial entre la pantalla táctil y el microcontrolador, la misma se encarga de procesar datagramas salientes y entrantes. 
+
+En la sección \ref{sec:interfaz_pantalla} se presentó el modelo STWI043WT elegido para el equipo dip coater, el mismo requiere para su configuración el desarrollo de un proyecto con el software \textit{STONE GUI Desing Software}. En la figura \ref{fig:stone_a} se presenta la interfaz interactiva que permite crear pantallas y diferentes tipos de objetos o \textit{widgets} para brindar de funcionalidad a las mismas. El fabricante define también un protocolo de comunicación \citep{web_protocolo_stone} para interaccionar con los objetos que componen cada pantalla.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/stone_a.png}
+	\caption{STONE GUI Desing Software.}
+	\label{fig:stone_a}
+\end{figure}
 
 
+
+En la figura \ref{fig:datagrama_a} se define el formato de datagrama para enviar datos desde el microcontrolador hacia la pantalla. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/datagrama_b.jpg}
+	\caption{Datagrama desde microcontrolador hacia pantalla.}
+	\label{fig:datagrama_b}
+\end{figure}
+
+El datagrama está compuesto por tres bloques:
+\begin{enumerate}
+\item Frame header: 3 bytes fijos.
+\item Data: Datos definidos en texto plano con formato \textit{JSON (JavaScript Object Notation)}.
+\item Frame tail: 2 bytes fijos.
+\end{enumerate}
+
+El campo data define múltiples categorías, se mencionan a continuación las mas importantes:
+\begin{itemize}
+\item Cmd-code: Es un identificador único que define la instrucción.
+\item Type: Define el tipo de objeto.
+\item Widget: Define el nombre único del objeto.
+\item Text: Define el contenido del objeto, varia según el tipo de objeto.
+\end{itemize}  
+
+En la figura \ref{fig:datagrama_a} se define el formato de datagrama para enviar datos desde la pantalla hacia el microcontrolador. El datagrama esta compuesto por los siguientes bloques:
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/datagrama_a.jpg}
+	\caption{Datagrama desde pantalla hacia microcontrolador.}
+	\label{fig:datagrama_a}
+\end{figure}
+
+\begin{enumerate}
+
+\item Frame header: 3 bytes fijos.
+\item Code: Identificación única de objeto.
+\item Data-Len: Define el largo del dato a transmitir.
+\item Data: Su tamaño debe coincidir con el item anterior.
+\item Frame tail: 2 bytes fijos.
+\item CRC16: Para verificación de integridad del datagrama.
+
+\end{enumerate}
+
+Para procesar los datagramas entrantes se implementó un bloque de código que analiza el buffer del periférico UART-1. Cuando hay datos disponibles el periférico envía un evento a través de una \textit{queue} de freeRTOS. El evento UART-DATA se recibe en la \textit{task} mod-hmi-RX-task-loop la cual comienza a procesar dichos datos mientras estén disponibles. En la figura \ref{fig:secuencia_a} se observa el control que se va realizando a cada unos del los bytes entrantes. Si el datagrama pasa todas las condiciones es aceptado y enviado a la \textit{task} app hmi task a través de una \textit{queue} para ser procesado.
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/Secuencia_lectura_uart.jpg}
+	\caption{Secuencia de procesamientos de datos entrantes.}
+	\label{fig:secuencia_a}
+\end{figure}
+
+ 
+En la figura \ref{fig:stone_a} se presenta la pantalla de configuración de programa  creada con el software de diseño.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Figures/pantalla.png}
+	\caption{Pantalla de configuración de programa.}
+	\label{fig:stone_a}
+\end{figure}  
+
+
+ 
+
+\subsubsection{Registros de variables ambientales}
+
+En la sección \ref{sec:sistema_propuesto} se presentó el requerimiento opcional que establece el registro de variables de humedad, presión y temperatura. El interés del cliente se fundamenta en que ciertos experimentos necesitan realizarse particularmente a humedad y temperatura controlada. 
+
+Para el registro de estas variables se incorporó al sistema un sensor BME280, el mismo integra en un solo CI sensores de presión atmosférica, temperatura y humedad relativa. El fabricante ofrece en sus repositorios \citep{web_repositorio_api_bosh} ejemplos de implementaciones y una API para utilizar todas las funcionalidades del CI.
+
+La comunicación entre el sensor y el microcontrolador se realizó a través del protocolo I2C, se incorporó el módulo del software BOARD I2C que se encarga de inicializar el periférico y define las funciones de lectura y escritura.
+
+La capa API del fabricante utiliza las funciones definidas en la BOARD I2C para comunicarse con el dispositivo, sobre esta última   
+
+En la figura \ref{fig:api_bosh} de observa el flujo de capas desarrollado:
+
+Se define en el el módulo API BOSH
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.4\textwidth]{./Figures/api_bosh_bme.jpg}
+	\caption{Módulo API BOSH.}
+	\label{fig:api_bosh}
+\end{figure}
+
+
+Para visualizar los datos registrados por el sensor se implementó sobre la APP TEST una rutina de consulta con llamado a funciones de la capa API BOSH BME, se observa en la siguiente figura los datos registrados en consola.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{./Figures/registro_bme.png}
+	\caption{Registro de datos en consola.}
+	\label{fig:api_bosh}
+\end{figure}
+
+ 
+   
+
+El desarrollo de este MPV incluyó el registro de variables ambientales pero no un control y corrección de las mismas con un sistema de control. Sin embargo, se pretende ofrecer en un futuro cercano la funcionalidad  de cámara de humedad anexada a este MPV. Por tal motivo se presenta el anexo XX el desarrollo alcanzado sobre un sistema de control de de humedad.  
 
 
  
 \subsubsection{Parámetros de calibración}
 \label{subsec:calibracion}
 
-La carpeta /components/config contiene tres archivos de configuración importantes.
+La carpeta /components/config contiene tres archivos de configuración importantes:
 \begin{itemize}
 \item hardware.h: contiene todas las macros referidas a los pines de conexión del modelo de microcontrolador utilizado.
-
-\item os-config.h: contiene las macros de configuración de las tareas de FreeRTOS tal es el caso de tamaños, prioridades, y periodos de tiempo entre otras.
-\item machine.h: contiene las macros relacionadas con la calibración del equipo.
+\item os-config.h: contiene las macros de configuración de las tareas y colas de FreeRTOS. Entre otras los tamaños de stack, las prioridades y los periodos de tiempo de ejecución de tareas.
+\item machine.h: contiene las macros relacionadas con la calibración mecánica del equipo.
 \end{itemize}
 
 
@@ -407,7 +541,7 @@ La macro más importante configurada en el archivo machine.h es MACHINE STEPS PE
 
 Con este valor de micro pasos por milímetro se pueden calcular los factores de corrección de unidades utilizados por el driver TMC5130. Las unidades de posición son expresados en unidades de micro pasos, las unidades de velocidad en micro pasos sobre segundos y las unidades de aceleración en micro pasos sobre segundos al cuadrado.
 
-Se observa en la figura \ref{fig:unidades} extraída de la hoja de datos del driver TMC5130 \citep{3_web_trinamic_producto} los factores de corrección que deben aplicarse cuando se cuenta con un clock externo incorporado en el circuito electrónico.
+Se observa en la figura \ref{fig:unidades}, extraída de la hoja de datos del driver TMC5130, los factores de corrección que deben aplicarse cuando se cuenta con un clock externo incorporado en el circuito electrónico.
 
 \begin{figure}[h!]
 	\centering
@@ -456,7 +590,7 @@ Como se mencionó en la subsección \ref{subsection:Driver TMC5130} el equipo se
 
 \subsubsection{Etapa CAD}
 
-Como se mencionó en la sección \ref{sec:estructura_mecanica} se utilizó para el diseño mecánico del equipo el software BOBCAD. El módulo CAD del software permite realizar modelos 2D y 3D de pieza necesarios para la fabricación.
+Como se mencionó en la sección \ref{sec:estructura_mecanica} se utilizó para el diseño mecánico del equipo el software BOBCAD. El módulo CAD del software permite realizar modelos 2D y 3D de piezas.
 El prototipo dip coater cuenta actualmente con dos piezas mecanizadas en aluminio.
  
 Se observa en la figura \ref{fig:carro} la pieza que se acopla al carro de la guiá lineal presentada en la sección \ref{sec:estructura_mecanica}.
@@ -468,7 +602,7 @@ Se observa en la figura \ref{fig:carro} la pieza que se acopla al carro de la gu
 	\label{fig:carro}
 \end{figure}
 
-Y en la figura \ref{fig:estructura_superior} el soporte superior que sostiene el motor paso a paso y el  tornillo que esta acoplado al eje del motor.
+Y en la figura \ref{fig:estructura_superior} el soporte superior que sostiene el motor paso a paso y el  tornillo acoplado al eje del motor.
 
 \begin{figure}[h]
 	\centering
@@ -477,23 +611,24 @@ Y en la figura \ref{fig:estructura_superior} el soporte superior que sostiene el
 	\label{fig:estructura_superior}
 \end{figure}
 
-Con el modelo 3D diseñado se fabricó una primera versión a través de impresión 3D en plástico, luego que las piezas fueron probadas, testeadas y aprobadas en el prototipo se paso a la fabricación en aluminio.
+Con el modelo 3D diseñado se fabricó una primera versión a través de impresión 3D en plástico. Luego que las piezas fueron probadas, testeadas y aprobadas en el prototipo, se pasó a la fabricación en aluminio.
 
 \subsubsection{Etapa CAM}
 
-La estrategia utilizada en el mecanizado es por el método de arranque de viruta, es decir que se parte de un bloque de aluminio con volumen de material suficiente y se desbasta con herramientas de corte hasta modelar la pieza. Esta estrategia se programa en la parte CAM del software, se puede observar en la figura \ref{fig:estrategia} un listado de las operaciones realizadas para la fabricación de una pieza.
+La estrategia utilizada en el mecanizado es por el método de arranque de viruta. Este consiste en partir de un bloque de aluminio con volumen de material suficiente y desbastar con herramientas de corte hasta modelar la pieza. Esta estrategia se programa en la parte CAM del software. 
+%Se puede observar en la figura \ref{fig:estrategia} un listado de las operaciones realizadas para la fabricación de una pieza.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=.6\textwidth]{./Figures/3d_estrategia.png}
-	\caption{Estrategias de mecanizado en software Bodcad.}
-	\label{fig:estrategia}
-\end{figure}
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=.6\textwidth]{./Figures/3d_estrategia.png}
+%	\caption{Estrategias de mecanizado en software Bodcad.}
+%	\label{fig:estrategia}
+%\end{figure}
 
-Existen diferentes estrategias de mecanizado para diferentes tipos de operaciones tal es el caso de refrentado, vaciado, fresado de chaflán, taladro, roscado entre otras. Cada una de estas funciones en general se realizan con herramientas específicas que son definidas en la configuración del software.
+Existen diferentes estrategias de mecanizado para diferentes tipos de operaciones tal es el caso de refrentado, vaciado, fresado de chaflán, taladrado y roscado entre otras. Cada una de estas funciones en general se realizan con herramientas específicas que son definidas en la configuración del software.
 Estas piezas se fabricaron en dos etapas, primero se mecanizo la parte superior de las mismas y luego de una rotación de  180 ° se termino de mecanizar la parte inferior.
 
-El material mecanizado fue aluminio 6061, el mismo es una aleación endurecida compuesta por aluminio, magnesio y silicio, la elección se basó en que el mismo puede someterse a tratamientos de anodizado posteriores. El anodizado es un tratamiento electrolítico, que genera una capa superficial de óxido de aluminio (alúmina), de espesor superior que el aluminio en estado natural, tiene como ventajas la protección contra atmósferas agresivas, agentes químicos y una mayor dureza superficial.
+El material mecanizado fue aluminio 6061, el mismo es una aleación endurecida compuesta por aluminio, magnesio y silicio. La elección se basó en que el mismo puede someterse a tratamientos de anodizado posteriores. El anodizado es un tratamiento electrolítico, que genera una capa superficial de óxido de aluminio (alúmina). De espesor superior que el aluminio en estado natural, tiene como ventajas la protección contra atmósferas agresivas, agentes químicos y una mayor dureza superficial.
 
 Finalmente en la figura \ref{fig:real_custom} se observan ambas piezas fabricadas.
 
@@ -507,28 +642,28 @@ Finalmente en la figura \ref{fig:real_custom} se observan ambas piezas fabricada
 
 \subsection{Modelos 3D y real}
 
-A continuación en la figura \ref{fig:mecanica_3d_model} se presenta el primer modelo 3D diseñado de equipo dip coater.
+En la figura \ref{fig:mecanica_3d_model} se presenta el primer modelo 3D diseñado del equipo dip coater.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Figures/3d.jpg}
+	\includegraphics[width=0.9\textwidth]{./Figures/3d.jpg}
 	\caption{Modelo 3D.}
 	\label{fig:mecanica_3d_model}
 \end{figure}
 
-Se detallan a continuación los siguientes componentes fundamentales del equipo:
 
-\begin{itemize}
-\item Guiás lineales IGUS 
-\item Mecanizado soporte superior y mecanizado carro
-\item Placa electrónica
-\item Pantalla táctil 4.3 inch
-\end{itemize}
+%Se detallan a continuación los siguientes componentes fundamentales del equipo:
+%\begin{itemize}
+%\item Guiás lineales IGUS 
+%\item Mecanizado soporte superior y mecanizado carro
+%\item Placa electrónica
+%\item Pantalla táctil 4.3 inch
+%\end{itemize}
 
-Luego de sucesivas iteraciones con pruebas de piezas impresas en material plástico se logró fabricar un primer prototipo completamente en metal que se presenta a continuación en la figura \ref{fig:mecanica_real_model}.
+Luego de sucesivas iteraciones con pruebas de piezas impresas en material plástico se logró fabricar un primer prototipo completamente en metal que se presenta en la figura \ref{fig:mecanica_real_model}.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{./Figures/real.png}
+	\includegraphics[width=0.4\textwidth]{./Figures/real.png}
 	\caption{Primer prototipo dip coater TECSCI.}
 	\label{fig:mecanica_real_model}
 \end{figure}

@@ -63,7 +63,7 @@ De reuniones con el cliente en donde se remarca la importancia de trabajar con u
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo: impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
 Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
   
-Todos los CI requieren una configuración inicial de parámetros, que dependen del tipo de  motor y de la carga asociada al mismo. Es por eso que la empresa ofrece el software TMCL-IDE  y diferentes placas de desarrollo para ayudar a realizar una correcta configuración de parámetros. La placa de desarrollo para este integrado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
+Todos los CI requieren una configuración inicial de parámetros que depende del tipo de motor y de la carga asociada al mismo. Para encontrarla la empresa ofrece el software TMCL-IDE y diferentes placas de desarrollo para trabajar sobre los diferentes drivers. La placa de desarrollo que corresponde al integrado seleccionado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
 
 El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. Finalmente el motor paso a paso se conecta a la placa de evaluación.
 
@@ -93,12 +93,12 @@ Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-La comunicación con el CI se puede establecer a través del protocolo \textit{ UART (Universal Asynchronous Receiver-Transmitter)} o \textit{SPI (Serial Peripheral Interface)}, para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
+La comunicación con el CI se puede establecer a través del protocolo serie o \textit{SPI (Serial Peripheral Interface)}, para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
 
 
 Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. Los pasos están relacionados con las fases  y con la cantidad de dientes que tiene el rotor y estator del motor. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1.8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
 
-Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos, el driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrían en total 51200 micropasos como se observa en la ecuación \ref{eq:micro_pasos}.
+Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos, el driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrán en total 51200 micropasos, como se observa en la ecuación \ref{eq:micro_pasos}.
 
 \begin{equation}
 	\label{eq:micro_pasos}
@@ -107,7 +107,7 @@ Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el 
 
 El motor estará acoplado a un eje lineal que generará movimientos ascendentes y descendentes. Sobre este eje lineal se acoplará un carro de aluminio que tendrá una pinza que sostendrá las muestras. 
 
-Otra funcionalidad que se utilizará es \textit{stallguard2}, una función de alta precisión que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta.
+Otra funcionalidad que se utilizará es \textit{stallguard2}, una función que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta.
 
 Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado por la carga acoplada al eje, si se aplica una fuerza contraría al movimiento programado o el recorrido del carro llega a un límite mecánico, la fuerza contraelectromotriz aumentará. 
 
@@ -123,7 +123,7 @@ Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado
 En el capítulo \ref{Chapter3} se estudiará el valor del registro  stallguard2 configurado. Cada vez que el equipo se enciende se realizará un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utilizará entonces esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos.   
 
 
-También se utilizará \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}, cuyo efecto reduce la energía suministrada según hojas de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Incluso en aplicaciones en donde la carga es constante, como es este equipo dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
+También se utilizará \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}. El efecto final es reducir la energía suministrada según hojas de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Esto aplica incluso en equipos donde la carga es constante, como es el caso del dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
 
 \begin{figure}[h]
 \centering 
@@ -133,21 +133,22 @@ También se utilizará \textit{coolstep}, una función que a través de medicion
 \end{figure}
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-Por último se utilizará la función \textit{dcStep}, que es un modo de conmutación automática que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
+Por último, se utilizará la función \textit{dcStep}, que es un modo de conmutación automático que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
 
 
 %el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
-El driver TMC5130 cuenta con cincuenta registros que se utilizan para configurar las funcionalidades del CI y controlar el motor. El acceso a los registros se realizará a través del protocolo SPI. En el capítulo \ref{Chapter3} se darán más detalles de los registros configurados con la ayuda del software TMCL-IDE.  
+El driver TMC5130 cuenta con cincuenta registros que se utilizan para configurar las funcionalidades del CI y controlar el motor. En el capítulo \ref{Chapter3} se darán más detalles de los registros configurados con la ayuda del software TMCL-IDE.  
 
 
 \section{Interfaz de usuario}
+\label{sec:interfaz_pantalla}
 
 Respecto a la interacción entre el usuario y el equipo surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar al equipo a pie de máquina. Dando lugar al siguiente requerimiento:
 \begin{itemize}
 \item La configuración de la máquina debe poder realizarse a través de una pantalla táctil.	
 \end{itemize} 
 
-Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}. Las mismas incorporan  una unidad de procesamiento que se encarga exclusivamente del procesamiento gráfico. En general, cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y a través de un protocolo de comunicación se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En el caso de este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}.
+Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}. Las mismas se encargan exclusivamente del procesamiento gráfico. En general, cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y a través de un protocolo de comunicación se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En el caso de este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}.
  
 
 Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de pantallas que caracteriza según el tipo de aplicación y entorno de trabajo. Ofrece entonces pantallas para usos industriales, civiles o avanzados. Por las dimensiones finales del equipo y el tipo de uso se optó por pantallas avanzadas de 4.3 pulgadas. Se detallan en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
@@ -177,7 +178,7 @@ Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_
 
 El modelo elegido fue el STWI043WT, que pertenece a la nueva línea productos, tiene mayor capacidad de procesamiento, cuenta con un software nuevo de configuración con mayores funcionalidades respecto al utilizado por el otro modelo y la diferencia de precios no supera el \SI{15}{\percent}.  
 
-La comunicación de la pantalla STWI043WT con el microcontrolador se estableció a través del protocolo UART.
+La comunicación de la pantalla STWI043WT con el microcontrolador se estableció a través del protocolo serie.
 
 
 %El modelo elegido como se observa en la figura \ref{fig:stone}
@@ -225,7 +226,7 @@ Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se espec
 Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Un software  utilizado en la industria manufacturera, que se encuentra constituido por dos módulos fundamentales que permiten abarcar aspectos de diseño y modelado de pieza y luego de fabricación.  
 
 Con la parte CAD se diseña el modelo 3D de la pieza. Con el fin de corregir errores de diseño con mayor velocidad, se realiza una impresión 3D con filamento plástico para probar las dimensiones y la factibilidad técnica de la pieza.
-Una vez que el modelo en su versión plástica queda aprobado, se comienza con la configuración del módulo CAM, este módulo se encarga de convertir, a través de diferentes estrategias, al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora \textit{ CNC (Computer Numerical Control)} de la marca FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en los respectivos movimientos de motores.
+Una vez que el modelo en su versión plástica queda aprobado, se comienza con la configuración del módulo CAM, este módulo se encarga de convertir, a través de diferentes estrategias, al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora CNC de la marca FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en movimientos de motores.
 
 
 \begin{figure}[ht]
@@ -238,6 +239,7 @@ Una vez que el modelo en su versión plástica queda aprobado, se comienza con l
  
 
 \section{Sistema electrónico propuesto}
+\label{sec:sistema_propuesto}
 
 
 Se presentan a continuación los siguientes requerimientos:
@@ -246,10 +248,10 @@ Se presentan a continuación los siguientes requerimientos:
 \item El sistema debe permitir que el usuario pueda configurar en un programa variables de desplazamiento y tiempos de espera.
 \item Un programa previamente configurado debe poder ejecutarse o guardarse en memoria interna.
 \item El usuario debe poder guardar al menos 10 programas en la memoria no volátil del sistema.
-\item Se deberá utilizar un control de versionado de cambios durante el desarrollo del firmware.
+\item Se debe utilizar control de versionado de cambios durante el desarrollo del firmware.
 \item El desarrollo del firmware debe realizarse con capas de abstracción de software de tal manera que permita en un futuro cambiar de microcontrolador sin mayor esfuerzo.
 \item El desarrollo se realizará sobre un módulo microcontrolador ESP32.
-\item Deberá registrar variables de presión y temperatura [opcional].
+\item Se deben registrar variables de humedad, presión y temperatura [opcional].
 \end{itemize}
 
 De reuniones con el cliente y de la necesidad de trabajar con un equipo que permita a futuro contar con una comunicación Wi-Fi, surgió el requerimiento de trabajar con el módulo ESP32 \citep{web_esp}.
