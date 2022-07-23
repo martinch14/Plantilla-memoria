@@ -55,17 +55,17 @@ De reuniones con el cliente en donde se remarca la importancia de trabajar con u
 			
 \begin{itemize}
 \item El equipo deberá contar con un motor paso a paso Nema 17 \citep{web_nema17}  para realizar los movimientos.
-\item Se utilizará un driver de motor de la marca TRINAMIC.
+\item Se utilizará un driver de motor de la marca Trinamic Motion Control.
 \end{itemize}
 
-\textit{Trinamic Motion Control} \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su lema se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos. Actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
+Trinamic \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su tecnología se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos. Actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
 
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo: impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
 Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
   
 Todos los CI requieren una configuración inicial de parámetros que depende del tipo de motor y de la carga asociada al mismo. Para encontrarla la empresa ofrece el software TMCL-IDE y diferentes placas de desarrollo para trabajar sobre los diferentes drivers. La placa de desarrollo que corresponde al integrado seleccionado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
 
-El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. Finalmente el motor paso a paso se conecta a la placa de evaluación.
+El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. 
 
 \begin{figure}[htpb]
 \centering 
@@ -80,7 +80,7 @@ El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con dife
   
 \subsection{Driver TMC5130}
 \label{subsection:Driver TMC5130}
-El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso del dip coater el peso de la carga es despreciable, por lo tanto la corriente es suficiente. Se realizarán en el capítulo \ref{Chapter4} los respectivos ensayos.
+El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso del dip coater el peso de la carga es despreciable.
 
 Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
@@ -90,22 +90,23 @@ Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 \caption{Diagrama en bloques TMC5130 \protect\footnotemark.}
 \label{fig:tmc5130_diagrama}
 \end{figure}
-
-\footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
+%\footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
 La comunicación con el CI se puede establecer a través del protocolo serie o \textit{SPI (Serial Peripheral Interface)}, para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
 
+Los pasos que definen a este tipo de motores están relacionados con las fases y con la cantidad de dientes que tienen en su rotor y estator. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1.8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
 
-Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. Los pasos están relacionados con las fases  y con la cantidad de dientes que tiene el rotor y estator del motor. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1.8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
-
-Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos, el driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrán en total 51200 micropasos, como se observa en la ecuación \ref{eq:micro_pasos}.
+Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos. El driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrán en total 51200 micropasos, como se observa en la ecuación \ref{eq:micro_pasos}.
 
 \begin{equation}
 	\label{eq:micro_pasos}
 		(360/1.8) * 256 = 51200 \textup{ micropasos por revolución}
 \end{equation}
 
-El motor estará acoplado a un eje lineal que generará movimientos ascendentes y descendentes. Sobre este eje lineal se acoplará un carro de aluminio que tendrá una pinza que sostendrá las muestras. 
+
+Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor.
+
+%El motor estará acoplado a un eje lineal que generará movimientos ascendentes y descendentes. Sobre este eje lineal se acoplará un carro de aluminio que tendrá una pinza que sostendrá las muestras. 
 
 Otra funcionalidad que se utilizará es \textit{stallguard2}, una función que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta.
 
@@ -271,3 +272,21 @@ Teniendo en cuenta los requerimientos analizados en las secciones previas y los 
 El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad central de procesamiento, contará con dos comunicaciones a través del periférico UART, una para establecer una consola de comandos que permita comunicar al equipo con una computadora y realizar pruebas de funcionamiento y configuraciones y la otra para comunicarse con la pantalla táctil. También establecerá un protocolo de almacenamiento para guardar los programas que el usuario cree en la memoria FLASH disponible. Finalmente contará con un módulo de comunicación sobre protocolo I2C para obtener datos del sensor de humedad y temperatura BME280.  
 
 
+\section{Herramientas de desarrollo}
+
+Para la implementación del hardware se utilizó el software libre de diseño de circuitos impresos KICAD \citep{web_kicad}, la elección del mismo se basó en los siguientes puntos:
+
+\begin{itemize}
+\item Las capacidades que brinda el software son suficientes para el desarrollo de este hardware.
+\item Se valora el apoyo del \textit{CERN:European Organization for Nuclear Research} \citep{1_nota_web_kicad_cern} al proyecto KICAD.
+\item Las últimas versiones presentan mejoras significativas respecto a sus predecesoras.
+\end{itemize}
+
+
+Para la implementación del firmware se trabajó con el \textit{framework} ESP-IDF \citep{web_esp_idf} provisto por el fabricante del microcontrolador. Dicho entorno se ejecuta sobre FreeRTOS, que es un sistema operativo de tiempo real utilizado en dispositivos embebidos que permite un desarrollo de software bajo un esquema multi-tareas.
+
+Se trabajó con el entorno de programación ECLIPSE IDE, la elección se basó en los siguientes puntos:
+\begin{itemize}
+\item El fabricante del microcontrolador ESPRESSIF ofrece \textit{plugings} para incorporar al entorno y facilitar el desarrollo. 
+\item Existe documentación para la configuración del \textit{framework ESP-IDF} \citep{web_esp_idf_eclipse} sobre el entorno.
+\end{itemize}

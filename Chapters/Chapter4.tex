@@ -14,28 +14,39 @@
 En el presente capítulo se explican los ensayos realizados sobre el prototipo del equipo dip coater, se presentan y analizan los resultados obtenidos y se introducen posibles cambios para próximas versiones.
 \subsection{Comunicación con driver TMC5130}
 
-El presente ensayo se realizó para verificar la comunicación entre el microcontrolador ESP32 y el CI TMC5130. Como se mencionó en el capítulo \ref{Chapter3} dicha comunicación se establece a través del  protocolo SPI.
+El presente ensayo se realizó para verificar la comunicación entre el microcontrolador ESP32 y el CI TMC5130. Como se mencionó en el capítulo \ref{Chapter3} dicha comunicación se establece a través del  protocolo SPI. En la figura \ref{fig:ensayo_spi_0} se observa el esquema del banco de pruebas propuesto.
 
-La comunicación con el CI TMC5130 está definida por un datagrama de 5 bytes, el primer byte define la dirección del registro y los 4 bytes restantes representan su valor. 
+\begin{figure}[h]
+\centering 
+\includegraphics[width=1\textwidth]{./Figures/ensayo_spi.jpg}
+\caption{Banco de pruebas.}
+\label{fig:ensayo_spi_0}
+\end{figure}
+
+
+ 
 % Al encender el equipo se realiza una configuración inicial en donde se escriben todos los registros y luego durante el uso del equipo se realizan operaciones de lectura y escritura para conocer el estado del CI y accionar diferentes tipos de movimientos.
 %Se configura el ESP como dispositivo \textit{SPI master} y el TMC5130 como dispositivo \textit{SPI slave}.
 
-En la figura \ref{fig:datagrama} se observa la estructura de datos para leer y escribir registros.
+%En la figura \ref{fig:datagrama} se observa la estructura de datos para leer y escribir registros.
+%\begin{figure}[h]
+%\centering 
+%\includegraphics[width=1\textwidth]{./Figures/datagrama.png}
+%\caption{Datagrama de 40 bits.}
+%\label{fig:datagrama}
+%\end{figure}
+
+
+%Las operaciones de lectura y escritura tienen una diferencia, que se ve representada por el bit más significativo de la trama de datos, es decir el bit 39. Cuando la operación es de lectura, y primer byte que representa la dirección del registro no sufre alteración. Cuando la operación es de escritura, se debe establecer en 1 el bit de la posición 39. Por ejemplo, si  se pretende escribir un valor en el registro [0x22], el primer byte del datagrama deberá ser [0x22 + 0x80 = 0xA2],  sumar [0x80] representa poner en 1 el primer bit del byte mas significativo del datagrama. 
+
+
+Para realizar el ensayo se conectó de manera provisoria el analizador lógico USB con las cuatro terminales que establecen la comunicación SPI entre el microcontrolador y el CI TMC5130. La comunicación con el CI TMC5130 está definida por datagramas de 5 bytes, el primer byte define la dirección del registro y los 4 bytes restantes representan su valor. Las operaciones de lectura y escritura tienen una diferencia que se representa en el byte de dirección. Cuando la operación es de escritura, se debe establece en 1 el bit mas significativo de dicho byte y cuando la operación es de lectura, la dirección no sufre alteración.
+
+Se puede observar en la figura \ref{fig:ensayo_spi} el banco de pruebas.
+
 \begin{figure}[h]
 \centering 
-\includegraphics[width=1\textwidth]{./Figures/datagrama.png}
-\caption{Datagrama de 40 bits.}
-\label{fig:datagrama}
-\end{figure}
-
-Las operaciones de lectura y escritura tienen una diferencia, que se ve representada por el bit más significativo de la trama de datos, es decir el bit 39. Cuando la operación es de lectura, y primer byte que representa la dirección del registro no sufre alteración. Cuando la operación es de escritura, se debe establecer en 1 el bit de la posición 39. Por ejemplo, si  se pretende escribir un valor en el registro [0x22], el primer byte del datagrama debería ser [0x22 + 0x80 = 0xA2],  sumar [0x80] representa poner en 1 el primer bit del byte mas significativo del datagrama. 
-
-
-Para realizar el ensayo se conectó provisoriamente un analizador lógico USB a la placa electrónica, específicamente sobre los terminales que establecen la comunicación SPI entre el microcontrolador y el CI TMC5130. Se puede observar en la figura \ref{fig:ensayo_spi} el banco de prueba.
-
-\begin{figure}[h]
-\centering 
-\includegraphics[width=0.7\textwidth]{./Figures/ensayo_spi.jpeg}
+\includegraphics[width=0.8\textwidth]{./Figures/ensayo_spi.jpeg}
 \caption{Ensayo sobre terminales SPI.}
 \label{fig:ensayo_spi}
 \end{figure}
@@ -90,7 +101,7 @@ En la figura \ref{fig:ensayo_spi_c} se observa la ejecución nuevamente del coma
 \end{itemize}
 
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering 
 \includegraphics[width=1\textwidth]{./Figures/ensayo_spi_c_c.png}
 \caption{Comando de lectura actualizado sobre registro [0x2D].}
@@ -99,12 +110,11 @@ En la figura \ref{fig:ensayo_spi_c} se observa la ejecución nuevamente del coma
 
 Se observa entonces que luego de estas operaciones el registro [0x2D] se actualizó correctamente con el valor[0x00 0xFF 0x00 0x00].
 
-Con este ensayo se validó la correcta comunicación entre el microcontrolador y el CI TMC5130 para las operaciones de lectura y escritura de datos.
-\subsection{Comunicación con pantalla táctil}
+Con este ensayo se validó la comunicación SPI entre el microcontrolador y el CI TMC5130 para las operaciones de lectura y escritura de datos.
 
-El presente ensayo se realizó para verificar la comunicación entre el microcontrolador ESP32 y la pantalla táctil STONE . Como se mencionó en el capítulo \ref{Chapter3} dicha comunicación se establece a través del  protocolo serial.
-
-El banco de pruebas fue el siguiente:
+%\subsection{Comunicación con pantalla táctil}
+%El presente ensayo se realizó para verificar la comunicación entre el microcontrolador ESP32 y la pantalla táctil STONE . Como se mencionó en el capítulo \ref{Chapter3} dicha comunicación se establece a través del  protocolo serial.
+%El banco de pruebas fue el siguiente:
 
 
 
@@ -113,9 +123,10 @@ El banco de pruebas fue el siguiente:
 
 El ensayo se realizó para verificar los parámetros que definen el desplazamiento de la muestra, es decir para verificar que las velocidades y aceleraciones que definen movimientos sean similares a las que surgen del cálculo teórico.
 
-En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de seis puntos que define un movimiento y se mostró la configuración de los parámetros para obtener una rampa de cuatro puntos en donde la etapa de aceleración es igual a la etapa de desaceleración.
+En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de cuatro puntos que define los movimientos del equipo. 
+%Puntos que define un movimiento y se mostró la configuración de los parámetros para obtener una rampa de cuatro puntos en donde la etapa de aceleración es igual a la etapa de desaceleración.
 
-Dicha rampa está definida por la siguiente ecuación \ref{eq:movimiento_completo}.
+Dicha rampa está definida por la ecuación \ref{eq:movimiento_completo}.
 
 \begin{equation}
 	\label{eq:movimiento_completo}
@@ -123,7 +134,7 @@ Dicha rampa está definida por la siguiente ecuación \ref{eq:movimiento_complet
 \end{equation}
 %(((2*velocidad)/(aceleración*1000))+(desplazamiento/velocidad))*60*1000  
 
-Por lo tanto, con los valores de aceleración, desaceleración, velocidad y desplazamiento se puede calcular el tiempo teórico necesario para la ejecución de un movimiento.
+Por lo tanto, con los valores de aceleración, desaceleración, velocidad y desplazamiento se calculó el tiempo teórico necesario para la ejecución de un movimiento.
 En la tabla \ref{tab:ensayo_comandos} se observan los valores de los parámetros ensayados.
 
 \begin{table}[h]
@@ -145,23 +156,26 @@ En la tabla \ref{tab:ensayo_comandos} se observan los valores de los parámetros
 	\label{tab:ensayo_comandos}
 \end{table}
 
-Para realizar el ensayo se programó una aplicación de prueba con el siguiente procedimiento:
+Para realizar el ensayo se implementó una aplicación de prueba que realiza el siguiente procedimiento:
 
 \begin{enumerate}
 \item Configuración de movimiento descendente con valores de velocidad, aceleración y desplazamiento.
-\item Ejecución del movimiento y registro del tiempo del sistema.
+\item Ejecución del movimiento descendente y registro del tiempo del sistema.
 \item Registro del tiempo del sistema al final del movimiento, cálculo de variación temporal y envío del dato por terminal serie.
-\item Configuración y ejecución de movimiento ascendente con sus respectivos registros y envío de dato.
+\item Configuración y ejecución de movimiento ascendente con valores de velocidad, aceleración y desplazamiento.
+\item Ejecución del movimiento ascendente y registro del tiempo del sistema.
+\item Registro del tiempo del sistema al final del movimiento, cálculo de variación temporal y envío del dato por terminal serie.
 \item Incremento de la tabla hacia nuevos parámetros de aceleración, velocidad y desplazamiento.
 \item Repetición del ciclo.
 \end{enumerate}
 
-Un ordenador conectado al equipo ejecuta un script de Python que almacena los datos recibidos en un archivo.
-En la figura \ref{fig:tiempo_movimiento_1} se observa en el eje Y el tiempo en milisegundos necesario para ejecutar cada movimiento. Los dos puntos cercanos representan el descenso y ascenso con los mismos parámetros de velocidad, aceleración y desplazamiento. El gráfico compara los tiempos teórico respecto a los tiempos registrados. A simple vista no se puede visualizar diferencias significativas entre ambos pares de puntos.
+Un ordenador conectado al equipo ejecuta un script de Python que guarda los datos recibidos en un archivo.
+
+En la figura \ref{fig:tiempo_movimiento_1} se observa una comparación de tiempos teóricos respecto a  tiempos registrados en el sistema. En el eje Y se representa el tiempo en milisegundos necesario para ejecutar cada movimiento y en el eje X la velocidad. Los puntos cercanos representan el movimiento descendente y ascendente con el mismos parámetro de velocidad y aceleración, por tal motivo se visualizan pares de puntos cercanos. El gráfico compara los tiempos teórico respecto a los tiempos registrados. A simple vista no se pueden visualizar diferencias significativas.
 
 \begin{figure}[h]
 \centering 
-\includegraphics[width=1.2\textwidth]{./Figures/tiempo_movimiento_1.png}
+\includegraphics[width=1\textwidth]{./Figures/tiempo_movimiento_1.png}
 \caption{Comparación de tiempos teóricos y registrados.}
 \label{fig:tiempo_movimiento_1}
 \end{figure}
@@ -184,7 +198,7 @@ Se concluye con este ensayo que el equipo es muy preciso en la mayor parte del r
 
 Este ensayo se realizó para definir y ajustar la constante de desplazamiento que relaciona los micro pasos realizados por el motor, con la distancia de desplazamiento del carro. La misma es una constante que está definida por el paso del tornillo sobre el cual se desplaza el carro.
 
-Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto\citep{web_asimeto}, el cual puede observarse en la figura \ref{fig:micrometro}. El mismo tiene una resolución de 0.0001 mm y permite desplazamientos de 0 a 50 mm.
+Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto\citep{web_asimeto}, el cual puede observarse en la figura \ref{fig:micrometro}. El mismo tiene una resolución de 0.001 mm y permite desplazamientos de 0 a 50 mm.
 
 
 \begin{figure}[h]
@@ -210,12 +224,12 @@ En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición do
 Para iniciar el ensayo se presiona el botón \textit{origin} del comparador para poner en cero la medida, la sensibilidad del mismo es tan grande que es difícil lograr 0,000 mm debido a la acción misma  de apretar el botón. Luego se realizan movimientos descendentes de 1 mm y se registran los datos.
 En la tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obtenidos.
 
-\begin{table}[h]
+\begin{table}[h!]
 	\centering
 	\caption[Ensayo de desplazamiento]{Ensayo de desplazamiento lineal descendente}
 	\begin{tabular}{l c c }    
 		\toprule
-		\textbf{Posición absoluta}     & \textbf{Desplazamiento relativo} & \textbf{Error Relativo} \\
+		\textbf{Posición absoluta}     & \textbf{Desplazamiento} & \textbf{Error Relativo} \\
 		\midrule
 		0,058 mm	& 	        	& 	 			 	\\		
 		1,051 mm    & 	0,993 mm    	& 	0,007				\\
@@ -232,12 +246,12 @@ En la tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obten
 
 De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para los movimientos ascendentes.
  
-\begin{table}[h]
+\begin{table}[h!]
 	\centering
 	\caption[Ensayo de desplazamiento]{Ensayo de desplazamiento lineal ascendente}
 	\begin{tabular}{l c c }    
 		\toprule
-		\textbf{Posición absoluta}     & \textbf{Desplazamiento relativo} & \textbf{Error Relativo} \\
+		\textbf{Posición absoluta}     & \textbf{Desplazamiento} & \textbf{Error Relativo} \\
 		\midrule
 		0,02 mm	& 	        	& 	 			 	\\		
 		0,939 mm    & 	0,019 mm    	& 	0,081	\\
@@ -262,7 +276,7 @@ Para corregir el valor de micro pasos por milímetros de desplazamiento se utili
 
 
 Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micro pasos por milímetros, luego de sucesivas correcciones la macro quedo definida en 12932 micro pasos por milímetros.
-Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas anteriores, en donde se observó que el porcentaje promedio de los errores relativos no afectaba en las décimas de milímetros.
+Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas anteriores, en donde se observó que el porcentaje promedio de los errores relativos fue inferior al 2.5\%.
 
 \section{Caso de prueba}
 \section{Prueba de campo con personal capacitado}
