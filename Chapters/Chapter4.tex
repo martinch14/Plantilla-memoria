@@ -123,7 +123,7 @@ Con este ensayo se validó la comunicación SPI entre el microcontrolador y el C
 
 El ensayo se realizó para verificar los parámetros que definen el desplazamiento de la muestra, es decir para verificar que las velocidades y aceleraciones que definen movimientos sean similares a las que surgen del cálculo teórico.
 
-En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de cuatro puntos que define los movimientos del equipo. Con los valores de aceleración, desaceleración, velocidad y desplazamiento se calculó el tiempo teórico necesario para la ejecución de cada movimiento.
+En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de cuatro puntos que define los movimientos del equipo. Con los valores de aceleración, desaceleración, velocidad y desplazamiento se calculó el tiempo teórico necesario para ejecutar cada ciclo de trabajo.
 %Puntos que define un movimiento y se mostró la configuración de los parámetros para obtener una rampa de cuatro puntos en donde la etapa de aceleración es igual a la etapa de desaceleración.
 
 %Dicha rampa está definida por la ecuación \ref{eq:movimiento_completo}.
@@ -134,28 +134,27 @@ En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de cuat
 %(((2*velocidad)/(aceleración*1000))+(desplazamiento/velocidad))*60*1000  
 
 
-En la tabla \ref{tab:ensayo_comandos} se observan los valores de los parámetros ensayados.
+Para realizar el ensayo , cuyos parámetros se ven en la tabla \ref{tab:ensayo_comandos}, se implementó una aplicación de prueba que realiza el siguiente procedimiento: 
 
 \begin{table}[h!]
 	\centering
-	\caption[Ensayo de tiempo en desplazamientos]{Ensayo de tiempos en desplazamiento}
+	\caption[Ensayo de tiempos en desplazamientos]{Ensayo de tiempos en desplazamientos}
 	\begin{tabular}{c c c }    
 		\toprule
-		\textbf{Velocidad (mm/min)}     & \textbf{Aceleración-Desaceleración(m/min)} & \textbf{Desplazamiento(mm)} \\
+		\textbf{Velocidad (mm/min)}     & \textbf{Aceleración-Desaceleración (m/min2)} & \textbf{Desplazamiento (mm)} \\
 		\midrule
-		1  mm/min	 & 	   100-500-1000-2100 m/min2     & 	50 mm 			 	\\		
-		10  mm/min   & 	   100-500-1000-2100 m/min2 	& 	50 mm				\\
-		100  mm/min  & 	   100-500-1000-2100 m/min2	    & 	50 mm 				\\
-		200  mm/min	 & 	   100-500-1000-2100 m/min2	    & 	50 mm 			\\
-		500  mm/min	 & 	   100-500-1000-2100 m/min2     & 	50 mm					\\
-		800  mm/min	 & 	   100-500-1000-2100 m/min2     & 	50 mm					\\
+		1  	 & 	   100-500-1000-2100      & 	50  			 	\\		
+		10     & 	   100-500-1000-2100  	& 	50 			\\
+		100    & 	   100-500-1000-2100 	    & 	50  				\\
+		200  	 & 	   100-500-1000-2100 	    & 	50  			\\
+		500  	 & 	   100-500-1000-2100      & 	50 					\\
+		800  	 & 	   100-500-1000-2100      & 	50 					\\
 		\bottomrule
 		\hline
 	\end{tabular}
 	\label{tab:ensayo_comandos}
 \end{table}
 
-Para realizar el ensayo se implementó una aplicación de prueba que realiza el siguiente procedimiento:
 
 \begin{enumerate}
 \item Configuración de movimiento descendente con valores de velocidad, aceleración y desplazamiento.
@@ -170,7 +169,7 @@ Para realizar el ensayo se implementó una aplicación de prueba que realiza el 
 
 Un ordenador conectado al equipo ejecuta un script de Python que guarda los datos recibidos en un archivo.
 
-En la figura \ref{fig:tiempo_movimiento_1} se observa una comparación de tiempos teóricos respecto a  tiempos registrados en el sistema. En el eje Y se representa el tiempo en milisegundos necesario para ejecutar cada movimiento y en el eje X la velocidad. Los puntos cercanos representan el movimiento descendente y ascendente con el mismos parámetro de velocidad y aceleración, por tal motivo se visualizan pares de puntos cercanos. El gráfico compara los tiempos teórico respecto a los tiempos registrados. A simple vista no se pueden visualizar diferencias significativas.
+En la figura \ref{fig:tiempo_movimiento_1} se observa una comparación de tiempos teóricos respecto a  tiempos registrados en el sistema. En el eje Y se representa el tiempo en milisegundos necesario para ejecutar cada movimiento y en el eje X la velocidad. Los puntos cercanos representan el movimiento descendente y ascendente con el mismo parámetro de velocidad y aceleración, por tal motivo se visualizan. El gráfico compara los tiempos teóricos respecto a los tiempos registrados. A simple vista no se pueden visualizar diferencias significativas.
 
 \begin{figure}[h!]
 \centering 
@@ -193,18 +192,17 @@ Se concluye con este ensayo que el equipo es muy preciso en la mayor parte del r
  
 \subsection{Ejecución de comandos}
 
-El ensayo se realizó para verificar que solamente el comando stop es procesado cuando el equipo está en funcionamiento. 
+El objetivo del siguiente ensayo fue demostrar que el único comando que se procesa con el equipo en funcionamiento es el de stop.
 
-Cada vez que el usuario ejecuta un comando sobre la consola, la aplicación app console procesa y envía el mensaje a través de una \textit{queue} de FreeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. 
+Cada vez que el usuario ejecuta un comando sobre la consola, la aplicación app console procesa y envía el mensaje a través de una cola de FreeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. 
 
 Para realizar el ensayo se implementó el siguiente procedimiento:
 \begin{enumerate}
 \item Ejecución de proceso  dip coating.
-\item Envió de comando DOWN.
+\item Envió de comando DOWN. Cualquier otro comando de la sección \ref{sec:consola_comandos} tendrá el mismo efecto.
 \item Envío de comando STOP.
 \end{enumerate}
 
-En la figura \ref{fig:consola_comando_ok} se observa que luego de iniciar el proceso dip coating se envía el comando DOWN y el mismo es descartado sin afectar al proceso.
 
 \begin{figure}[h!]
 	\centering
@@ -213,7 +211,7 @@ En la figura \ref{fig:consola_comando_ok} se observa que luego de iniciar el pro
 	\label{fig:consola_comando_ok}
 \end{figure}
 
-El único comando de movimiento que no se descarta es el comando STOP, que tiene un tratamiento especial a través de una \textit{queue} propia y siempre se garantiza su ejecución. En la figura \ref{fig:consola_comando_false} se observa la finalización del proceso.
+El único comando de movimiento que no se descarta es el comando stop, que tiene un tratamiento especial a través de una cola propia y siempre se garantiza su ejecución. En la figura \ref{fig:consola_comando_false} se observa la finalización del proceso.
 
 \begin{figure}[h!]
 	\centering
@@ -222,32 +220,31 @@ El único comando de movimiento que no se descarta es el comando STOP, que tiene
 	\label{fig:consola_comando_false}
 \end{figure}
  
-Se realizó el ensayo con todos los comandos individuales  presentados en la sección \ref{sec:consola_comandos} y se verificó el correcto funcionamiento.  
   
 \section{Calibración del equipo}
 \label{sec:calibración}
 \subsection{Desplazamiento lineal y micropasos}
 
-Este ensayo se realizó para definir y ajustar la constante de desplazamiento que relaciona los micropasos realizados por el motor, con la distancia de desplazamiento del carro. La misma es una constante que está definida por el paso del tornillo sobre el cual se desplaza el carro.
+La razón de este ensayo fue definir y ajustar la constante de desplazamiento que relaciona los micropasos realizados por el motor, con la distancia de desplazamiento del carro. La misma es una constante que está definida por el paso del tornillo.
 
 Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto\citep{web_asimeto}, el cual puede observarse en la figura \ref{fig:micrometro}. El mismo tiene una resolución de 0.001 mm y permite desplazamientos de 0 a 50 mm.
 
 
 \begin{figure}[h!]
 \centering 
-\includegraphics[width=0.3\textwidth]{./Figures/micrometro.png}
+\includegraphics[width=0.4\textwidth]{./Figures/micrometro.png}
 \caption{Comparador digital Asimeto.}
 \label{fig:micrometro}
 \end{figure}
 
-El ensayo consistió en medir seis desplazamientos sucesivos de 1 mm sobre el carro de manera descendente y luego de manera ascendente. Este ensayo es importante porque permite corregir la unidad de conversión de micropasos a milímetros que utiliza el CI TMC5130 para realizar todos los movimientos. 
-En la subsección \ref{subsec:calibracion} se mencionó la macro \textit{MACHINE STEPS PER MILLIMETER} definida en el archivo hardware.h que surgió de este ensayo. 
+El ensayo consistió en medir seis desplazamientos sucesivos de 1 mm sobre el carro de manera descendente y luego de manera ascendente. Es importante porque permite corregir la unidad de conversión de micropasos a milímetros que utiliza el CI TMC5130 para realizar todos los movimientos. 
+En la subsección \ref{subsec:calibracion} se mencionó la macro \textit{MACHINE STEPS PER MILLIMETER} definida en el archivo hardware.h que surgió de estas mediciones. 
 
 En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición donde se visualiza el comparador Asimeto apoyado sobre una base metálica independiente, con la punta del mismo en contacto directo con el carro de desplazamiento.
 
 \begin{figure}[h!]
 \centering 
-\includegraphics[width=0.5\textwidth]{./Figures/desplazamiento_lineal.png}
+\includegraphics[width=0.4\textwidth]{./Figures/desplazamiento_lineal.png}
 \caption{Ensayo de desplazamiento lineal.}
 \label{fig:desplazamiento_lineal}
 \end{figure}
@@ -258,7 +255,7 @@ En la tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obten
 
 \begin{table}[h!]
 	\centering
-	\caption[Ensayo de desplazamiento]{Ensayo de desplazamiento lineal descendente}
+	\caption[Ensayo de desplazamiento descendente]{Ensayo de desplazamiento lineal descendente}
 	\begin{tabular}{l c c }    
 		\toprule
 		\textbf{Posición absoluta}     & \textbf{Desplazamiento} & \textbf{Error Relativo} \\
@@ -280,7 +277,7 @@ De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para
  
 \begin{table}[h!]
 	\centering
-	\caption[Ensayo de desplazamiento]{Ensayo de desplazamiento lineal ascendente}
+	\caption[Ensayo de desplazamiento ascendente]{Ensayo de desplazamiento lineal ascendente}
 	\begin{tabular}{l c c }    
 		\toprule
 		\textbf{Posición absoluta}     & \textbf{Desplazamiento} & \textbf{Error Relativo} \\
@@ -301,21 +298,23 @@ De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para
 
 Para corregir el valor de micropasos por milímetros de desplazamiento se utilizó el siguiente procedimiento:
 \begin{enumerate}
-\item Realizar un promedio de los 6 errores relativos ascendentes y descendentes.
+\item Calcular un promedio de los 6 errores relativos ascendentes y descendentes.
 \item Ajustar el valor inicial de micropasos con los respectivos errores. 
-\item Realizar un promedio entre el valor corregido ascendente y el valor corregido descendente.
+\item Calcular un promedio entre el valor corregido ascendente y el valor corregido descendente.
 \end{enumerate}
 
 
-Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micropasos por milímetros, luego de sucesivas correcciones la macro quedo definida en 12932 micropasos por milímetros.
-Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas anteriores, en donde se observó que el porcentaje promedio de los errores relativos fue inferior al 2.5\%.
+Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micropasos por milímetro, luego de sucesivas correcciones la macro quedo definida en 12932 micropasos por milímetro.
+Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas, en donde se observó que el porcentaje promedio de los errores relativos fue inferior al 2.5\%.
 
 \section{Caso de prueba}
-\section{Prueba de campo con personal capacitado}
+\subsection{Prueba de campo con personal capacitado}
 
-El ensayo consistió en realizar un procedimiento completo de uso sobre el equipo dip coater con personal capacitado del Instituto de Nanosistemas.
+El ensayo final se llevó a cabo junto a personal capacitado del Instituto de Nanosistemas e implicó un proceso completo de producción de thin film.
 
-La prueba implicó realizar el primer \textit{thin films} del equipo, se utilizó un wafer de silicio como sustrato y una solución de dióxido de titanio disuelto en etanol para formar un \textit{film} de nanopartículas de titanio. La prueba se realizó en el laboratorio Nanoatelier del Instituto de Nanosistemas de la Unsam, se observa en la figura \ref{fig:equipo_laboratorio} el equipo instalado. Se incorporó sobre el equipo una cámara de acrílico para generar un ambiente aislado.
+Para el experimento se utilizó  un wafer de silicio como sustrato y dióxido de titanio disuelto en etanol como solución para formar un \textit{film} de nanopartículas de titanio. La prueba se realizó en el laboratorio Nanoatelier del Instituto de Nanosistemas, se observa en la figura \ref{fig:equipo_laboratorio} el equipo instalado.
+
+
 \begin{figure}[h!]
 \centering 
 \includegraphics[width=0.7\textwidth]{./Figures/prueba_b.jpg}
@@ -326,8 +325,8 @@ La prueba implicó realizar el primer \textit{thin films} del equipo, se utiliz�
 
 Para realizar el experimento se siguió la siguiente secuencia:
 \begin{enumerate}
-\item Se conectó la cámara de acrílico del equipo a un suministro de aire comprimido. El suministro pasa por un filtro de sílica gel que baja la humedad del aire suministrado.
-\item Se colocó un wafer de silicio sobre el carro del equipo y una solución dentro de una caja plástica debajo del carro como se observa en la figura \ref{fig:equipo_laboratorio_a}.
+\item Se agregó sobre el equipo una cámara de acrílico con suministro de aire comprimido y filtro de sílica gel, utilizado para bajar la humedad del aire.
+\item Se colocó el wafer de silicio sobre el carro y la solución dentro de una caja plástica debajo, como se observa en la figura \ref{fig:equipo_laboratorio_a}.
 \item Se encendió el equipo y el usuario configuró los parámetros del proceso a pie de máquina sobre la pantalla táctil.
 \item En paralelo se controló la humedad de la cámara sobre la consola serial de un ordenador conectado al equipo.
 \item Se esperó hasta lograr una humedad dentro de la cámara de 20\%.
@@ -337,25 +336,25 @@ Para realizar el experimento se siguió la siguiente secuencia:
 
 \begin{figure}[h!]
 \centering 
-\includegraphics[width=0.4\textwidth]{./Figures/prueba_a.jpg}
+\includegraphics[width=0.5\textwidth]{./Figures/prueba_a.jpg}
 \caption{Wafer de silicio sobre carro.}
 \label{fig:equipo_laboratorio_a}
 \end{figure}
 
-Con este ensayo se pudo corroborar el funcionamiento correcto del equipo de manera integra, se destacá que los usuarios investigadores realizaron de manera intuitiva una correcta configuración de equipo. En la figura \ref{fig:equipo_laboratorio_c} se observa el primer \textit{film} producido por el equipo. Los usuarios comentaron que el perfil visual que observaron sobre la muestra contaba con todas las características de un \textit{film} correctamente fabricado.  
+Con este ensayo se pudo corroborar el funcionamiento correcto del equipo de manera íntegra, se destaca que los usuarios investigadores realizaron de manera intuitiva una correcta configuración de parámetros. En la figura \ref{fig:equipo_laboratorio_c} se observa el primer \textit{film} producido. Los usuarios comentaron que el perfil visual que observaron sobre la muestra contaba con todas las características de un \textit{film} correctamente fabricado.  
 
 \begin{figure}[h!]
 \centering 
-\includegraphics[width=0.4\textwidth]{./Figures/prueba_c.jpg}
+\includegraphics[width=0.6\textwidth]{./Figures/prueba_c.jpg}
 \caption{Ensayo final.}
 \label{fig:equipo_laboratorio_c}
 \end{figure}
 
 \section{Comparación con el estado del arte}
 
-En está sección se realiza una comparación del equipo fabricado respecto a los equipos comerciales presentados en la sección \ref{sec:mercado}. 
+En la tabla \ref{tab:equipos_competencia_comparacion} se observan las características del equipo diseñado y fabricado contra los equipos comerciales mostrados en la sección \ref{sec:mercado}.
 
-Se incorpora en la tabla \ref{tab:equipos_competencia_comparacion}  la columna \textit{open source hardware} por la importancia que está especificación brinda al desarrollo del presente equipo.
+%Se incorpora en la tabla \ref{tab:equipos_competencia_comparacion}  la columna \textit{open source hardware} por la importancia que está especificación brinda al desarrollo del presente equipo.
 
 
 \begin{table}[h!]
@@ -363,25 +362,25 @@ Se incorpora en la tabla \ref{tab:equipos_competencia_comparacion}  la columna \
 	\caption[Dip coaters en el mercado]{Comparación de especificaciones técnicas.}
 	\begin{tabular}{l c c c c c}    
 		\toprule
-		\textbf{Equipo} 	 & \textbf{Recorrido}  & \parbox{2cm} {\textbf{Velocidad (mm/min)}}  & \parbox{2cm}{\textbf{Aceleración (m/min2)}}  & \textbf{Interface} & \parbox{2cm}{\textbf{Open Source Hardware}} \\
+		\textbf{Equipo} 	 & \parbox{2cm} {\textbf{Recorrido (mm)}}  & \parbox{2cm} {\textbf{Velocidad (mm/min)}}  & \parbox{2cm}{\textbf{Aceleración (m/min2)}}  & \textbf{Interface} & \parbox{2cm}{\textbf{Open Source Hardware}} \\
 		\midrule
-		Bio Single	& 300 mm 	& 1    - 1000   & no & PC & no 							\\		
-		Bio Multiplie		& 70  mm	& 0.1  - 108 	& no & PC & no					\\
-		Kibron LayerX				& 134 mm	& 0.06 - 300	& no & PC & no					\\
-		Bungard						& 600 mm	& 30 - 10000	& no & Display LCD & no		\\
-		Ossila 					& 100 mm	& 0.6  - 3000	& no & PC & no		\\
-		Holmarc					& 100 mm	& 1.08 - 540	& no & PC & no		\\
-		\textbf{Este Equipo} 						& 300 mm  &  1-800 & si &  Touch-PC  & si \\
+		Bio Single	& 300  	& 1    - 1000   & no & PC & no 							\\		
+		Bio Multiplie		& 70  	& 0.1  - 108 	& no & PC & no					\\
+		Kibron LayerX				& 134 	& 0.06 - 300	& no & PC & no					\\
+		Bungard						& 600 	& 30 - 10000	& no & Display LCD & no		\\
+		Ossila 					& 100 	& 0.6  - 3000	& no & PC & no		\\
+		Holmarc					& 100 	& 1.08 - 540	& no & PC & no		\\
+		\textbf{Este Equipo} 						& 300   &  1-800 & si &  Touch-PC  & si \\
 		\bottomrule
 		\hline
 	\end{tabular}
 	\label{tab:equipos_competencia_comparacion}
 \end{table}
 
-Se destacan aspectos únicos que diferencian este equipo respecto a los comerciales:
+Se destacan aspectos únicos que diferencian a este equipo sobre el resto:
 
 \begin{enumerate}
-\item Puede realizar experimentos con control de la variable aceleración.
-\item Se configura fácilmente a través de una pantalla táctil y también permite la configuración desde un ordenador.
-\item Toda la información del equipo esta disponible, esto permite que el usuario aproveche todo el recurso según sus necesidades.
+\item Permite realizar experimentos con variaciones del parámetro de aceleración.
+\item Se configura fácilmente a través de una pantalla táctil o desde un ordenador.
+\item Adhiere a la filosofía del hardware libre.
 \end{enumerate}

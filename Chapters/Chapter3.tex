@@ -179,7 +179,7 @@ Luego de fabricar el PCB, se continuó con el montaje de componentes electrónic
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.6\textwidth]{./Figures/dip_real_model.jpg}
+	\includegraphics[width=0.8\textwidth]{./Figures/dip_real_model.jpg}
 	\caption{Plaqueta electrónica final.}
 	\label{fig:dip_real_model}
 \end{figure}
@@ -206,13 +206,13 @@ Se desarrolló un firmware modular que permite incorporar código de manera incr
 \end{figure}
 
 
-La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 aplicaciones fundamentales para el funcionamiento del equipo y una aplicación de testing utilizada para probar nuevos componentes de software. Cada aplicación contiene al menos una \textit{task} del sistema operativo freeRTOS. A continuación se detallan las aplicaciones:
+La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 aplicaciones fundamentales para el funcionamiento del equipo y una aplicación de testing utilizada para probar nuevos componentes de software. Cada aplicación contiene al menos una tarea del sistema operativo freeRTOS. A continuación se detallan las aplicaciones:
 
 \begin{itemize}
 
 \item APP coating: se encarga de la comunicación con el driver TMC5130, de la ejecución de movimientos individuales y del proceso completo de dip coating.
-\item APP consola: administra una consola de comandos que permite ejecutar y configurar el equipo a través de una comunicación serial. Recibe y procesa comandos de la consola y los envía a través de una \textit{queue} de freeRTOS a la app coating.
-\item APP hmi: administra la interfaz de configuración, establece una comunicación serial con la pantalla táctil, recibe comandos a través de una \textit{queue} de freeRTOS y los envía a la app coating para ser procesados.
+\item APP consola: administra una consola de comandos que permite ejecutar y configurar el equipo a través de una comunicación serial. Recibe y procesa comandos de la consola y los envía a través de una cola de freeRTOS a la app coating.
+\item APP hmi: administra la interfaz de configuración, establece una comunicación serial con la pantalla táctil, recibe comandos a través de una cola de freeRTOS y los envía a la app coating para ser procesados.
 \item APP test: se utiliza para probar nuevos componentes y realizar \textit{test} sobre el sistema.
 
 \end{itemize}
@@ -258,24 +258,27 @@ En la figura \ref{fig:tmcl_ide} se observa el entorno de desarrollo TMCL-IDE.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Figures/tmcl_ide_1.png}
+	\includegraphics[width=1\textwidth]{./Figures/tmcl_ide_1.png}
 	\caption{Software TMCL-IDE.}
 	\label{fig:tmcl_ide}
 \end{figure}
 
 
 En la figura \ref{fig:tmcl_ide_stall} se puede observar el \textit{wizard} de configuración de las funciones \textit{stallguard2} y \textit{coolstep}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Figures/tmcl_ide_2.png}
+	\caption{Configuración de funcionalidades stalldguard2 y coolstep.}
+	\label{fig:tmcl_ide_stall}
+\end{figure}
+
 Como se mencionó en el capítulo \ref{Chapter2} es posible usar stallguard2 para detectar los límites mecánicos de recorrido. El parámetro \textit{stall guard threshold} relaciona la fuerza contraelectromotriz registrada por el driver. A medida que se detecta mayor fuerza, es decir mayor oposición al movimiento y mayor corriente en los motores, el valor de stallguard2 disminuye. Se debe configurar entonces un valor límite de detección para que una vez alcanzado se genere un evento.
 
 El firmware cuenta con una función llamada mod-coating-process-cero-machine que utiliza stallguard2. Se encarga de detectar el evento que el driver envía cuando se detecta un final de carrera. La misma se encarga de parar el motor, generar un desplazamiento en sentido contrario y establecer una nueva posición. Esta función se ejecuta al encender el equipo y sirve para posicionar el carro.
  
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.6\textwidth]{./Figures/tmcl_ide_2.png}
-	\caption{Configuración de funcionalidades stalldguard2 y coolstep.}
-	\label{fig:tmcl_ide_stall}
-\end{figure}
+
 
 Otros parámetros importantes a configurar son los que definen la rampa de aceleración del desplazamiento. El driver permite configurar una rampa de seis puntos donde los valores a encontrar, A1, AMAX, D1, DMAX, V1 y VMAX corresponden a la aceleración, desaceleración y velocidad, como se observa en la figura \ref{fig:rampa}.
 
@@ -399,23 +402,48 @@ Se detallan a continuación las líneas más importantes:
 
 Otra parte importante de app coating es la definición del proceso completo de dip coating, el mismo está implementado con un arreglo de estructuras de tamaño fijo. Cada item del arreglo esta compuesto por el tipo de movimiento, los valores de parámetros que se reciben desde app consola o app hmi y punteros a funciones que ejecutan cada movimiento. Es decir que el proceso completo de dip coating está formado por una concatenación de movimientos individuales, como puede observarse en el siguiente fragmento de código \ref{cod:vEstructuraCode}.
 
+%\begin{lstlisting}[label=cod:vEstructuraCode,caption=Proceso completo de dip coating.] % 
+
+%processCommand_t cmdProcessCustom[MAX_ESTATIC_COMMAND] = {
+
+%/*Deplazamiento hasta muestra*/
+%{ .commandnumber = PROCESS_COMMAND_DOWN, 		 	.fp = HandlerDownUntil},
+%{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWait},
+%/*Comienzo de ciclo*/
+%{ .commandnumber = PROCESS_COMMAND_DOWN, 		  .fp = HandlerDownLoop },
+%{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWaitDown },
+%{ .commandnumber = PROCESS_COMMAND_UP, 			 	.fp = HandlerUpLoop },
+%{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWaitUp },
+%/*Fin de ciclo */
+%{ .commandnumber = PROCESS_COMMAND_FINISH,		.fpcommandhandler = HandlerFinish},
+%}; 
+
+%\end{lstlisting}
+
+
+
 \begin{lstlisting}[label=cod:vEstructuraCode,caption=Proceso completo de dip coating.] % 
 
 processCommand_t cmdProcessCustom[MAX_ESTATIC_COMMAND] = {
 
-/*Deplazamiento hasta muestra*/
-{ .commandnumber = PROCESS_COMMAND_DOWN, 		 	.fp = HandlerDownUntil},
-{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWait},
-/*Comienzo de ciclo*/
-{ .commandnumber = PROCESS_COMMAND_DOWN, 		  .fp = HandlerDownLoop },
-{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWaitDown },
-{ .commandnumber = PROCESS_COMMAND_UP, 			 	.fp = HandlerUpLoop },
-{ .commandnumber = PROCESS_COMMAND_WAIT, 			.fp = HandlerWaitUp },
-/*Fin de ciclo */
-{ .commandnumber = PROCESS_COMMAND_FINISH,		.fpcommandhandler = HandlerFinish},
-}; 
+{ .cnum = PROCESS_COMMAND_DOWN, 	.argument.velocity = 212000,	.argument.acceleration = 65000 , 	.fp = DownUntil},
+{ .cnum = PROCESS_COMMAND_WAIT, .argument.time = 2,	.fp = Wait},
+/*start of the DWUW cycle*/
+{ .cnum = PROCESS_COMMAND_DOWN, .argument.velocity = 100000,	.argument.acceleration = 65000 , 	.fpcommandhandler = DownLoop },
+{ .cnum = PROCESS_COMMAND_WAIT, .argument.wait.time = 1,.fp = WaitDown },
+{ .cnum = PROCESS_COMMAND_UP, .argument.velocity = 100000, .argument.acceleration = 65000 ,.fp = UpLoop },
+{ .cnum = PROCESS_COMMAND_WAIT, .argument.time = 1, .fp = WaitUp },
+/*LOOP repeats N times the DWUW cycle */
+{ .cnum =  PROCESS_COMMAND_LOOP, .argument.value.val = 3 },
+{ .cnum = PROCESS_COMMAND_FINISH, .argument.velocity = 0, .argument.acceleration = 0, .fp = Finish},
+
+};
 
 \end{lstlisting}
+
+
+
+
 
 Esta implementación es fija en el firmware pero se puede modificar con facilidad. Surgió en charlas con investigadores usuarios de equipos dip coater el interés por la posibilidad de modificar el proceso. Particularmente se observó interés en poder extraer la muestra con dos velocidades diferentes para generar en un mismo \textit{films} dos perfiles diferentes.
 
@@ -478,9 +506,9 @@ A modo de ejemplo se observa en la figura \ref{fig:comando_lectura} una consulta
 
 \subsubsection{Pantalla táctil}
 
-La aplicación app hmi establece un canal de comunicación serial entre la pantalla táctil y el microcontrolador, la misma se encarga de procesar datagramas salientes y entrantes. 
+La aplicación app hmi establece un canal de comunicación serial entre la pantalla táctil y el microcontrolador, se encarga de procesar datagramas salientes y entrantes. 
 
-En la sección \ref{sec:interfaz_pantalla} se presentó el modelo STWI043WT elegido para el equipo dip coater, el mismo requiere para su configuración el desarrollo de un proyecto con el software \textit{STONE GUI Desing Software}. La interfaz interactiva permite crear pantallas y diferentes tipos de objetos o \textit{widgets} para brindar de funcionalidad a las mismas. El fabricante define también un protocolo de comunicación \citep{web_protocolo_stone} para interaccionar con los objetos que componen cada pantalla.
+En la sección \ref{sec:interfaz_pantalla} se presentó el modelo STWI043WT elegido para el equipo dip coater, requiere para su configuración el desarrollo de un proyecto con el software \textit{STONE GUI Desing Software}. La interfaz interactiva permite crear pantallas y diferentes tipos de objetos o \textit{widgets} para brindar de funcionalidad a las mismas. El fabricante define también un protocolo de comunicación \citep{web_protocolo_stone} para interaccionar con los objetos que componen cada pantalla.
 
 %\begin{figure}[h!]
 %	\centering
@@ -512,7 +540,7 @@ El campo data define múltiples categorías, se mencionan a continuación las ma
 \item Cmd-code: Es un identificador único que define la instrucción.
 \item Type: Define el tipo de objeto.
 \item Widget: Define el nombre único del objeto.
-\item Text: Define el contenido del objeto, varia según el tipo de objeto.
+\item Text: Define el contenido del objeto, varía según el tipo de objeto.
 \end{itemize}  
 
 En la figura \ref{fig:datagrama_a} se define el formato de datagrama para enviar datos desde la pantalla hacia el microcontrolador. El datagrama esta compuesto por los siguientes bloques:
@@ -535,7 +563,7 @@ En la figura \ref{fig:datagrama_a} se define el formato de datagrama para enviar
 
 \end{enumerate}
 
-Para procesar los datagramas entrantes se implementó un bloque de código que analiza el buffer del periférico UART-1. Cuando hay datos disponibles el periférico envía un evento a través de una \textit{queue} de freeRTOS. El evento UART-DATA se recibe en la \textit{task} mod-hmi-RX-task-loop la cual comienza a procesar dichos datos mientras estén disponibles. En la figura \ref{fig:secuencia_a} se observa el control que se va realizando a cada unos del los bytes entrantes. Si el datagrama pasa todas las condiciones es aceptado y enviado a la \textit{task} app hmi task a través de una \textit{queue} para ser procesado.
+Para procesar los datagramas entrantes se implementó un bloque de código que analiza el buffer del periférico UART-1. Cuando hay datos disponibles el periférico envía un evento a través de una cola de freeRTOS. El evento UART-DATA se recibe en la tarea mod-hmi-RX-task-loop la cual comienza a procesar dichos datos. En la figura \ref{fig:secuencia_a} se observa el control que se realiza en cada uno de los bytes entrantes. Si el datagrama pasa todas las condiciones se acepta y se envía a la tarea app hmi task a través de una cola para ser procesado.
 
 
 \begin{figure}[h!]
@@ -555,16 +583,16 @@ En la figura \ref{fig:stone_a} se presenta la pantalla de configuración de prog
 	\label{fig:stone_a}
 \end{figure}  
 
-Al ejecutar el botón \textit{play}, la pantalla envía un serie de datagramas con todos los parámetros configurados en la misma, los datagramas son procesados para verificar su validez y enviados hacia app coating para dar inicio al proceso. 
+Al ejecutar el botón \textit{play}, la pantalla envía un serie de datagramas con todos los parámetros configurados en la misma. Los datagramas son procesados para verificar su validez y enviados hacia app coating para dar inicio al proceso. 
  
 
-\subsubsection{Registros de variables ambientales}
+\subsubsection{Registro de variables ambientales}
 
-En la sección \ref{sec:sistema_propuesto} se presentó el requerimiento opcional que establece el registro de variables de humedad, presión y temperatura. El interés del cliente se fundamenta en que ciertos experimentos necesitan realizarse particularmente a humedad y temperatura controlada. 
+En la sección \ref{sec:sistema_propuesto} se presentó el requerimiento opcional que establece el registro de variables de humedad, presión y temperatura. El interés del cliente se fundamenta en que ciertos experimentos necesitan realizarse a humedad y temperatura controlada. Esta primera implementación solo monitorea las variables y no realiza ningún control. 
 
-Para el registro de estas variables se incorporó al sistema un sensor BME280, el mismo integra en un solo CI sensores de presión atmosférica, temperatura y humedad relativa. El fabricante ofrece en sus repositorios \citep{web_repositorio_api_bosh} ejemplos de implementaciones y una API para utilizar todas las funcionalidades del CI.
+Para el registro de estas variables se incorporó al sistema un sensor BME280. El mismo integra en un solo CI sensores de presión atmosférica, temperatura y humedad relativa. El fabricante ofrece en sus repositorios \citep{web_repositorio_api_bosh} ejemplos de implementaciones y una API para utilizar todas las funcionalidades del integrado.
 
-La comunicación entre el sensor y el microcontrolador se realizó a través del protocolo I2C, se incorporó el módulo del software BOARD I2C que se encarga de inicializar el periférico. También se implementó el módulo API BOSH BME, que trabaja con todas las funcionalidades que ofrece el fabricante en su API. En la figura \ref{fig:api_bosh} de observa el flujo de capas desarrollado:
+La comunicación entre el sensor y el microcontrolador se realizó a través del protocolo I2C, se incorporó el módulo del software BOARD I2C que se encarga de inicializar el periférico. También se implementó el módulo API BOSH BME, que trabaja con todas las funcionalidades que ofrece el fabricante en su API. En la figura \ref{fig:api_bosh} se puede observar el detalle de las capas desarrolladas.
 
 \begin{figure}[h!]
 	\centering
@@ -582,7 +610,7 @@ API BOSH BME inicializada una estructura donde define los siguientes parámetros
 \item Configuración de modo normal de funcionamiento del sensor. 
 \end{itemize}
 
-Para visualizar los datos registrados por el sensor se implementó sobre la APP TEST una rutina de consulta con llamado a funciones de la capa API BOSH BME, se observa en la siguiente figura \ref{fig:api_bosh_consola} los datos registrados en consola.
+Para visualizar los datos registrados por el sensor se implementó sobre la app test una rutina de consulta que llama a funciones de la capa API BOSH BME, se observa en la figura \ref{fig:api_bosh_consola} los datos registrados en consola.
 
 \begin{figure}[h!]
 	\centering
@@ -713,7 +741,7 @@ Finalmente en la figura \ref{fig:real_custom} se observan ambas piezas fabricada
 En la figura \ref{fig:mecanica_3d_model} se presenta el primer modelo 3D diseñado del equipo dip coater.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\textwidth]{./Figures/3d.jpg}
+	\includegraphics[width=1\textwidth]{./Figures/3d.jpg}
 	\caption{Modelo 3D.}
 	\label{fig:mecanica_3d_model}
 \end{figure}
@@ -731,7 +759,7 @@ Luego de sucesivas iteraciones con pruebas de piezas impresas en material plást
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.4\textwidth]{./Figures/real.png}
+	\includegraphics[width=0.5\textwidth]{./Figures/real.png}
 	\caption{Primer prototipo dip coater TECSCI.}
 	\label{fig:mecanica_real_model}
 \end{figure}
