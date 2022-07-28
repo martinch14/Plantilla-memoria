@@ -400,7 +400,7 @@ Se detallan a continuación las líneas más importantes:
 \end{itemize}
 
 
-Otra parte importante de app coating es la definición del proceso completo de dip coating, el mismo está implementado con un arreglo de estructuras de tamaño fijo. Cada item del arreglo esta compuesto por el tipo de movimiento, los valores de parámetros que se reciben desde app consola o app hmi y punteros a funciones que ejecutan cada movimiento. Es decir que el proceso completo de dip coating está formado por una concatenación de movimientos individuales, como puede observarse en el siguiente fragmento de código \ref{cod:vEstructuraCode}.
+Otra parte importante de app coating es la definición del proceso completo de dip coating, el mismo está implementado con un arreglo de estructuras de tamaño fijo. Cada item del arreglo esta compuesto por el tipo de movimiento, los valores de parámetros que se reciben desde app consola o app hmi y punteros a funciones que ejecutan cada movimiento. Es decir que el proceso completo de dip coating está formado por una concatenación de movimientos individuales, como puede observarse en el siguiente fragmento de código \ref{cod:vEstructuraCode}. Cada vez que se ejecuta el proceso se recorre el arreglo.
 
 %\begin{lstlisting}[label=cod:vEstructuraCode,caption=Proceso completo de dip coating.] % 
 
@@ -425,27 +425,25 @@ Otra parte importante de app coating es la definición del proceso completo de d
 \begin{lstlisting}[label=cod:vEstructuraCode,caption=Proceso completo de dip coating.] % 
 
 processCommand_t cmdProcessCustom[MAX_ESTATIC_COMMAND] = {
-
-{ .cnum = PROCESS_COMMAND_DOWN, 	.argument.velocity = 212000,	.argument.acceleration = 65000 , 	.fp = DownUntil},
-{ .cnum = PROCESS_COMMAND_WAIT, .argument.time = 2,	.fp = Wait},
-/*start of the DWUW cycle*/
-{ .cnum = PROCESS_COMMAND_DOWN, .argument.velocity = 100000,	.argument.acceleration = 65000 , 	.fpcommandhandler = DownLoop },
-{ .cnum = PROCESS_COMMAND_WAIT, .argument.wait.time = 1,.fp = WaitDown },
-{ .cnum = PROCESS_COMMAND_UP, .argument.velocity = 100000, .argument.acceleration = 65000 ,.fp = UpLoop },
-{ .cnum = PROCESS_COMMAND_WAIT, .argument.time = 1, .fp = WaitUp },
-/*LOOP repeats N times the DWUW cycle */
-{ .cnum =  PROCESS_COMMAND_LOOP, .argument.value.val = 3 },
-{ .cnum = PROCESS_COMMAND_FINISH, .argument.velocity = 0, .argument.acceleration = 0, .fp = Finish},
+/*Deplazamiento hasta muestra*/
+{ .cnum = COMMAND_DOWN, .arg.vel = 212000,	.arg.accel = 65000 , .fp = DownUntil},
+{ .cnum = COMMAND_WAIT, .arg.time = 2, .fp = Wait},
+/*Comienzo de ciclo*/
+{ .cnum = COMMAND_DOWN, .argu.vel = 100000,	.arg.accel = 65000 , .fp = DownLoop },
+{ .cnum = COMMAND_WAIT, .arg.wait.time = 1,.fp = WaitDown },
+{ .cnum = COMMAND_UP, .arg.vel = 100000, .arg.accel = 65000 ,.fp = UpLoop },
+{ .cnum = COMMAND_WAIT, .arg.time = 1, .fp = WaitUp },
+/*Repeticiones del ciclo */
+{ .cnum =  COMMAND_LOOP, .arg.value = 3 },
+/*Fin de ciclo */
+{ .cnum = COMMAND_FINISH, .arg.vel = 0, .arg.accel = 0, .fp = Finish},
 
 };
 
 \end{lstlisting}
 
 
-
-
-
-Esta implementación es fija en el firmware pero se puede modificar con facilidad. Surgió en charlas con investigadores usuarios de equipos dip coater el interés por la posibilidad de modificar el proceso. Particularmente se observó interés en poder extraer la muestra con dos velocidades diferentes para generar en un mismo \textit{films} dos perfiles diferentes.
+%Esta implementación es fija en el firmware pero se puede modificar con facilidad. Surgió en charlas con investigadores usuarios de equipos dip coater el interés por la posibilidad de modificar el proceso. Particularmente se observó interés en poder extraer la muestra con dos velocidades diferentes para generar en un mismo \textit{films} dos perfiles diferentes.
 
 
 \subsubsection{Consola de comandos}
@@ -563,12 +561,11 @@ En la figura \ref{fig:datagrama_a} se define el formato de datagrama para enviar
 
 \end{enumerate}
 
-Para procesar los datagramas entrantes se implementó un bloque de código que analiza el buffer del periférico UART-1. Cuando hay datos disponibles el periférico envía un evento a través de una cola de freeRTOS. El evento UART-DATA se recibe en la tarea mod-hmi-RX-task-loop la cual comienza a procesar dichos datos. En la figura \ref{fig:secuencia_a} se observa el control que se realiza en cada uno de los bytes entrantes. Si el datagrama pasa todas las condiciones se acepta y se envía a la tarea app hmi task a través de una cola para ser procesado.
-
+Para procesar los datagramas entrantes se implementó un bloque de código que analiza el buffer del periférico UART-1. Cuando hay datos disponibles el periférico envía un evento a través de una cola de freeRTOS. El evento UART-DATA se recibe en la tarea mod-hmi-RX-task-loop y comienza a procesar dichos datos. En la figura \ref{fig:secuencia_a} se observa el control que se realiza en cada uno de los bytes entrantes. Si el datagrama pasa todas las condiciones se acepta y se envía a la tarea app hmi task a través de una cola para ser procesado.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\textwidth]{./Figures/Secuencia_lectura_uart.jpg}
+	\includegraphics[width=1\textwidth]{./Figures/Secuencia_lectura_uart_a.jpg}
 	\caption{Secuencia de procesamientos de datos entrantes.}
 	\label{fig:secuencia_a}
 \end{figure}
@@ -588,11 +585,11 @@ Al ejecutar el botón \textit{play}, la pantalla envía un serie de datagramas c
 
 \subsubsection{Registro de variables ambientales}
 
-En la sección \ref{sec:sistema_propuesto} se presentó el requerimiento opcional que establece el registro de variables de humedad, presión y temperatura. El interés del cliente se fundamenta en que ciertos experimentos necesitan realizarse a humedad y temperatura controlada. Esta primera implementación solo monitorea las variables y no realiza ningún control. 
+En la sección \ref{sec:sistema_propuesto} se presentó el requerimiento opcional que establece el registro de variables de humedad, presión y temperatura. El interés del cliente se fundamenta en que ciertos experimentos necesitan realizarse a humedad y temperatura controlada. Esta primera implementación solo monitorea las variables y no realiza ningún control de corrección sobre las mismas. 
 
 Para el registro de estas variables se incorporó al sistema un sensor BME280. El mismo integra en un solo CI sensores de presión atmosférica, temperatura y humedad relativa. El fabricante ofrece en sus repositorios \citep{web_repositorio_api_bosh} ejemplos de implementaciones y una API para utilizar todas las funcionalidades del integrado.
 
-La comunicación entre el sensor y el microcontrolador se realizó a través del protocolo I2C, se incorporó el módulo del software BOARD I2C que se encarga de inicializar el periférico. También se implementó el módulo API BOSH BME, que trabaja con todas las funcionalidades que ofrece el fabricante en su API. En la figura \ref{fig:api_bosh} se puede observar el detalle de las capas desarrolladas.
+La comunicación entre el sensor y el microcontrolador se realizó a través del protocolo I2C. Se incorporó el módulo de software BOARD I2C que se encarga de inicializar el periférico I2C. También se implementó el módulo API BOSH BME, que trabaja con todas las funcionalidades que ofrece el fabricante en su API. En la figura \ref{fig:api_bosh} se puede observar el detalle de las capas desarrolladas.
 
 \begin{figure}[h!]
 	\centering
@@ -601,7 +598,7 @@ La comunicación entre el sensor y el microcontrolador se realizó a través del
 	\label{fig:api_bosh}
 \end{figure}
 
-API BOSH BME inicializada una estructura donde define los siguientes parámetros de interés:
+API BOSH BME inicializa una estructura que define los siguientes parámetros:
 \begin{itemize}
 \item Dirección del dispositivo I2C.
 \item Función de lectura.
@@ -610,7 +607,7 @@ API BOSH BME inicializada una estructura donde define los siguientes parámetros
 \item Configuración de modo normal de funcionamiento del sensor. 
 \end{itemize}
 
-Para visualizar los datos registrados por el sensor se implementó sobre la app test una rutina de consulta que llama a funciones de la capa API BOSH BME, se observa en la figura \ref{fig:api_bosh_consola} los datos registrados en consola.
+Los datos registrados por el sensor se visualizan cada cinco minutos en la consola de comandos, como se observa en la figura \ref{fig:api_bosh_consola}.
 
 \begin{figure}[h!]
 	\centering
@@ -620,7 +617,7 @@ Para visualizar los datos registrados por el sensor se implementó sobre la app 
 \end{figure}
 
  
-El desarrollo de este MPV incluyó el registro de variables ambientales pero no un control y corrección de las mismas con un sistema de control. Sin embargo, se pretende ofrecer en un futuro cercano la funcionalidad de cámara de humedad anexada a este MPV.
+%El desarrollo de este MPV incluyó el registro de variables ambientales pero no un control y corrección de las mismas con un sistema de control. Sin embargo, se pretende ofrecer en un futuro cercano la funcionalidad de cámara de humedad anexada a este MPV.
 
 \subsubsection{Parámetros de calibración}
 \label{subsec:calibracion}
@@ -691,7 +688,7 @@ El prototipo dip coater cuenta actualmente con dos piezas mecanizadas en alumini
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=.5\textwidth]{./Figures/3d_carro.png}
+	\includegraphics[width=.6\textwidth]{./Figures/3d_carro.png}
 	\caption{Pieza personalizada soporte de carro.}
 	\label{fig:carro}
 \end{figure}
@@ -700,7 +697,7 @@ Y en la figura \ref{fig:estructura_superior} el soporte superior que sostiene el
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\textwidth]{./Figures/3d_top.png}
+	\includegraphics[width=.6\textwidth]{./Figures/3d_top.png}
 	\caption{Piezas personalizada soporte de estructura superior.}
 	\label{fig:estructura_superior}
 \end{figure}
@@ -716,7 +713,7 @@ A modo de ejemplo se presenta en la figura \ref{fig:estrategia} el listado de op
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.6\textwidth]{./Figures/3d_estrategia.png}
+	\includegraphics[width=.55\textwidth]{./Figures/3d_estrategia.png}
 	\caption{Operaciones de mecanizado en software Bodcad.}
 	\label{fig:estrategia}
 \end{figure}
