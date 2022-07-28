@@ -73,7 +73,7 @@ Se observa en la figura \ref{fig:kicad_tension} la etapa reguladora de tensión 
 	\label{fig:kicad_tension}
 \end{figure}
   
-El equipo se diseñó para ser alimentado con una fuente externa de tensión continua, simplificando así cuestiones regulatorias de certificación que deben cumplir equipos que se alimentan directamente a la red eléctrica.
+El equipo se diseñó para ser alimentado con una fuente externa de tensión continua, simplificando así cuestiones regulatorias de certificación que deben cumplir equipos que se alimentan directamente de la red eléctrica.
 
 \subsection{Etapa de comunicación}
 
@@ -97,7 +97,7 @@ Para descargar un firmware en el microcontrolador ESP32 se debe seguir la siguie
 \item Enviar firmware desde el entorno de desarrollo. 
 \end{enumerate}
 
-La interfaz UART CP2102 consta de señales de transmisión y recepción de datos TX y RX respectivamente, también admite las señales de control RTS/CTS, DSR/DTR y X-ON/X-OFF. Se incorporó en el diseño el uso de las terminales DTR y RTS para generar la secuencia de descarga de manera automática. Sin embargo la misma presentó cierta inestabilidad y no siempre se logró generar la secuencia correctamente, por tal motivo se implementará en la nueva versión de la placa botones para poder forzar dicha secuencia.
+La interfaz UART CP2102 consta de señales de transmisión y recepción de datos TX y RX. También admite las señales de control RTS/CTS, DSR/DTR y X-ON/X-OFF. Se incorporó en el diseño el uso de las terminales DTR y RTS para generar la secuencia de descarga de manera automática. Sin embargo la misma presentó cierta inestabilidad y no siempre se logró generar la secuencia correctamente, por tal motivo se implementará en la nueva versión de la placa botones para poder forzar dicha secuencia.
 
 
 
@@ -114,7 +114,7 @@ El módulo TMC5130-EVAL, como se describió en la sección \ref{sec:Circuitos in
 
 
 
-El driver se alimenta por las terminales VS/VSA con la tensión de entrada de la placa electrónica y por la terminal VCC con 5 V los cuales son generados internamente  por un regulador en la terminal 5VOUT. Si bien esta configuración funciona, se pretende mejorar el diseño en la próxima versión de la placa. El fabricante sugiere alimentar la terminal VCC con una tensión externa para evitar el uso del regulador de tensión interno y mejorar así la eficiencia térmica del CI.
+El driver se alimenta por las terminales VS/VSA con la tensión de entrada de la placa electrónica y por la terminal VCC con 5 V, los cuales son generados internamente  por un regulador en la terminal 5VOUT. Si bien esta configuración funciona, se pretende mejorar el diseño en la próxima versión de la placa. El fabricante sugiere alimentar la terminal VCC con una tensión externa para evitar el uso del regulador de tensión interno y mejorar así la eficiencia térmica del CI.
 
 Se observa en la figura \ref{fig:kicad_trinamic} las conexiones del driver con el motor paso a paso, la etapa de alimentación y las conexiones del puerto SPI para la comunicación con el microcontrolador. 
  
@@ -191,7 +191,7 @@ Luego de fabricar el PCB, se continuó con el montaje de componentes electrónic
 \section{Firmware}
 \subsection{Capas de abstracción}
 
-Se desarrolló un firmware modular que permite incorporar código de manera incremental y ordenada. Se observan en la figura \ref{fig:capas} las capas de abstracción de software implementadas. Esta implementación tiene dos ideas fundamentales:
+Se desarrolló un firmware modular que permite incorporar código de manera incremental y ordenada. Se observan en la figura \ref{fig:capas} las capas de abstracción de software implementadas. Esta solución tiene dos ideas fundamentales:
 
 \begin{itemize}
 \item No permitir llamados a funciones entre capas discontinuas. Los módulos de la capa superior o capa APP solo pueden hacer llamados a funciones de la capa intermedia o capa API \textit{(Application Programming Interfaces)} y estas últimas solo pueden llamar a funciones de la capa inferior o capa BOARD.
@@ -211,7 +211,7 @@ La capa tres corresponde a la capa de aplicaciones. El firmware cuenta con 3 apl
 \begin{itemize}
 
 \item APP coating: se encarga de la comunicación con el driver TMC5130, de la ejecución de movimientos individuales y del proceso completo de dip coating.
-\item APP consola: administra una consola de comandos que permite ejecutar y configurar el equipo a través de una comunicación serial, recibe y procesa comandos de la consola y los envía a través de una \textit{queue} de freeRTOS a la app coating.
+\item APP consola: administra una consola de comandos que permite ejecutar y configurar el equipo a través de una comunicación serial. Recibe y procesa comandos de la consola y los envía a través de una \textit{queue} de freeRTOS a la app coating.
 \item APP hmi: administra la interfaz de configuración, establece una comunicación serial con la pantalla táctil, recibe comandos a través de una \textit{queue} de freeRTOS y los envía a la app coating para ser procesados.
 \item APP test: se utiliza para probar nuevos componentes y realizar \textit{test} sobre el sistema.
 
@@ -267,7 +267,7 @@ En la figura \ref{fig:tmcl_ide} se observa el entorno de desarrollo TMCL-IDE.
 En la figura \ref{fig:tmcl_ide_stall} se puede observar el \textit{wizard} de configuración de las funciones \textit{stallguard2} y \textit{coolstep}.
 Como se mencionó en el capítulo \ref{Chapter2} es posible usar stallguard2 para detectar los límites mecánicos de recorrido. El parámetro \textit{stall guard threshold} relaciona la fuerza contraelectromotriz registrada por el driver. A medida que se detecta mayor fuerza, es decir mayor oposición al movimiento y mayor corriente en los motores, el valor de stallguard2 disminuye. Se debe configurar entonces un valor límite de detección para que una vez alcanzado se genere un evento.
 
-El firmware cuenta con una función llamada mod-coating-process-cero-machine que utiliza stallguard2. Se encarga de detectar el evento que el driver envía cuando se detecta un final de carrera. La misma se encarga de parar el motor, generar un desplazamiento en sentido contrario y establecer una nueva posición. Esta función se ejecuta al encender el equipo y sirve para posicionar el carro del equipo.
+El firmware cuenta con una función llamada mod-coating-process-cero-machine que utiliza stallguard2. Se encarga de detectar el evento que el driver envía cuando se detecta un final de carrera. La misma se encarga de parar el motor, generar un desplazamiento en sentido contrario y establecer una nueva posición. Esta función se ejecuta al encender el equipo y sirve para posicionar el carro.
  
 
 \begin{figure}[h!]
@@ -326,9 +326,10 @@ Para el control de los movimientos se optó por generar una rampa de cuatro punt
 Estas relaciones de variables están fijas en el firmware y no pueden ser cambiadas por el usuario, es decir que los movimientos del equipo siempre responden a una rampa de aceleración de cuatro puntos.
 
 
-A modo de ejemplo, se presenta el siguiente bloque de código que es parte de la app coating y  se ejecuta cuando llega un comando de movimiento individual.
- 
-\begin{lstlisting}[label=cod:vDownCode,caption=Ejecución de comando DOWN.] % 
+A modo de ejemplo, se presenta el fragmento de código \ref{code:vDownCode} que pertenece a la aplicación app coating y se ejecuta cuando llega un comando de movimiento individual.
+
+
+\begin{lstlisting}[label=code:vDownCode,caption=Ejecución de comando DOWN.] % 
 
 int HandlerDown_without_program(processCommandArgSpin_t*	arg) {
 	int32_t reg_rampstat, position_actual , position_target;
@@ -388,7 +389,7 @@ Se detallan a continuación las líneas más importantes:
 \item [4] Habilitación del driver.
 \item [7] Registro de la posición actual.
 \item [8-26] Carga de parámetros de velocidad y aceleración que forman rampa de cuatro puntos.
-\item [29] Suma el desplazamiento con la posición actual.
+\item [29] Suma el desplazamiento deseado con la posición actual.
 \item [30] Control de limites mecánicos.
 \item [31] Se escribe el registro XTARGET y se da inicio al movimiento.
 \item [37] Dentro de un ciclo \textit{while} se controlan dos bits del registro RAMPSTAT que se activan cuando XACTUAL = XTARGET (fin del movimiento).
@@ -396,9 +397,9 @@ Se detallan a continuación las líneas más importantes:
 \end{itemize}
 
 
-Otra parte importante de app coating es la definición del proceso completo de dip coating, el mismo está implementado con un arreglo de estructuras de tamaño fijo. Cada item del arreglo esta compuesto por tipo de movimiento, valores de parámetros que se reciben desde app consola o app hmi y punteros a funciones que ejecutan cada movimiento. Es decir que el proceso completo de dip coating está formado por una concatenación de movimientos individuales como puede observarse en el siguiente bloque de código.
+Otra parte importante de app coating es la definición del proceso completo de dip coating, el mismo está implementado con un arreglo de estructuras de tamaño fijo. Cada item del arreglo esta compuesto por el tipo de movimiento, los valores de parámetros que se reciben desde app consola o app hmi y punteros a funciones que ejecutan cada movimiento. Es decir que el proceso completo de dip coating está formado por una concatenación de movimientos individuales, como puede observarse en el siguiente fragmento de código \ref{cod:vEstructuraCode}.
 
-\begin{lstlisting}[label=cod:vDownCode,caption=Proceso completo de dip coating.] % 
+\begin{lstlisting}[label=cod:vEstructuraCode,caption=Proceso completo de dip coating.] % 
 
 processCommand_t cmdProcessCustom[MAX_ESTATIC_COMMAND] = {
 
@@ -430,7 +431,7 @@ Se definen dos series de comandos:
 \item Comandos para realizar consultas y configuraciones del sistema, utilizados durante el desarrollo del trabajo.
 \end{itemize}
 
-En la figura \ref{fig:consola_movimientos} se observa la primer serie de comandos. 
+En la figura \ref{fig:consola_movimientos} se observa la primera serie de comandos. 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/consola_2.png}
@@ -445,16 +446,9 @@ Para realizar un proceso dip coating a través de la consola se debe seguir el s
 \item Down, up, etc: permiten mover la muestra hasta la posición inicial del experimento.
 \item Cerosample: registra la posición.
 \item Depthsample: configura la distancia de recorrido de la muestra.
-\item Setcommandcustomapp: configura los parámetros del proceso listados a continuación:
-
-\begin{itemize}
-\item Velocidad y aceleración ascendente y descendente.
-\item Tiempos de espera en posición superior e inferior.
-\item Cantidad de repeticiones del ciclo.
-\end{itemize}
-
+\item Setcommandcustomapp: configura la velocidad y aceleración ascendente y descendente, los tiempos de espera en posición superior e inferior y la cantidad de repeticiones del ciclo.
 \item Run: inicia el proceso dip coating.
-\item Stop: está disponible para que el usuario pueda detener el proceso si así lo deseará.
+\item Stop: está disponible para que el usuario pueda detener el proceso.
 
 \end{enumerate}
 
@@ -471,7 +465,7 @@ Se observa en la figura \ref{fig:consola_comandos} la segunda serie de comandos.
 Estos comandos permiten utilizar al driver de manera independiente, realizar configuraciones y visualizar el estado de los registros.
 Los comandos read-register y write-register sirven para leer y escribir registros sobre el driver TMC5130.
 
-A modo de ejemplo se observa en la figura \ref{fig:comando_lectura} una consulta sobre el registro Xactual[0x21], que expresa la posición actual en micro pasos desde la referencia inicial y otra consulta sobre el registro Xtarget[0x2D], cuyo valor expresa la posición objetivo en micro pasos que se desea alcanzar. En este ejemplo Xactual = Xtarget ya que el carro estaba detenido. Para ejecutar un movimiento se debe configurar una posición en Xtarget, la misma accionará el motor hasta alcanzar Xactual = Xtarget. Previamente se deben configurar los registros de velocidad y aceleración.
+A modo de ejemplo se observa en la figura \ref{fig:comando_lectura} una consulta sobre el registro Xactual[0x21], que expresa la posición actual en micropasos desde la referencia inicial y otra consulta sobre el registro Xtarget[0x2D], cuyo valor expresa la posición objetivo en micropasos que se desea alcanzar. En este ejemplo Xactual = Xtarget ya que el carro estaba detenido. Para ejecutar un movimiento se debe configurar una posición en Xtarget, la misma accionará el motor hasta alcanzar Xactual = Xtarget. Previamente se deben configurar los registros de velocidad y aceleración.
 
 
 \begin{figure}[h!]
@@ -598,7 +592,7 @@ Para visualizar los datos registrados por el sensor se implementó sobre la APP 
 \end{figure}
 
  
-El desarrollo de este MPV incluyó el registro de variables ambientales pero no un control y corrección de las mismas con un sistema de control. Sin embargo, se pretende ofrecer en un futuro cercano la funcionalidad de cámara de humedad anexada a este MPV. Por tal motivo se presenta en el anexo (XX) el desarrollo de un sistema de control de humedad.  
+El desarrollo de este MPV incluyó el registro de variables ambientales pero no un control y corrección de las mismas con un sistema de control. Sin embargo, se pretende ofrecer en un futuro cercano la funcionalidad de cámara de humedad anexada a este MPV.
 
 \subsubsection{Parámetros de calibración}
 \label{subsec:calibracion}
@@ -606,14 +600,14 @@ El desarrollo de este MPV incluyó el registro de variables ambientales pero no 
 La carpeta /components/config contiene tres archivos de configuración importantes:
 \begin{itemize}
 \item hardware.h: contiene todas las macros referidas a los pines de conexión del modelo de microcontrolador utilizado.
-\item os-config.h: contiene las macros de configuración de las tareas y colas de FreeRTOS. Entre otras los tamaños de stack, las prioridades y los periodos de tiempo de ejecución de tareas.
+\item os-config.h: contiene las macros de configuración de las tareas y colas de FreeRTOS. Incluye entre otros parámetros el tamaño del stack, la prioridad y el tiempo de ejecución de cada tarea.
 \item machine.h: contiene las macros relacionadas con la calibración mecánica del equipo.
 \end{itemize}
 
 
-La macro más importante configurada en el archivo machine.h es MACHINE STEPS PER MILLIMETER y es necesario que este bien definida. En la sección \ref{sec:calibración} se demuestra el procedimiento realizado para definir su valor. Esta macro define la cantidad de micro pasos necesarios para generar el desplazamiento de 1 mm. La misma esta completamente relaciona con el paso del tornillo acoplado al eje del motor. Las unidades de posición son expresados en micro pasos, las unidades de velocidad en micro pasos sobre segundos y las unidades de aceleración en micro pasos sobre segundos al cuadrado.
+La macro más importante configurada en el archivo machine.h es MACHINE STEPS PER MILLIMETER, que debe estar perfectamente determinada. En la sección \ref{sec:calibración} se demuestra el procedimiento realizado para obtener su valor. Esta macro define la cantidad de micropasos necesarios para generar el desplazamiento de 1 mm. La misma esta completamente relacionada con el paso del tornillo acoplado al eje del motor. Las unidades de posición son expresados en micropasos, las unidades de velocidad en micropasos sobre segundos y las unidades de aceleración en micropasos sobre segundos al cuadrado. 
 
-Se observa en la figura \ref{fig:unidades}, extraída de la hoja de datos del driver TMC5130, los factores de corrección que deben aplicarse cuando se cuenta con un clock externo incorporado en el circuito electrónico. Se deben calcular las constantes que corrigen los valores de velocidad y aceleración.
+Se observa en la figura \ref{fig:unidades}, extraída de la hoja de datos del driver TMC5130, los factores de corrección que deben aplicarse cuando se cuenta con un clock externo incorporado en el circuito electrónico. 
 
 \begin{figure}[h!]
 	\centering
@@ -622,16 +616,17 @@ Se observa en la figura \ref{fig:unidades}, extraída de la hoja de datos del dr
 	\label{fig:unidades}
 \end{figure}
 
+Se observa en el fragmento de código \ref{cod:vMachine} el cálculo de las constantes que corrigen los valores de velocidad y aceleración.
 
-Como se mencionó en la subsección \ref{subsection:Driver TMC5130} el equipo se configuró con 51200 micro pasos por vuelta completa.  
+%Como se mencionó en la subsección \ref{subsection:Driver TMC5130} el equipo se configuró con 51200 micropasos por vuelta completa.  
  
  
 
-\begin{lstlisting}[label=cod:vControl,caption=Macros de desplazamiento y factores de conversión.]  % Start your code-block
+\begin{lstlisting}[label=cod:vMachine,caption=Macros de desplazamiento y factores de corrección.]  % Start your code-block
 /*Buscar este numero con calibración mecánica del sistema*/
 
 #define MACHINE_STEPS_PER_MILLIMETER	(12916)		
-#define MACHINE_EXT_CLOCK					(16000000)	//16MHz
+#define MACHINE_EXT_CLOCK						  (16000000)	//16MHz
 
 
 /*FACTOR*/
@@ -643,8 +638,8 @@ Como se mencionó en la subsección \ref{subsection:Driver TMC5130} el equipo se
 
 /*UPPER AND LOWER MECHANICAL LIMIT*/
 
-#define MACHINE_CONTROL_MECANICAL_UPPER_LIMIT 	(MACHINE_STEPS_PER_MILLIMETER * 10 ) // 10mm
-#define MACHINE_CONTROL_MECANICAL_LOWER_LIMIT	(MACHINE_STEPS_PER_MILLIMETER * 290) // 290mm
+#define UPPER_LIMIT 	(MACHINE_STEPS_PER_MILLIMETER * 10 ) // 10mm
+#define LOWER_LIMIT		(MACHINE_STEPS_PER_MILLIMETER * 290) // 290mm
 
 \end{lstlisting}
 
@@ -682,12 +677,12 @@ Y en la figura \ref{fig:estructura_superior} el soporte superior que sostiene el
 	\label{fig:estructura_superior}
 \end{figure}
 
-Con los modelos 3D diseñados, se fabricaron primeras versiones a través de impresión 3D en plástico. 
+Con los modelos 3D terminados, se fabricó un primer lote utilizando impresión 3D en plástico.
 Luego que las piezas fueron probadas, testeadas y aprobadas en el prototipo, se pasó a la fabricación final sobre aluminio.
 
 \subsubsection{Etapa CAM}
 
-La estrategia utilizada en el mecanizado CNC es por el método de arranque de viruta. Este consiste en partir de un bloque de aluminio con volumen de material suficiente y desbastar con herramientas de corte hasta modelar la pieza. Esta estrategia se programa en la parte CAM del software. Existen diferentes operaciones de mecanizado que se utilizan según el tipo de pieza que se desee fabricar. Tal es el caso de refrentado, vaciado, fresado de chaflán, taladrado y roscado entre otras. Cada una de estas operaciones  en general se realizan con herramientas específicas que son definidas en la configuración del software.
+La estrategia utilizada en el mecanizado CNC es el método de arranque de viruta. Este consiste en partir de un bloque de aluminio con volumen de material suficiente y desbastar con herramientas de corte hasta modelar la pieza. Esta estrategia se programa en la parte CAM del software. Existen diferentes operaciones de mecanizado que se utilizan según el tipo de pieza que se desee fabricar. Tal es el caso de refrentado, vaciado, fresado de chaflán, taladrado y roscado entre otras. Cada una de estas operaciones  en general se realizan con herramientas específicas que son definidas en la configuración del software.
 
 A modo de ejemplo se presenta en la figura \ref{fig:estrategia} el listado de operaciones realizadas para la fabricación de la pieza soporte carro del equipo.
 

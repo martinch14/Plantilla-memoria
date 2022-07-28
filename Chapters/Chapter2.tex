@@ -51,14 +51,14 @@ Cabe destacar que todos los experimentos en la publicación fueron realizados a 
 \label{sec:Circuitos integrados Trinamic}
 
 %De los siguientes requerimientos funcionales acordados con el cliente:
-De reuniones con el cliente en donde se remarca la importancia de trabajar con un control preciso de motor y en base a experiencias de uso de equipos con tecnologías similares surge el interés de trabajar con un fabricante de driver específico. Se definen entonces los siguientes requerimientos:
+De reuniones con el cliente en donde se remarcó la importancia de trabajar con un control preciso de motor y en base a experiencias de uso de equipos con tecnologías similares, surge el interés de trabajar con un fabricante de driver específico. Se definen entonces los siguientes requerimientos:
 			
 \begin{itemize}
 \item El equipo deberá contar con un motor paso a paso Nema 17 \citep{web_nema17}  para realizar los movimientos.
 \item Se utilizará un driver de motor de la marca Trinamic Motion Control.
 \end{itemize}
 
-Trinamic \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su tecnología se basa en convertir señales digitales en movimientos controlados. Tiene una experiencia de veinte años en la industria del control de motores, lo que garantiza en cierta medida la calidad de sus productos. Actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
+Trinamic \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su tecnología se basa en convertir señales digitales en movimientos controlados. Tiene una amplia experiencia en la industria del control de motores y sus CI son utilizados en una gran variedad de productos. Actualmente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
 
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo: impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
 Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
@@ -80,9 +80,7 @@ El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con dife
   
 \subsection{Driver TMC5130}
 \label{subsection:Driver TMC5130}
-El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. En el caso del dip coater el peso de la carga es despreciable.
-
-Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
+El driver TMC5130 permite operar motores bipolares de dos fases comúnmente conocidos como motores paso a paso. El CI incorpora una etapa de potencia con tecnología \textit{MOSFET (Metal Oxide Semiconductor Field Effect Transistor)}  que permite manejar corrientes de hasta dos amperios por fase. Se observa en la figura \ref{fig:tmc5130_diagrama} el diagrama en bloque del CI.
 
 \begin{figure}[htpb]
 \centering 
@@ -104,13 +102,11 @@ Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el 
 \end{equation}
 
 
-Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor.
+Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. El CI cuenta con el registro XACTUAL que contiene la cantidad de pasos absolutos desde una referencia inicial. También cuenta con el registro XTARGET que contiene una posición objetivo, cuando se escribe este registro el CI se acciona hasta lograr que XACTUAL = XTARGET.
 
 %El motor estará acoplado a un eje lineal que generará movimientos ascendentes y descendentes. Sobre este eje lineal se acoplará un carro de aluminio que tendrá una pinza que sostendrá las muestras. 
 
-Otra funcionalidad que se utilizará es \textit{stallguard2}, una función que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. Como se observa en la figura \ref{fig:tmc5130_stallGuard2} el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta.
-
-Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado por la carga acoplada al eje, si se aplica una fuerza contraría al movimiento programado o el recorrido del carro llega a un límite mecánico, la fuerza contraelectromotriz aumentará. 
+Otra funcionalidad que se utilizó fue \textit{stallguard2}, una función que mide la fuerza contraelectromotriz generada en las bobinas del motor por cambios de carga en el eje. En la figura \ref{fig:tmc5130_stallGuard2} se observa que el valor del registro stallguard2 se decrementa linealmente a medida que la carga aumenta. Cuando se aplica una fuerza contraría al movimiento programado o el recorrido del carro llega a un límite mecánico, la fuerza contraelectromotriz aumenta. 
 
 \begin{figure}[h]
 \centering 
@@ -121,10 +117,10 @@ Es decir, el motor gira con un valor asociado de fuerza contraelectromotriz dado
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
 
-En el capítulo \ref{Chapter3} se estudiará el valor del registro  stallguard2 configurado. Cada vez que el equipo se enciende se realizará un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utilizará entonces esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos.   
+En el capítulo \ref{Chapter3} se estudiará el valor del registro  stallguard2 configurado. Cada vez que el equipo se enciende se realiza un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utiliza esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos.   
 
 
-También se utilizará \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}. El efecto final es reducir la energía suministrada según hojas de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Esto aplica incluso en equipos donde la carga es constante, como es el caso del dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
+También se utilizó \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}. El efecto final es reducir la energía suministrada según la hoja de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Esto aplica incluso en equipos donde la carga es constante, como es el caso del dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
 
 \begin{figure}[h]
 \centering 
@@ -134,7 +130,7 @@ También se utilizará \textit{coolstep}, una función que a través de medicion
 \end{figure}
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-Por último, se utilizará la función \textit{dcStep}, que es un modo de conmutación automático que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
+Por último, se utilizó la función \textit{dcStep}, que es un modo de conmutación automático que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
 
 
 %el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
@@ -269,7 +265,7 @@ Teniendo en cuenta los requerimientos analizados en las secciones previas y los 
 \label{fig:equipo_propuesto}
 \end{figure}
 
-El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad central de procesamiento, contará con dos comunicaciones a través del periférico UART, una para establecer una consola de comandos que permita comunicar al equipo con una computadora y realizar pruebas de funcionamiento y configuraciones y la otra para comunicarse con la pantalla táctil. También establecerá un protocolo de almacenamiento para guardar los programas que el usuario cree en la memoria FLASH disponible. Finalmente contará con un módulo de comunicación sobre protocolo I2C para obtener datos del sensor de humedad y temperatura BME280.  
+El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad central de procesamiento. Contará con dos canales de comunicación serie, uno para establecer una consola de comandos que permita comunicar al equipo con una computadora, realizar pruebas de funcionamiento y configuraciones, y el otro para comunicarse con la pantalla táctil. También establecerá un protocolo de almacenamiento para guardar los programas que el usuario cree en la memoria FLASH disponible. Finalmente contará con un módulo de comunicación sobre protocolo I2C para obtener datos del sensor de humedad y temperatura BME280.  
 
 
 \section{Herramientas de desarrollo}
@@ -279,7 +275,7 @@ Para la implementación del hardware se utilizó el software libre de diseño de
 \begin{itemize}
 \item Las capacidades que brinda el software son suficientes para el desarrollo de este hardware.
 \item Se valora el apoyo del \textit{CERN:European Organization for Nuclear Research} \citep{1_nota_web_kicad_cern} al proyecto KICAD.
-\item Las últimas versiones presentan mejoras significativas respecto a sus predecesoras.
+%\item Las últimas versiones presentan mejoras significativas respecto a sus predecesoras.
 \end{itemize}
 
 
