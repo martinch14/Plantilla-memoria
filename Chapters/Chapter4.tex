@@ -134,7 +134,7 @@ En el capítulo \ref{Chapter3} se detalló la configuración de la rampa de cuat
 %(((2*velocidad)/(aceleración*1000))+(desplazamiento/velocidad))*60*1000  
 
 
-Para realizar el ensayo , cuyos parámetros se ven en la tabla \ref{tab:ensayo_comandos}, se implementó una aplicación de prueba que realiza el siguiente procedimiento: 
+Para realizar el ensayo, cuyos parámetros se ven en la tabla \ref{tab:ensayo_comandos}, se implementó una aplicación de prueba que realiza el siguiente procedimiento: 
 
 \begin{table}[h!]
 	\centering
@@ -195,7 +195,6 @@ Se concluye con este ensayo que el equipo es muy preciso en la mayor parte del r
 El objetivo del siguiente ensayo fue demostrar que el único comando que se procesa con el equipo en funcionamiento es el de stop.
 
 Cada vez que el usuario ejecuta un comando sobre la consola, la aplicación app console procesa y envía el mensaje a través de una cola de FreeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. 
-
 Para realizar el ensayo se implementó el siguiente procedimiento:
 \begin{enumerate}
 \item Ejecución de proceso  dip coating.
@@ -203,6 +202,7 @@ Para realizar el ensayo se implementó el siguiente procedimiento:
 \item Envío de comando STOP.
 \end{enumerate}
 
+En la figura \ref{fig:consola_comando_ok} se observa como se descarta el comando down cuando el equipo se encuentra en funcionamiento.
 
 \begin{figure}[h!]
 	\centering
@@ -298,9 +298,9 @@ De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para
 
 Para corregir el valor de micropasos por milímetros de desplazamiento se utilizó el siguiente procedimiento:
 \begin{enumerate}
-\item Calcular un promedio de los 6 errores relativos ascendentes y descendentes.
+\item Calcular el promedio de los 6 errores relativos ascendentes y descendentes.
 \item Ajustar el valor inicial de micropasos con los respectivos errores. 
-\item Calcular un promedio entre el valor corregido ascendente y el valor corregido descendente.
+\item Calcular el promedio entre el valor corregido ascendente y el valor corregido descendente.
 \end{enumerate}
 
 
@@ -352,25 +352,24 @@ Con este ensayo se pudo corroborar el funcionamiento correcto del equipo de mane
 
 \section{Comparación con el estado del arte}
 
-En la tabla \ref{tab:equipos_competencia_comparacion} se observan las características del equipo diseñado y fabricado contra los equipos comerciales mostrados en la sección \ref{sec:mercado}.
-
+En la tabla \ref{tab:equipos_competencia_comparacion} se observan las características del equipo diseñado y fabricado contra los equipos comerciales mostrados en la sección \ref{sec:mercado}. 
 %Se incorpora en la tabla \ref{tab:equipos_competencia_comparacion}  la columna \textit{open source hardware} por la importancia que está especificación brinda al desarrollo del presente equipo.
 
 
 \begin{table}[h!]
 	\centering
 	\caption[Dip coaters en el mercado]{Comparación de especificaciones técnicas.}
-	\begin{tabular}{l c c c c c}    
+	\begin{tabular}{l  c c c c}    
 		\toprule
-		\textbf{Equipo} 	 & \parbox{2cm} {\textbf{Recorrido (mm)}}  & \parbox{2cm} {\textbf{Velocidad (mm/min)}}  & \parbox{2cm}{\textbf{Aceleración (m/min2)}}  & \textbf{Interface} & \parbox{2cm}{\textbf{Open Source Hardware}} \\
+		\textbf{Equipo} 	  & \parbox{2cm} {\textbf{Velocidad (mm/min)}}  & \parbox{2cm}{\textbf{Aceleración (m/min2)}}  & \textbf{Interface} & \parbox{2cm}{\textbf{Open Source Hardware}} \\
 		\midrule
-		Bio Single	& 300  	& 1    - 1000   & no & PC & no 							\\		
-		Bio Multiplie		& 70  	& 0.1  - 108 	& no & PC & no					\\
-		Kibron LayerX				& 134 	& 0.06 - 300	& no & PC & no					\\
-		Bungard						& 600 	& 30 - 10000	& no & Display LCD & no		\\
-		Ossila 					& 100 	& 0.6  - 3000	& no & PC & no		\\
-		Holmarc					& 100 	& 1.08 - 540	& no & PC & no		\\
-		\textbf{Este Equipo} 						& 300   &  1-800 & si &  Touch-PC  & si \\
+		Bio Single	 	& 1    - 1000   & no & PC & no 							\\		
+		Bio Multiplie		  	& 0.1  - 108 	& no & PC & no					\\
+		Kibron LayerX				 	& 0.06 - 300	& no & PC & no					\\
+		Bungard						 	& 30 - 10000	& no & Display LCD & no		\\
+		Ossila 					 	& 0.6  - 3000	& no & PC & no		\\
+		Holmarc					 	& 1.08 - 540	& no & PC & no		\\
+		\textbf{Este Equipo} 						   &  1-800 & 1 - 2100 &  Touch-PC  & si \\
 		\bottomrule
 		\hline
 	\end{tabular}
