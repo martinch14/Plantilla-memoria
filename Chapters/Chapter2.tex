@@ -14,7 +14,7 @@ En el presente capítulo se introducen los módulos principales del equipo dip c
 Para entender la relación entre la velocidad de extracción y el espesor de material depositado se tuvo en consideración la siguiente publicación \textit{(Preparation of Sol-Gel Films by Dip-Coating)} \cite{paper_galo}, que describe la técnica dip coating como un proceso dinámico, complejo y difícil de modelar, debido a los gradientes de concentración y viscosidad generados por evaporación de la solución. 
 
 
-La publicación se basa entonces en un estudio semi-experimental sobre varias soluciones químicas para predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos, un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas respecto al rango de estudio. 
+La publicación se basa en un estudio experimental sobre varias soluciones químicas y parámetros de proceso para proponer un modulo semiempírico que permita predecir el espesor final de la película. Tiene en cuenta dos modelos matemáticos: un modelo de capilaridad asociado a extracciones en velocidades bajas y otro modelo de evaporación asociado a velocidades altas respecto al rango de estudio. 
 
 Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabricados respecto a las velocidades utilizadas, también se puede observar la relación entre los diferentes modelos aplicados. 
 
@@ -30,7 +30,7 @@ Se observa en la figura \ref{fig:paper_galo} la variación de los espesores fabr
 
 Los resultados del experimento concluyen en que existe linealidad en la relación de espesor respecto a la velocidad de extracción entre \SI{60}{\milli\meter\per\minute} y \SI{600}{\milli\meter\per\minute} . También demuestra que en dicho rango de velocidades el fenómeno se explica por el modelo de evaporación.
 
-Se desprende de este análisis la importancia de los siguientes requerimientos funcionales definidos por el cliente: 
+Se desprende de este análisis y de las conversaciones con el cliente, la importancia de los siguientes requerimientos funcionales:
 
 \begin{itemize}
 \item El sistema debe contar con un rango de velocidades de desplazamiento de muestra entre [1- 1000 \si{\milli\meter\per\minute}]. 
@@ -54,18 +54,18 @@ Cabe destacar que todos los experimentos en la publicación fueron realizados a 
 De reuniones con el cliente en donde se remarcó la importancia de trabajar con un control preciso de motor y en base a experiencias de uso de equipos con tecnologías similares, surge el interés de trabajar con un fabricante de driver específico. Se definen entonces los siguientes requerimientos:
 			
 \begin{itemize}
-\item El equipo deberá contar con un motor paso a paso Nema 17 \citep{web_nema17}  para realizar los movimientos.
-\item Se utilizará un driver de motor de la marca Trinamic Motion Control.
+\item El equipo deberá contar con un motor paso a paso Nema 17 \citep{web_nema17}.
+\item Se utilizará un driver de motor de la marca TRINAMIC Motion Control.
 \end{itemize}
 
-Trinamic \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores, su tecnología se basa en convertir señales digitales en movimientos controlados. Tiene una amplia experiencia en la industria del control de motores y sus CI son utilizados en una gran variedad de productos. Recientemente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
+Trinamic \citep{3_web_trinamic} se especializa en la fabricación de CI (Circuitos Integrados) para el control de diferentes tipos de motores. Su tecnología se basa en convertir señales digitales en movimientos controlados. Tiene una amplia experiencia en la industria del control de motores y sus CI son utilizados en una gran variedad de productos. Recientemente fue adquirida por la compañía Analog Devices \citep{web_analogdevices}.
 
 Cabe destacar que los integrados fabricados por la empresa Trinamic se utilizan en diversas aplicaciones en donde la precisión es importante, como por ejemplo: impresión 3D, automatización industrial, robótica y equipos de laboratorio médico entre otras.
 Cuenta con una amplia gama de productos que se diferencian principalmente según el tipo de motor que se quiera accionar. Luego de estudiar las diferentes alternativas ofrecidas se eligió trabajar con el driver TMC5130 \citep{3_web_trinamic_producto}.
   
-Todos los CI requieren una configuración inicial de parámetros que depende del tipo de motor y de la carga asociada al mismo. Para encontrarla la empresa ofrece el software TMCL-IDE y diferentes placas de desarrollo para trabajar sobre los diferentes drivers. La placa de desarrollo que corresponde al integrado seleccionado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
+Todos los CI requieren una configuración inicial de parámetros que depende del tipo de motor y de la carga asociada al mismo. Para encontrarla, la empresa ofrece el software TMCL-IDE y diferentes placas de desarrollo para trabajar sobre los diferentes drivers. La placa de desarrollo que corresponde al integrado seleccionado es la \textit{TMC5130-Eval Evaluation Board} \citep{3_web_trinamic_placa}.
 
-El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. 
+El TMCL-IDE se ejecuta sobre una placa de desarrollo general compatible con diferentes kits de evaluación. En la figura \ref{fig:tmc5130_placa} se observa a la izquierda la placa Startrampe  que se conecta entre la computadora y la placa de evaluación \textit{TMC5130-Eval} que se observa a derecha. 
 
 \begin{figure}[htpb]
 \centering 
@@ -90,19 +90,19 @@ El driver TMC5130 permite operar motores bipolares de dos fases comúnmente cono
 \end{figure}
 %\footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-La comunicación con el CI se puede establecer a través del protocolo serie o \textit{SPI (Serial Peripheral Interface)}, para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
+La comunicación con el CI se puede establecer a través del protocolo serie o \textit{SPI (Serial Peripheral Interface)}. Para el desarrollo de este trabajo se utilizó el protocolo de comunicación SPI.
 
-Los pasos que definen a este tipo de motores están relacionados con las fases y con la cantidad de dientes que tienen en su rotor y estator. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1.8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
+Los pasos que definen a este tipo de motores están relacionados con las fases y con la cantidad de dientes que tienen en su rotor y estator. Un paso es el movimiento mínimo que el motor puede hacer. Un motor paso a paso, como su nombre lo indica, realiza movimientos a través de pasos sucesivos. Por ejemplo, es común contar con algún motor en donde la especificación indica que el paso es de \ang{1,8}, esto significa que por cada vuelta de motor \ang{360}, el mismo realizará 200 pasos.
 
-Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos, el fabricante los denomina micropasos. El driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1.8} se tendrán en total 51200 micropasos, como se observa en la ecuación \ref{eq:micro_pasos}.
+Una funcionalidad que incorpora este CI es incrementar la cantidad de pasos por revolución mediante la implementación de micropasos. El driver puede generar hasta un máximo de 256 micropasos por cada paso del motor. Siguiendo con el ejemplo recién presentado, para un motor de paso \ang{1,8} se tendrán en total 51200 micropasos por revolución, como se observa en la ecuación \ref{eq:micro_pasos}.
 
 \begin{equation}
 	\label{eq:micro_pasos}
-		(360/1.8) * 256 = 51200 \textup{ micropasos por revolución}
+		\left( \frac{360}{1,8} \frac{^\circ/\textup{rev}}{^\circ/\textup{paso}}\right) \times 256 \textup{ micropaso/paso} = 51200 \textup{ micropasos/rev}
 \end{equation}
 
 
-Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. El CI cuenta con el registro XACTUAL que contiene la cantidad de pasos absolutos desde una referencia inicial. También cuenta con el registro XTARGET que contiene una posición objetivo, cuando se escribe este registro el CI se acciona hasta lograr que XACTUAL = XTARGET.
+Una característica importante a destacar es la posibilidad de programar la cantidad de pasos que da el motor. El CI cuenta con el registro \verb|XACTUAL| que contiene la cantidad de pasos absolutos desde una referencia inicial. También cuenta con el registro \verb|XTARGET| que contiene una posición objetivo, cuando se escribe este registro el CI se acciona hasta lograr que \verb|XACTUAL = XTARGET|.
 
 %El motor estará acoplado a un eje lineal que generará movimientos ascendentes y descendentes. Sobre este eje lineal se acoplará un carro de aluminio que tendrá una pinza que sostendrá las muestras. 
 
@@ -117,7 +117,7 @@ Otra funcionalidad que se utilizó fue \textit{stallguard2}, una función que mi
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
 
-En el capítulo \ref{Chapter3} se estudiará el valor del registro  stallguard2 configurado. Cada vez que el equipo se enciende se realiza un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utiliza esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos.   
+En el capítulo \ref{Chapter3} se estudiará el uso del valor del registro stallguard2 como indicador de un límite mecánico del sistema, mediante la comparación con un valor umbral configurado. Cada vez que el equipo se enciende se realiza un movimiento hacia un extremo del recorrido para buscar el cero de máquina. Se utiliza esta medida para encontrar un límite mecánico del sistema y realizar  un posicionamiento inicial. El uso de esta funcionalidad evita la incorporación de finales de carrera electromecánicos u ópticos.   
 
 
 También se utilizó \textit{coolstep}, una función que a través de mediciones de carga en el eje del motor adapta automáticamente la corriente suministrada hacia las bobinas, aumentando la eficiencia energética como puede observarse en la figura \ref{fig:tmc5130_coolStep}. El efecto final es reducir la energía suministrada según la hoja de datos \citep{3_web_trinamic_producto} hasta un \SI{75}{\percent}. Esto aplica incluso en equipos donde la carga es constante, como es el caso del dip coater, ya que la carga variable representada por un wafer de silicio o un portaobjeto es completamente despreciable.
@@ -130,7 +130,7 @@ También se utilizó \textit{coolstep}, una función que a través de mediciones
 \end{figure}
 \footnotetext{Imagen tomada de \cite{3_web_trinamic}.}
 
-Por último, se utilizó la función \textit{dcStep}, que es un modo de conmutación automático que ajusta la velocidad del motor en caso de existir sobrecarga en el eje, es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
+Por último, se utilizó la función \textit{dcStep}, que es un modo de conmutación automático que ajusta la velocidad del motor en caso de existir sobrecarga en el eje. Es decir que si no puede mover la carga acoplada al eje con la velocidad establecida, se ajusta a una velocidad menor para poder seguir en movimiento y no detenerse por completo. 
 
 
 %el capítulo \ref{Chapter3} se darán detalles de las configuraciones finales del equipo.
@@ -140,12 +140,12 @@ El driver TMC5130 cuenta con cincuenta registros que se utilizan para configurar
 \section{Interfaz de usuario}
 \label{sec:interfaz_pantalla}
 
-Respecto a la interacción entre el usuario y el equipo surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar al equipo a pie de máquina. Dando lugar al siguiente requerimiento:
+Respecto a la interacción entre el usuario y el equipo, surgió en reuniones con el cliente la necesidad de contar con una interfaz moderna, que permita a un usuario dentro de un laboratorio configurar el equipo a pie de máquina. Esto dio lugar al siguiente requerimiento:
 \begin{itemize}
 \item La configuración de la máquina debe poder realizarse a través de una pantalla táctil.	
 \end{itemize} 
 
-Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}. Las mismas se encargan exclusivamente del procesamiento gráfico. En general, cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y a través de un protocolo de comunicación se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En el caso de este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un  \textit{PLC (Programmable Logic Controller)}.
+Se decidió trabajar con pantallas del tipo \textit{HMI (Human Machine Interface)}. Las mismas se encargan exclusivamente del procesamiento gráfico. En general, cuentan con un software de diseño para la creación de la interfaz gráfica, es decir que permiten crear botones, barras, pantallas y diferentes tipos de objetos para interaccionar con el usuario. Luego se le da funcionalidad a cada uno de estos objetos creados en el software y, a través de un protocolo de comunicación, se interactúa con el sistema de control, permitiendo finalmente controlar y configurar el equipo. En este equipo la pantalla se comunica con un microcontrolador, pero  podría  comunicarse con algún otro sistema de control como por ejemplo un \textit{PLC (Programmable Logic Controller)}.
  
 
 Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_stone}. El fabricante ofrece un catálogo amplio de pantallas que caracteriza según el tipo de aplicación y entorno de trabajo. Ofrece entonces pantallas para usos industriales, civiles o avanzados. Por las dimensiones finales del equipo y el tipo de uso se optó por pantallas avanzadas de 4.3 pulgadas. Se detallan en la tabla \ref{tab:tabla_stone} las características técnicas de dos pantallas de 4.3 pulgadas del fabricante.
@@ -158,14 +158,14 @@ Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_
 		\textbf{}     & \textbf{STWI043WT} & \textbf{STVI043WT} \\
 		\midrule
 		CPU 			& 	Cortex A8         		& 	CortexM4 			 	\\		
-		Refresh Rate    & 	1G Hz         			& 	200 MHz 				\\
-		Image format  	& 	png, bmp, jpg, svg, gif     & 	bmp, jpg 				\\
-		Resolution		& 	480×272 pixel	        & 	480×272 pixel 			\\
-		Flash  			& 	256 MB         			& 	128 MB 					\\
+		Tasa de refresco    & 	1 GHz         			& 	200 MHz 				\\
+		Formato de imagen  	& 	png, bmp, jpg, svg, gif     & 	bmp, jpg 				\\
+		Resolución		& 	480×272 pixel	        & 	480×272 pixel 			\\
+		Memoria flash 			& 	256 MB         			& 	128 MB 					\\
 		Color  			& 	262 K	          		& 	65 K 					\\
-		PCB 			& 	2.0 mm black, ROHS       & 	1.6 mm green 			\\
-		Touch Type		& 	Resistive    			& 	Resistive				\\
-		Interface 		& 	RS232/RS422/RS485/TTL   & 	RS232/RS485/TTL			\\
+		PCB 			& 	2.0 mm negra, ROHS       & 	1.6 mm verde 			\\
+		Tipo		& 	Resistiva   			& 	Resistiva				\\
+		Interfaz 		& 	RS232/RS422/RS485/TTL   & 	RS232/RS485/TTL			\\
 		\bottomrule
 		\hline
 	\end{tabular}
@@ -173,7 +173,7 @@ Luego de una investigación de mercado se eligió a la empresa STONE \citep{web_
 \end{table}
 
 
-El modelo elegido fue el STWI043WT, que pertenece a la nueva línea productos, tiene mayor capacidad de procesamiento, cuenta con un software nuevo de configuración con mayores funcionalidades respecto al utilizado por el otro modelo y la diferencia de precios no supera el \SI{15}{\percent}.  
+El modelo elegido fue el STWI043WT, que pertenece a la nueva línea de productos, tiene mayor capacidad de procesamiento, cuenta con un software nuevo de configuración con mayores funcionalidades respecto al utilizado por el otro modelo y la diferencia de precios no supera el \SI{15}{\percent}.  
 
 La comunicación de la pantalla STWI043WT con el microcontrolador se estableció a través del protocolo serie.
 
@@ -193,7 +193,7 @@ Se presentan a continuación los siguientes requerimientos asociados a las parte
 
 \begin{itemize}
 \item La estructura principal del equipo debe ser fabricada con perfil de aluminio anodizado natural.
-\item El recorrido mecánico de desplazamiento de muestra debe ser como mínimo de [3500 mm].
+\item El recorrido mecánico de desplazamiento de muestra debe ser como mínimo de [350 mm].
 \item Las piezas especiales del equipo deben ser mecanizadas en aluminio.
 
 \end{itemize}
@@ -205,31 +205,31 @@ El equipo cuenta con una guía lineal acoplada al perfil principal. Para la elec
 \begin{enumerate}
 \item El ambiente cambia  según las soluciones químicas utilizadas. Es posible entonces que se trabaje con soluciones corrosivas que afecten la estructura.  
 \item El uso de lubricantes en las guías podría afectar la calidad del experimento.
-\item Se deben evitar vibraciones en la estructura para no dañar la calidad del \textit{film}.
+\item Se deben evitar vibraciones en la estructura para no dañar la calidad del películas.
 
 \end{enumerate}
 
-Se decidió entonces trabajar con la empresa IGUS \citep{web_igus}, que se especializa en la fabricación de polímeros. La misma ofrece guías lineales que se deslizan en lugar de rodar, y por lo tanto no utilizan rodamientos metálicos. Los polímeros están combinados con materiales anticorrosivos y no requieren de la aplicación de lubricante, es decir, que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
+Se decidió entonces trabajar con la empresa alemana IGUS GmbH \citep{web_igus}, que se especializa en la fabricación de polímeros. La misma ofrece guías lineales que se deslizan sobre polímeros tribológicos que poseen un bajo coeficiente de rozamiento en lugar de utilizar rodamientos metálicos. Los polímeros están combinados con materiales anticorrosivos y no requieren de la aplicación de lubricante, es decir, que conforman un entorno de trabajo limpio y libre de mantenimiento periódico. Se observa en la figura \ref{fig:equipo_mecánico} cuatro tipos de guías en donde se puede apreciar el polímero auto-lubricado que se ubica entre el eje y el carro.
 
 \begin{figure}[ht]
 \centering 
 \includegraphics[width=0.7\textwidth]{./Figures/guias.png}
-\caption{Guía Lineal IGUS.\protect\footnotemark.}
+\caption{Guías lineales IGUS\protect\footnotemark.}
 \label{fig:equipo_mecánico}
 \end{figure}
 \footnotetext{Imagen tomada de \cite{web_igus}.}
 
 
-Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Un software  utilizado en la industria manufacturera, que se encuentra constituido por dos módulos fundamentales que permiten abarcar aspectos de diseño y modelado de pieza y luego de fabricación.  
+Para el diseño y fabricación de piezas mecanizadas en aluminio se trabajó con el software BOBCAD \citep{web_bobcad} \textit{CAD/CAM (Computer-Aided Design /Computer-Aided Manufacturing )}. Es un software  utilizado en la industria manufacturera, que se encuentra constituido por dos módulos fundamentales que permiten abarcar aspectos de diseño y modelado de pieza y luego de fabricación.  
 
 Con la parte CAD se diseña el modelo 3D de la pieza. Con el fin de corregir errores de diseño con mayor velocidad, se realiza una impresión 3D con filamento plástico para probar las dimensiones y la factibilidad técnica de la pieza.
-Una vez que el modelo en su versión plástica queda aprobado, se comienza con la configuración del módulo CAM, este módulo se encarga de convertir, a través de diferentes estrategias, al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora CNC de la marca FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en movimientos de motores.
+Una vez que el modelo en su versión plástica queda aprobado, se comienza con la configuración del módulo CAM. Este módulo se encarga de convertir, a través de diferentes estrategias, al modelo 3D en lenguaje de máquina que el equipo puede interpretar. Se observa en la imagen \ref{fig:fagor} la fresadora de la marca LAGUN con controlador CNC FAGOR \citep{web_fagor} utilizada para la fabricación de las piezas del equipo dip coater. El control de la fresadora interpreta el código G-CODE también conocido como RS-274 \citep{web_gcode} generado por el modulo CAM y lo convierte en movimientos de los ejes x, y, z.
 
 
 \begin{figure}[ht]
 \centering 
 \includegraphics[width=0.7\textwidth]{./Figures/fagor.png}
-\caption{Fresadora Fagor GVC 600.\protect\footnotemark.}
+\caption{Fresadora LAGUN GVC 600 con controlador CNC FAGOR 8055\protect\footnotemark.}
 \label{fig:fagor}
 \end{figure}
 \footnotetext{Imagen tomada en el centro tecnológico de FUNINTEC.}
@@ -270,19 +270,20 @@ El equipo estará entonces compuesto por el módulo ESP32-WROOM como unidad cent
 
 \section{Herramientas de desarrollo}
 
-Para la implementación del hardware se utilizó el software libre de diseño de circuitos impresos KICAD \citep{web_kicad}, la elección del mismo se basó en los siguientes puntos:
+Para la implementación del hardware se utilizó el software libre de diseño de circuitos impresos KICAD \citep{web_kicad}; la elección del mismo se basó en los siguientes puntos:
 
 \begin{itemize}
+\item Es un software de fuentes abiertas.
 \item Las capacidades que brinda el software son suficientes para el desarrollo de este hardware.
-\item Se valora el apoyo del \textit{CERN:European Organization for Nuclear Research} \citep{1_nota_web_kicad_cern} al proyecto KICAD.
+\item Se valora el apoyo del \textit{CERN (European Organization for Nuclear Research)} \citep{1_nota_web_kicad_cern} al proyecto KICAD.
 %\item Las últimas versiones presentan mejoras significativas respecto a sus predecesoras.
 \end{itemize}
 
 
-Para la implementación del firmware se trabajó con el \textit{framework} ESP-IDF \citep{web_esp_idf} provisto por el fabricante del microcontrolador. Dicho entorno se ejecuta sobre FreeRTOS, que es un sistema operativo de tiempo real utilizado en dispositivos embebidos que permite un desarrollo de software bajo un esquema multi-tareas.
+Para la implementación del firmware se trabajó con el \textit{framework} ESP-IDF \citep{web_esp_idf} provisto por el fabricante del microcontrolador. Dicho entorno se ejecuta sobre freeRTOS, que es un sistema operativo de tiempo real utilizado en dispositivos embebidos que permite un desarrollo de software bajo un esquema multitareas.
 
-Se trabajó con el entorno de programación ECLIPSE IDE, la elección se basó en los siguientes puntos:
+Se trabajó con el entorno de programación ECLIPSE IDE; la elección se basó en los siguientes puntos:
 \begin{itemize}
-\item El fabricante del microcontrolador ESPRESSIF ofrece \textit{plugings} para incorporar al entorno y facilitar el desarrollo. 
+\item El fabricante del microcontrolador ESPRESSIF ofrece \textit{plugins} para incorporar al entorno y facilitar el desarrollo. 
 \item Existe documentación para la configuración del \textit{framework ESP-IDF} \citep{web_esp_idf_eclipse} sobre el entorno.
 \end{itemize}

@@ -40,7 +40,7 @@ El presente ensayo se realizó para verificar la comunicación entre el microcon
 %Las operaciones de lectura y escritura tienen una diferencia, que se ve representada por el bit más significativo de la trama de datos, es decir el bit 39. Cuando la operación es de lectura, y primer byte que representa la dirección del registro no sufre alteración. Cuando la operación es de escritura, se debe establecer en 1 el bit de la posición 39. Por ejemplo, si  se pretende escribir un valor en el registro [0x22], el primer byte del datagrama deberá ser [0x22 + 0x80 = 0xA2],  sumar [0x80] representa poner en 1 el primer bit del byte mas significativo del datagrama. 
 
 
-Para realizar el ensayo se conectó de manera provisoria el analizador lógico USB con las cuatro terminales que establecen la comunicación SPI entre el microcontrolador y el CI TMC5130. La comunicación con el CI TMC5130 está definida por datagramas de 5 bytes, el primer byte define la dirección del registro y los 4 bytes restantes representan su valor. Las operaciones de lectura y escritura tienen una diferencia que se representa en el byte de dirección. Cuando la operación es de escritura, se debe establece en 1 el bit mas significativo de dicho byte y cuando la operación es de lectura, la dirección no sufre alteración.
+Para realizar el ensayo se conectó de manera provisoria el analizador lógico USB con las cuatro terminales que establecen la comunicación SPI entre el microcontrolador y el CI TMC5130. La comunicación con el CI TMC5130 está definida por datagramas de 5 bytes, el primer byte define la dirección del registro y los 4 bytes restantes representan su valor. Las operaciones de lectura y escritura tienen una diferencia que se representa en el byte de dirección. Cuando la operación es de escritura, se debe establecer en 1 el bit mas significativo de dicho byte y cuando la operación es de lectura, la dirección no sufre alteración.
 
 Se puede observar en la figura \ref{fig:ensayo_spi} el banco de pruebas.
 
@@ -55,15 +55,15 @@ El procedimiento realizado fue el siguiente:
 \begin{enumerate}
 \item Se conectó el equipo dip coater con el software Putty para establecer una consola de comandos.
 \item Se ejecutó el software del analizador lógico y se comenzó el registro de datos.
-\item Se ejecutó el comando de lectura del registro [0x2D].
-\item Se ejecutó el comando de escritura del registro [0x2D] con valor [0x00 0XFF 0x00 0x00].
-\item Se realizó nuevamente una lectura del registro [0x2D] para verificar el valor ingresado en el item anterior. 
+\item Se ejecutó el comando de lectura del registro \texttt{[0x2D]}.
+\item Se ejecutó el comando de escritura del registro \texttt{[0x2D]} con valor \texttt{[0x00 0XFF 0x00 0x00]}.
+\item Se realizó nuevamente una lectura del registro \texttt{[0x2D]} para verificar el valor ingresado en el item anterior. 
 \end{enumerate}
 
-El microcontrolador está configurado como dispositivo SPI \textit{master}, por lo tanto, envía por el puerto MOSI y recibe por el puerto MISO.
-En la figura \ref{fig:ensayo_spi_a} se observa la ejecución del comando de lectura sobre el registro [0x2D]. 
+El microcontrolador está configurado como dispositivo SPI \textit{master}; por lo tanto, envía por el puerto MOSI y recibe por el puerto MISO.
+En la figura \ref{fig:ensayo_spi_a} se observa la ejecución del comando de lectura sobre el registro \texttt{[0x2D]}. 
 \begin{itemize}
-\item MOSI: [0x2D][0x00 0x00 0x00 0x00].
+\item MOSI: \texttt{[0x2D][0x00 0x00 0x00 0x00]}.
 %\item MISO: [0x29][0x00 0x01 0xF8 0x88].
 \end{itemize}
 
@@ -72,15 +72,15 @@ En la figura \ref{fig:ensayo_spi_a} se observa la ejecución del comando de lect
 \begin{figure}[h!]
 \centering 
 \includegraphics[width=1\textwidth]{./Figures/ensayo_spi_a_v1.png}
-\caption{Comando de lectura sobre registro [0x2D].}
+\caption{Comando de lectura sobre registro \texttt{[0x2D]}.}
 \label{fig:ensayo_spi_a}
 \end{figure}
 
 
-En la figura \ref{fig:ensayo_spi_b} se observa la ejecución del comando de escritura sobre el registro [0x2D] con valor [0x00 0xFF 0xFF 0x00]. 
+En la figura \ref{fig:ensayo_spi_b} se observa la ejecución del comando de escritura sobre el registro \texttt{[0x2D]} con valor \texttt{[0x00 0xFF 0xFF 0x00]}. 
 
 \begin{itemize}
-\item MOSI: [0x2D + 0x80 = 0xAD][0x00 0xFF 0x00 0x00].
+\item MOSI: \texttt{[0x2D + 0x80 = 0xAD][0x00 0xFF 0x00 0x00]}.
 %\item MISO: [0x11][0x00 0x01 0xF8 0x88].
 \end{itemize}
 
@@ -89,26 +89,26 @@ En la figura \ref{fig:ensayo_spi_b} se observa la ejecución del comando de escr
 \begin{figure}[h!]
 \centering 
 \includegraphics[width=1\textwidth]{./Figures/ensayo_spi_b.png}
-\caption{Comando de escritura sobre registro [0x2D].}
+\caption{Comando de escritura sobre registro \texttt{[0x2D]}.}
 \label{fig:ensayo_spi_b}
 \end{figure}
 
-En la figura \ref{fig:ensayo_spi_c} se observa la ejecución nuevamente del comando de lectura sobre el registro [0x2D].
+En la figura \ref{fig:ensayo_spi_c} se observa la ejecución nuevamente del comando de lectura sobre el registro \texttt{[0x2D]}.
 
 \begin{itemize}
-\item MOSI: [0x2D][0x00 0xFF 0x00 0x00].
-\item MISO: [0x11][0x00 0xFF 0x00 0x00].
+\item MOSI: \texttt{[0x2D][0x00 0xFF 0x00 0x00]}.
+\item MISO: \texttt{[0x11][0x00 0xFF 0x00 0x00]}.
 \end{itemize}
 
 
 \begin{figure}[h!]
 \centering 
 \includegraphics[width=1\textwidth]{./Figures/ensayo_spi_c_c.png}
-\caption{Comando de lectura actualizado sobre registro [0x2D].}
+\caption{Comando de lectura actualizado sobre registro \texttt{[0x2D]}.}
 \label{fig:ensayo_spi_c}
 \end{figure}
 
-Se observa entonces que luego de estas operaciones el registro [0x2D] se actualizó correctamente con el valor[0x00 0xFF 0x00 0x00].
+Se observa entonces que luego de estas operaciones el registro \texttt{[0x2D]} se actualizó correctamente con el valor \texttt{[0x00 0xFF 0x00 0x00]}.
 
 Con este ensayo se validó la comunicación SPI entre el microcontrolador y el CI TMC5130 para las operaciones de lectura y escritura de datos.
 
@@ -169,7 +169,7 @@ Para realizar el ensayo, cuyos parámetros se ven en la tabla \ref{tab:ensayo_co
 
 Un ordenador conectado al equipo ejecuta un script de Python que guarda los datos recibidos en un archivo.
 
-En la figura \ref{fig:tiempo_movimiento_1} se observa una comparación de tiempos teóricos respecto a  tiempos registrados en el sistema. En el eje Y se representa el tiempo en milisegundos necesario para ejecutar cada movimiento y en el eje X la velocidad. Los pares de puntos cercanos representan el movimiento descendente y ascendente respectivamente, con el mismo parámetro de velocidad y aceleración. El gráfico compara los tiempos teóricos respecto a los tiempos registrados. A simple vista no se pueden visualizar diferencias significativas.
+En la figura \ref{fig:tiempo_movimiento_1} se observa una comparación de tiempos teóricos respecto a  tiempos registrados en el sistema. En el eje Y se representa el tiempo en milisegundos necesario para ejecutar cada movimiento y en el eje X la velocidad. Los pares de puntos cercanos representan el movimiento descendente y ascendente respectivamente, con el mismo parámetro de velocidad y aceleración. El gráfico compara los tiempos teóricos respecto a los tiempos registrados. A simple vista no se puede ver diferencias significativas.
 
 \begin{figure}[h!]
 \centering 
@@ -192,31 +192,31 @@ Se concluye con este ensayo que el equipo es muy preciso en la mayor parte del r
  
 \subsection{Ejecución de comandos}
 
-El objetivo del siguiente ensayo fue demostrar que el único comando que se procesa con el equipo en funcionamiento es el de stop.
+El objetivo del siguiente ensayo fue demostrar que el único comando que se procesa con el equipo en funcionamiento es el de \texttt{stop}.
 
-Cada vez que el usuario ejecuta un comando sobre la consola, la aplicación app console procesa y envía el mensaje a través de una cola de FreeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. 
+Cada vez que el usuario ejecuta un comando sobre la consola, la aplicación app console procesa y envía el mensaje a través de una cola de freeRTOS hacia la aplicación app coating. Si la máquina está ejecutando un movimiento individual o un proceso dip coating completo y recibe un comando nuevo, el mismo por seguridad es descartado, es decir que los mensajes no se encolan. 
 Para realizar el ensayo se implementó el siguiente procedimiento:
 \begin{enumerate}
 \item Ejecución de proceso  dip coating.
-\item Envió de comando DOWN. Cualquier otro comando de la sección \ref{sec:consola_comandos} tendrá el mismo efecto.
-\item Envío de comando STOP.
+\item Envió de comando \texttt{down}. Cualquier otro comando de la sección \ref{sec:consola_comandos} tendrá el mismo efecto.
+\item Envío de comando \texttt{stop}.
 \end{enumerate}
 
-En la figura \ref{fig:consola_comando_ok} se observa como se descarta el comando down cuando el equipo se encuentra en funcionamiento.
+En la figura \ref{fig:consola_comando_ok} se observa cómo se descarta el comando \texttt{down} cuando el equipo se encuentra en funcionamiento.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/consola_4.png}
-	\caption{Comando DOWN descartado por equipo en funcionamiento.}
+	\caption{Comando \texttt{down} descartado por equipo en funcionamiento.}
 	\label{fig:consola_comando_ok}
 \end{figure}
 
-El único comando de movimiento que no se descarta es el comando stop, que tiene un tratamiento especial a través de una cola propia y siempre se garantiza su ejecución. En la figura \ref{fig:consola_comando_false} se observa la finalización del proceso.
+El único comando de movimiento que no se descarta es el comando \texttt{stop}, que tiene un tratamiento especial a través de una cola propia y siempre se garantiza su ejecución. En la figura \ref{fig:consola_comando_false} se observa la finalización del proceso.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{./Figures/consola_5.png}
-	\caption{Comando STOP procesado.}
+	\caption{Comando \texttt{stop} procesado.}
 	\label{fig:consola_comando_false}
 \end{figure}
  
@@ -225,9 +225,9 @@ El único comando de movimiento que no se descarta es el comando stop, que tiene
 \label{sec:calibración}
 \subsection{Desplazamiento lineal y micropasos}
 
-La razón de este ensayo fue definir y ajustar la constante de desplazamiento que relaciona los micropasos realizados por el motor, con la distancia de desplazamiento del carro. La misma es una constante que está definida por el paso del tornillo.
+La razón de este ensayo fue definir y ajustar la constante de desplazamiento que relaciona los micropasos realizados por el motor, con la distancia de desplazamiento del carro. Es decir, la transformación del movimiento rotacional en un movimiento lineal.
 
-Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto\citep{web_asimeto}, el cual puede observarse en la figura \ref{fig:micrometro}. El mismo tiene una resolución de 0.001 mm y permite desplazamientos de 0 a 50 mm.
+Para realizar las mediciones se utilizó un comparador digital de la marca Asimeto \citep{web_asimeto}, el cual puede observarse en la figura \ref{fig:micrometro}. El mismo tiene una resolución de 0.001 mm y permite desplazamientos de 0 a 50 mm.
 
 
 \begin{figure}[h!]
@@ -238,7 +238,6 @@ Para realizar las mediciones se utilizó un comparador digital de la marca Asime
 \end{figure}
 
 El ensayo consistió en medir seis desplazamientos sucesivos de 1 mm sobre el carro de manera descendente y luego de manera ascendente. Es importante porque permite corregir la unidad de conversión de micropasos a milímetros que utiliza el CI TMC5130 para realizar todos los movimientos. 
-En la subsección \ref{subsec:calibracion} se mencionó la macro \textit{MACHINE STEPS PER MILLIMETER} definida en el archivo hardware.h que surgió de estas mediciones. 
 
 En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición donde se visualiza el comparador Asimeto apoyado sobre una base metálica independiente, con la punta del mismo en contacto directo con el carro de desplazamiento.
 
@@ -250,7 +249,7 @@ En la figura \ref{fig:desplazamiento_lineal} se observa el banco de medición do
 \end{figure}
 
 
-Para iniciar el ensayo se presiona el botón \textit{origin} del comparador para poner en cero la medida, la sensibilidad del mismo es tan grande que es difícil lograr 0,000 mm debido a la acción misma  de apretar el botón. Luego se realizan movimientos descendentes de 1 mm y se registran los datos.
+Para iniciar el ensayo se presiona el botón \textit{origin} del comparador para poner en cero la medida. Luego se realizan movimientos descendentes de 1 mm y se registran los datos.
 En la tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obtenidos.
 
 \begin{table}[h!]
@@ -264,7 +263,7 @@ En la tabla \ref{tab:ensayo_desplazamiento_des} se muestran los resultados obten
 		1,051 mm    & 	0,993 mm    	& 	0,007				\\
 		2,035 mm 	& 	0,984 mm	    & 	0,016 				\\
 		3,034 mm	& 	0,999 mm	    & 	0,001 			\\
-		4,054 mm 	& 	1,02 mm         & 	-0,020					\\
+		4,054 mm 	& 	1,020 mm         & 	-0,020					\\
 		5,039 mm 	& 	0,985 mm	    & 	0,015					\\
 		5,998 mm 	& 	0,959 mm        & 	0,041 			\\
 		\bottomrule
@@ -286,8 +285,8 @@ De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para
 		0,939 mm    & 	0,019 mm    	& 	0,081	\\
 		1,931 mm 	& 	0,992 mm	    & 	0,008 	\\
 		2,929 mm	& 	0,998 mm	    & 	0,002 	\\
-		3,923 mm 	& 	0.994 mm        & 	0,006	\\
-		4,923 mm 	& 	1 mm	    	& 	0		\\
+		3,923 mm 	& 	0,994 mm        & 	0,006	\\
+		4,923 mm 	& 	1,000 mm	    & 	0,000		\\
 		5,911 mm 	& 	0,988 mm        & 	0,012 	\\
 		\bottomrule
 		\hline
@@ -298,21 +297,21 @@ De igual manera se confecciona la tabla \ref{tab:ensayo_desplazamiento_asc} para
 
 Para corregir el valor de micropasos por milímetros de desplazamiento se utilizó el siguiente procedimiento:
 \begin{enumerate}
-\item Calcular el promedio de los 6 errores relativos ascendentes y descendentes.
-\item Ajustar el valor inicial de micropasos con los respectivos errores. 
+\item Calcular el promedio de los seis desplazamientos ascendentes y descendentes.
+\item Ajustar el valor inicial de micropasos con el promedio de los desplazamientos ascendentes y descendentes. 
 \item Calcular el promedio entre el valor corregido ascendente y el valor corregido descendente.
 \end{enumerate}
 
 
-Inicialmente al comenzar el ensayo la macro \textit{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12737 micropasos por milímetro, luego de sucesivas correcciones la macro quedo definida en 12932 micropasos por milímetro.
-Este ensayo se repitió cinco veces hasta llegar a los valores presentados en las tablas, en donde se observó que el porcentaje promedio de los errores relativos fue inferior al 2.5\%.
+Inicialmente al comenzar el ensayo la macro \texttt{MACHINE STEPS PER MILLIMETER}  estaba definida con un valor de 12800 micropasos por milímetro como se definió en la sección \ref{subsec:calibracion_imp}, luego de sucesivas correcciones la macro quedó definida en 12932 micropasos por milímetro.
+Este ensayo se repitió hasta llegar a los valores presentados en las tablas, en donde se observó que el porcentaje promedio de los errores relativos fue inferior al 2.5\%.
 
 \section{Caso de prueba}
 \subsection{Prueba de campo con personal capacitado}
 
-El ensayo final se llevó a cabo junto a personal capacitado del Instituto de Nanosistemas e implicó un proceso completo de producción de thin film.
+El ensayo final se llevó a cabo junto a personal capacitado del Instituto de Nanosistemas e implicó un proceso completo de producción de películas delgadas de \ce{TiO2}.
 
-Para el experimento se utilizó  un wafer de silicio como sustrato y dióxido de titanio disuelto en etanol como solución para formar un \textit{film} de nanopartículas de titanio. La prueba se realizó en el laboratorio Nanoatelier del Instituto de Nanosistemas, se observa en la figura \ref{fig:equipo_laboratorio} el equipo instalado.
+Para el experimento se utilizó  una oblea de silicio como sustrato y \ce{TiCl4} disuelto en etanol como solución precursora para formar una película de \ce{TiO2}. La prueba se realizó en el laboratorio de química del Instituto de Nanosistemas, se observa en la figura \ref{fig:equipo_laboratorio} el equipo instalado.
 
 
 \begin{figure}[h!]
@@ -326,9 +325,9 @@ Para el experimento se utilizó  un wafer de silicio como sustrato y dióxido de
 Para realizar el experimento se siguió la siguiente secuencia:
 \begin{enumerate}
 \item Se agregó sobre el equipo una cámara de acrílico con suministro de aire comprimido y filtro de sílica gel, utilizado para bajar la humedad del aire.
-\item Se colocó el wafer de silicio sobre el carro y la solución dentro de una caja plástica debajo, como se observa en la figura \ref{fig:equipo_laboratorio_a}.
+\item Se colocó la oblea de silicio sobre el carro y la solución dentro de una caja plástica debajo, como se observa en la figura \ref{fig:equipo_laboratorio_a}.
 \item Se encendió el equipo y el usuario configuró los parámetros del proceso a pie de máquina sobre la pantalla táctil.
-\item En paralelo se controló la humedad de la cámara sobre la consola serial de un ordenador conectado al equipo.
+\item En paralelo se registró la humedad de la cámara sobre la consola serial de un ordenador conectado al equipo.
 \item Se esperó hasta lograr una humedad dentro de la cámara de 20\%.
 \item Se inicio el proceso de dip coating.
 \item Al finalizar se extrajo la muestra.
@@ -337,11 +336,11 @@ Para realizar el experimento se siguió la siguiente secuencia:
 \begin{figure}[h!]
 \centering 
 \includegraphics[width=0.5\textwidth]{./Figures/prueba_a.jpg}
-\caption{Wafer de silicio sobre carro.}
+\caption{Oblea de silicio sobre carro.}
 \label{fig:equipo_laboratorio_a}
 \end{figure}
 
-Con este ensayo se pudo corroborar el funcionamiento correcto del equipo de manera íntegra, se destaca que los usuarios investigadores realizaron de manera intuitiva una correcta configuración de parámetros. En la figura \ref{fig:equipo_laboratorio_c} se observa el primer \textit{film} producido. Los usuarios comentaron que el perfil visual que observaron sobre la muestra contaba con todas las características de un \textit{film} correctamente fabricado.  
+Con este ensayo se pudo corroborar el funcionamiento correcto del equipo de manera íntegra, se destaca que los usuarios investigadores realizaron de manera intuitiva una correcta configuración de los parámetros. En la figura \ref{fig:equipo_laboratorio_c} se observa la primera película producida. Los usuarios comentaron que el perfil visual que observaron sobre la muestra contaba con todas las características de un \textit{thin film} correctamente fabricado.  
 
 \begin{figure}[h!]
 \centering 
@@ -367,8 +366,8 @@ En la tabla \ref{tab:equipos_competencia_comparacion} se observan las caracterí
 		Bio Multiplie		  	& 0.1  - 108 	& no & PC & no					\\
 		Kibron LayerX				 	& 0.06 - 300	& no & PC & no					\\
 		Bungard						 	& 30 - 10000	& no & Display LCD & no		\\
-		Ossila 					 	& 0.6  - 3000	& no & PC & no		\\
-		Holmarc					 	& 1.08 - 540	& no & PC & no		\\
+		Ossila 					 	& 0.6  - 3000	& no & Display LCD & no		\\
+		Holmarc					 	& 1.08 - 540	& no & Display LCD & no 		\\
 		\textbf{Este Equipo} 						   &  1-800 & 1 - 2100 &  Touch-PC  & si \\
 		\bottomrule
 		\hline
